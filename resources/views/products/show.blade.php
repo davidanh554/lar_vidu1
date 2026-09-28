@@ -1,0 +1,660 @@
+@extends('layouts.store')
+
+@section('title', $product->name . ' - VUA TABLET')
+
+@section('content')
+<div class="container my-5">
+    <div class="mb-4">
+        <a href="{{ route('home') }}" class="btn btn-modern-outline btn-sm rounded-pill">
+            <i class="fa-solid fa-arrow-left me-1"></i> Quay lại trang chủ
+        </a>
+    </div>
+
+    <div class="card card-modern p-4 p-lg-5 bg-white">
+        <div class="row g-5">
+            <!-- Ảnh sản phẩm -->
+            <div class="col-lg-5 text-center">
+                <div class="bg-light p-4 rounded-4 d-flex align-items-center justify-content-center border" style="min-height: 380px;">
+                    @if($product->image)
+                        <img src="{{ asset($product->image) }}" class="img-fluid rounded-4" style="max-height: 360px; object-fit: contain;" alt="{{ $product->name }}">
+                    @else
+                        <div class="text-muted">
+                            <i class="fa-solid fa-tablet-screen-button fs-1 mb-2"></i>
+                            <p class="mb-0">Chưa có hình ảnh</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Thông tin & Tùy chọn mua hàng -->
+            <div class="col-lg-7">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    @if($product->category)
+                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill fw-semibold">{{ $product->category->name }}</span>
+                    @endif
+                    @if($product->brand)
+                        <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-1 rounded-pill fw-semibold">{{ $product->brand->name }}</span>
+                    @endif
+                </div>
+
+                <h1 class="h2 fw-bold text-dark mb-3">{{ $product->name }}</h1>
+
+                @php
+                    $variants = $product->color_variants;
+                    $totalStock = (int)$product->stock_quantity;
+                    $isOutOfStock = ($totalStock <= 0);
+                @endphp
+
+                <!-- Cấu hình nhanh -->
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    @if($product->chip) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill"><i class="fa-solid fa-microchip me-1 text-primary"></i>{{ $product->chip }}</span> @endif
+                    @if($product->ram) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill"><i class="fa-solid fa-memory me-1 text-primary"></i>{{ $product->ram }}</span> @endif
+                    @if($product->screen_size) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill"><i class="fa-solid fa-expand me-1 text-primary"></i>{{ $product->screen_size }}</span> @endif
+                </div>
+
+                <!-- Tồn kho theo màu đã chọn -->
+                <div class="mb-4" id="color-stock-badge-container">
+                    @if($isOutOfStock)
+                        <span class="badge-soft badge-soft-danger py-2 px-3">
+                            <i class="fa-solid fa-circle-xmark"></i> Tạm hết hàng
+                        </span>
+                    @else
+                        <span class="badge-soft badge-soft-success py-2 px-3" id="stock-status-badge">
+                            <i class="fa-solid fa-circle-check"></i> Tổng kho: {{ $totalStock }} sản phẩm
+                        </span>
+                    @endif
+                </div>
+
+                <!-- Giá bán -->
+                <div class="mb-4 p-3 bg-light rounded-4 d-flex align-items-baseline">
+                    @if($product->sale_price && $product->sale_price < $product->price)
+                        <span class="fs-2 fw-bold text-primary">{{ number_format($product->sale_price, 0, ',', '.') }}đ</span>
+                        <span class="fs-5 text-muted text-decoration-line-through ms-3">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                        <span class="badge bg-danger rounded-pill ms-3 px-3 py-1">Tiết kiệm {{ number_format($product->price - $product->sale_price, 0, ',', '.') }}đ</span>
+                    @else
+                        <span class="fs-2 fw-bold text-primary">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                    @endif
+                </div>
+
+                <!-- Form Mua hàng -->
+                <form action="{{ route('cart.add', $product->id) }}" method="POST" id="purchase-form">
+                    @csrf
+                    
+                    <!-- Chọn màu sắc -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold d-flex justify-content-between">
+                            <span>Chọn màu sắc:</span>
+                            <span class="text-muted small" id="selected-color-info"></span>
+                        </label>
+                        <div class="d-flex flex-wrap gap-2">
+                            @php
+                                $firstAvailableFound = false;
+                            @endphp
+                            @foreach($variants as $index => $variant)
+                                @php
+                                    $vQty = (int)$variant['quantity'];
+                                    $isAvailable = $vQty > 0;
+                                    $shouldCheck = false;
+                                    if ($isAvailable && !$firstAvailableFound) {
+                                        $shouldCheck = true;
+                                        $firstAvailableFound = true;
+                                    }
+                                @endphp
+                                <input type="radio" 
+                                       class="btn-check color-radio-input" 
+                                       name="color" 
+                                       id="color{{ $index }}" 
+                                       value="{{ $variant['name'] }}" 
+                                       data-name="{{ $variant['name'] }}" 
+                                       data-stock="{{ $vQty }}" 
+                                       {{ $shouldCheck ? 'checked' : '' }} 
+                                       {{ (!$isAvailable && $isOutOfStock) ? 'disabled' : '' }}>
+                                
+                                <label class="btn btn-outline-secondary btn-sm px-3 py-2 rounded-pill d-flex align-items-center gap-1 {{ !$isAvailable ? 'opacity-50' : '' }}" for="color{{ $index }}">
+                                    <i class="fa-solid fa-circle-dot small"></i>
+                                    <span>{{ $variant['name'] }}</span>
+                                    @if($vQty > 0)
+                                        <span class="badge bg-white text-dark border ms-1 font-monospace">Còn {{ $vQty }}</span>
+                                    @else
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle ms-1">Hết</span>
+                                    @endif
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Chọn số lượng -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Số lượng đặt mua:</label>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-1">
+                                <button class="stepper-btn" type="button" id="btn-qty-minus"><i class="fa-solid fa-minus fs-6"></i></button>
+                                <input type="number" name="quantity" id="input-quantity" value="1" min="1" max="1" class="stepper-input fw-bold" required>
+                                <button class="stepper-btn" type="button" id="btn-qty-plus"><i class="fa-solid fa-plus fs-6"></i></button>
+                            </div>
+                            <span class="text-muted small" id="color-stock-note"></span>
+                        </div>
+                    </div>
+
+                    <!-- Bộ nút hành động -->
+                    <div class="d-flex gap-3 mb-4">
+                        <button type="submit" name="action" value="add" id="btn-add-cart" class="btn btn-modern-outline btn-lg flex-fill rounded-pill fs-6 py-3">
+                            <i class="fa-solid fa-cart-plus me-2 text-primary"></i> Thêm vào giỏ
+                        </button>
+                        <button type="submit" name="action" value="buy_now" id="btn-buy-now" class="btn btn-modern-primary btn-lg flex-fill rounded-pill fs-6 fw-bold py-3 shadow">
+                            <i class="fa-solid fa-bolt me-2"></i> Mua ngay
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Box Chính sách & Bảo hành -->
+                <div class="card bg-light border-0 rounded-4 p-4">
+                    <div class="d-flex align-items-center mb-2 text-primary fw-bold">
+                        <i class="fa-solid fa-shield-halved me-2"></i> Chính sách ưu đãi & Cam kết tại VUA TABLET
+                    </div>
+                    <ul class="list-unstyled mb-0 text-muted small lh-lg">
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Sản phẩm chính hãng 100%, bảo hành 12 tháng tại các TTBH ủy quyền.</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Đổi mới trong 30 ngày đầu tiên nếu máy phát sinh lỗi phần cứng NSX.</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Giao hàng hỏa tốc toàn quốc qua GHN Express, kiểm tra hàng trước khi nhận.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mô tả chi tiết -->
+        <div class="border-top mt-5 pt-4">
+            <h4 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-circle-info me-2 text-primary"></i>Mô tả chi tiết sản phẩm</h4>
+            <div class="text-secondary lh-lg fs-6">
+                {{ $product->description ?? 'Chưa có thông tin mô tả chi tiết cho sản phẩm này.' }}
+            </div>
+        </div>
+
+        <!-- PHẦN ĐÁNH GIÁ SẢN PHẨM (CHUẨN GIAO DIỆN SHOPEE) -->
+        <div class="shopee-reviews-card mt-5">
+            <h4 class="shopee-review-title">ĐÁNH GIÁ SẢN PHẨM</h4>
+
+            <!-- Tổng quan điểm & bộ lọc sao -->
+            <div class="shopee-rating-overview d-flex flex-wrap align-items-center gap-4">
+                <div class="text-center pe-md-4 border-md-end">
+                    <div class="shopee-score-text mb-1">
+                        <span class="shopee-score-number">{{ number_format($avgRating, 1) }}</span> trên 5
+                    </div>
+                    <div class="shopee-stars-rating">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= round($avgRating))
+                                <i class="fa-solid fa-star"></i>
+                            @else
+                                <i class="fa-regular fa-star"></i>
+                            @endif
+                        @endfor
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 align-items-center flex-fill">
+                    <button type="button" class="shopee-filter-btn active" data-filter="all">
+                        Tất Cả
+                    </button>
+                    <button type="button" class="shopee-filter-btn" data-filter="5">
+                        5 Sao ({{ $starCounts[5] ?? 0 }})
+                    </button>
+                    <button type="button" class="shopee-filter-btn" data-filter="4">
+                        4 Sao ({{ $starCounts[4] ?? 0 }})
+                    </button>
+                    <button type="button" class="shopee-filter-btn" data-filter="3">
+                        3 Sao ({{ $starCounts[3] ?? 0 }})
+                    </button>
+                    <button type="button" class="shopee-filter-btn" data-filter="2">
+                        2 Sao ({{ $starCounts[2] ?? 0 }})
+                    </button>
+                    <button type="button" class="shopee-filter-btn" data-filter="1">
+                        1 Sao ({{ $starCounts[1] ?? 0 }})
+                    </button>
+                    <button type="button" class="shopee-filter-btn" data-filter="comment">
+                        Có Bình Luận ({{ $withCommentCount ?? 0 }})
+                    </button>
+
+                    @if($userEligibleOrder)
+                        <button type="button" class="btn btn-sm btn-danger rounded-pill px-3 ms-auto fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#productDetailReviewModal">
+                            <i class="fa-solid fa-pen-to-square me-1"></i> Viết đánh giá
+                        </button>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Danh sách các lượt đánh giá -->
+            <div id="shopee-reviews-container">
+                @forelse($reviews as $rev)
+                    <div class="shopee-review-item" data-rating="{{ $rev->rating }}" data-has-comment="{{ !empty(trim($rev->comment ?? '')) ? '1' : '0' }}">
+                        <div class="d-flex gap-3">
+                            <div class="shopee-user-avatar">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="shopee-user-name mb-1">
+                                    {{ $rev->user->name ?? 'Người dùng' }}
+                                </div>
+                                <div class="shopee-stars-rating small mb-1">
+                                    @for($s = 1; $s <= 5; $s++)
+                                        @if($s <= $rev->rating)
+                                            <i class="fa-solid fa-star"></i>
+                                        @else
+                                            <i class="fa-regular fa-star"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <div class="shopee-item-meta mb-2">
+                                    {{ $rev->created_at->format('Y-m-d H:i') }} | Phân loại hàng: {{ $rev->color ?: 'Mặc định' }}
+                                </div>
+
+                                <div class="shopee-criteria-row">
+                                    <span class="shopee-criteria-label">Đúng với mô tả:</span>
+                                    <span class="shopee-criteria-val ms-1">{{ $rev->match_description ?: 'đúng' }}</span>
+                                </div>
+                                <div class="shopee-criteria-row mb-2">
+                                    <span class="shopee-criteria-label">Chất lượng sản phẩm:</span>
+                                    <span class="shopee-criteria-val ms-1">{{ $rev->quality_rating ?: 'Tốt' }}</span>
+                                </div>
+
+                                @if(!empty($rev->comment))
+                                    <div class="shopee-review-text">{{ $rev->comment }}</div>
+                                @endif
+
+                                <div class="d-flex align-items-center gap-3 mt-2">
+                                    <button type="button" class="shopee-helpful-btn" data-review-id="{{ $rev->id }}">
+                                        <i class="fa-regular fa-thumbs-up"></i> Hữu Ích? <span class="helpful-num">({{ $rev->helpful_count }})</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa-regular fa-comment-dots fs-1 mb-2 d-block opacity-50"></i>
+                        Sản phẩm này chưa có đánh giá nào.
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+</div>
+
+@if($userEligibleOrder)
+<!-- Modal Viết Đánh Giá Từ Trang Chi Tiết Sản Phẩm -->
+<div class="modal fade" id="productDetailReviewModal" tabindex="-1" aria-labelledby="productDetailReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header border-bottom px-4 py-3 bg-light">
+                <h5 class="modal-title fw-bold text-dark d-flex align-items-center" id="productDetailReviewModalLabel">
+                    <i class="fa-solid fa-star text-warning me-2 fs-5"></i>Đánh giá sản phẩm
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('reviews.store') }}" method="POST" id="form-product-detail-review">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <input type="hidden" name="order_id" value="{{ $userEligibleOrder->id }}">
+                <input type="hidden" name="rating" id="detail-review-rating-val" value="5">
+                <input type="hidden" name="match_description" id="detail-review-match-val" value="đúng">
+                <input type="hidden" name="quality_rating" id="detail-review-quality-val" value="Tốt">
+
+                <div class="modal-body p-4">
+                    <div class="d-flex align-items-center gap-3 mb-3 border-bottom pb-3">
+                        <img src="{{ !empty($product->image) ? asset($product->image) : asset('images/default.png') }}" class="rounded border p-1" style="width: 50px; height: 50px; object-fit: contain;">
+                        <div>
+                            <h6 class="fw-bold mb-1 text-dark">{{ $product->name }}</h6>
+                            <small class="text-success"><i class="fa-solid fa-check-circle me-1"></i>Đã mua từ đơn hàng #{{ $userEligibleOrder->id }}</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center gap-3">
+                        <span class="text-dark small fw-bold">Chất lượng:</span>
+                        <div class="star-rating-picker" id="detail-star-picker" data-rating="5">
+                            <i class="fa-solid fa-star star-item active" data-value="1"></i>
+                            <i class="fa-solid fa-star star-item active" data-value="2"></i>
+                            <i class="fa-solid fa-star star-item active" data-value="3"></i>
+                            <i class="fa-solid fa-star star-item active" data-value="4"></i>
+                            <i class="fa-solid fa-star star-item active" data-value="5"></i>
+                        </div>
+                        <span class="star-feedback-label fw-bold text-danger small" id="detail-star-label">Tuyệt vời</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary mb-1">Đúng với mô tả:</label>
+                        <div class="d-flex gap-2 flex-wrap" id="detail-desc-match-pills">
+                            <button type="button" class="btn btn-sm btn-danger rounded-pill px-3" data-val="đúng">đúng</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="rất đúng">rất đúng</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="đúng một phần">đúng một phần</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary mb-1">Chất lượng sản phẩm:</label>
+                        <div class="d-flex gap-2 flex-wrap" id="detail-quality-pills">
+                            <button type="button" class="btn btn-sm btn-danger rounded-pill px-3" data-val="Tốt">Tốt</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="Tuyệt vời">Tuyệt vời</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="Bình thường">Bình thường</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary mb-1">Nhận xét chi tiết:</label>
+                        <textarea name="comment" class="form-control rounded-3" rows="3" placeholder="Hãy chia sẻ cảm nhận về sản phẩm..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3 bg-light">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">Gửi đánh giá</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endif
+
+<!-- Toast thông báo giỏ hàng không reload -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    <div id="cartToast" class="toast align-items-center text-white bg-success border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex p-2">
+            <div class="toast-body d-flex align-items-center gap-2 fs-6">
+                <i id="cartToastIcon" class="fa-solid fa-circle-check fs-5"></i>
+                <span id="cartToastMsg">Đã thêm vào giỏ hàng thành công!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const colorRadios = document.querySelectorAll('.color-radio-input');
+    const qtyInput = document.getElementById('input-quantity');
+    const btnMinus = document.getElementById('btn-qty-minus');
+    const btnPlus = document.getElementById('btn-qty-plus');
+    const btnAddCart = document.getElementById('btn-add-cart');
+    const btnBuyNow = document.getElementById('btn-buy-now');
+    const stockBadge = document.getElementById('stock-status-badge');
+    const colorNote = document.getElementById('color-stock-note');
+    const selectedColorInfo = document.getElementById('selected-color-info');
+    const purchaseForm = document.getElementById('purchase-form');
+    const cartToastEl = document.getElementById('cartToast');
+    const cartToast = new bootstrap.Toast(cartToastEl, { delay: 3000 });
+    const cartToastMsg = document.getElementById('cartToastMsg');
+    const cartToastIcon = document.getElementById('cartToastIcon');
+    const navCartCount = document.getElementById('nav-cart-count');
+
+    function showNotification(message, isSuccess = true) {
+        cartToastEl.className = `toast align-items-center text-white ${isSuccess ? 'bg-success' : 'bg-danger'} border-0 shadow-lg rounded-4`;
+        cartToastIcon.className = isSuccess ? 'fa-solid fa-circle-check fs-5' : 'fa-solid fa-circle-exclamation fs-5';
+        cartToastMsg.textContent = message;
+        cartToast.show();
+    }
+
+    function updateStockForSelectedColor() {
+        const checkedRadio = document.querySelector('.color-radio-input:checked');
+        if (!checkedRadio) {
+            if (colorRadios.length > 0) {
+                colorRadios[0].checked = true;
+                return updateStockForSelectedColor();
+            }
+            return;
+        }
+
+        const colorName = checkedRadio.getAttribute('data-name');
+        const stock = parseInt(checkedRadio.getAttribute('data-stock')) || 0;
+
+        selectedColorInfo.innerHTML = `Đang chọn: <strong>${colorName}</strong>`;
+
+        if (stock > 0) {
+            stockBadge.className = 'badge-soft badge-soft-success py-2 px-3';
+            stockBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Màu <strong>${colorName}</strong>: Còn <strong>${stock}</strong> máy`;
+            colorNote.textContent = `(Tối đa ${stock} sản phẩm cho màu ${colorName})`;
+            
+            qtyInput.disabled = false;
+            qtyInput.max = stock;
+            if (parseInt(qtyInput.value) > stock) {
+                qtyInput.value = stock;
+            }
+            if (parseInt(qtyInput.value) < 1) {
+                qtyInput.value = 1;
+            }
+
+            btnAddCart.disabled = false;
+            btnBuyNow.disabled = false;
+            btnAddCart.innerHTML = `<i class="fa-solid fa-cart-plus me-2 text-primary"></i> Thêm vào giỏ`;
+            btnBuyNow.innerHTML = `<i class="fa-solid fa-bolt me-2"></i> Mua ngay`;
+        } else {
+            stockBadge.className = 'badge-soft badge-soft-danger py-2 px-3';
+            stockBadge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Màu <strong>${colorName}</strong>: Đã hết hàng`;
+            colorNote.textContent = `(Màu này tạm thời hết hàng)`;
+            
+            qtyInput.value = 0;
+            qtyInput.max = 0;
+            qtyInput.disabled = true;
+
+            btnAddCart.disabled = true;
+            btnBuyNow.disabled = true;
+            btnAddCart.innerHTML = `<i class="fa-solid fa-circle-xmark me-2"></i> Hết hàng`;
+            btnBuyNow.innerHTML = `Hết hàng`;
+        }
+    }
+
+    colorRadios.forEach(radio => {
+        radio.addEventListener('change', updateStockForSelectedColor);
+    });
+
+    btnMinus.addEventListener('click', function() {
+        let current = parseInt(qtyInput.value) || 1;
+        if (current > 1) {
+            qtyInput.value = current - 1;
+        }
+    });
+
+    btnPlus.addEventListener('click', function() {
+        let current = parseInt(qtyInput.value) || 1;
+        let max = parseInt(qtyInput.max) || 1;
+        if (current < max) {
+            qtyInput.value = current + 1;
+        }
+    });
+
+    qtyInput.addEventListener('input', function() {
+        let current = parseInt(qtyInput.value) || 1;
+        let max = parseInt(qtyInput.max) || 1;
+        if (current > max) {
+            qtyInput.value = max;
+        }
+        if (current < 1) {
+            qtyInput.value = 1;
+        }
+    });
+
+    // Xử lý Thêm giỏ hàng AJAX
+    if (btnAddCart && purchaseForm) {
+        btnAddCart.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(purchaseForm);
+            formData.set('action', 'add');
+
+            const originalHtml = btnAddCart.innerHTML;
+            btnAddCart.disabled = true;
+            btnAddCart.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Đang thêm...`;
+
+            fetch(purchaseForm.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+                body: formData
+            })
+            .then(response => {
+                return response.json().then(data => ({
+                    status: response.status,
+                    data: data
+                }));
+            })
+            .then(({ status, data }) => {
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+
+                if (data.success) {
+                    if (navCartCount && data.cart_count !== undefined) {
+                        navCartCount.textContent = data.cart_count;
+                        navCartCount.classList.remove('d-none');
+                    }
+
+                    showNotification(data.message || 'Đã thêm sản phẩm vào giỏ hàng thành công!', true);
+
+                    btnAddCart.innerHTML = `<i class="fa-solid fa-check me-1"></i> Đã thêm!`;
+                    setTimeout(() => {
+                        btnAddCart.disabled = false;
+                        btnAddCart.innerHTML = originalHtml;
+                    }, 1200);
+                } else {
+                    showNotification(data.message || 'Có lỗi xảy ra, vui lòng thử lại!', false);
+                    btnAddCart.disabled = false;
+                    btnAddCart.innerHTML = originalHtml;
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi thêm giỏ hàng:', error);
+                showNotification('Không thể kết nối tới máy chủ. Vui lòng thử lại!', false);
+                btnAddCart.disabled = false;
+                btnAddCart.innerHTML = originalHtml;
+            });
+        });
+    }
+
+    // Filter Shopee reviews by star / comments
+    const filterButtons = document.querySelectorAll('.shopee-filter-btn');
+    const reviewItems = document.querySelectorAll('.shopee-review-item');
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.dataset.filter;
+            reviewItems.forEach(item => {
+                const rating = item.dataset.rating;
+                const hasComment = item.dataset.hasComment === '1';
+
+                if (filter === 'all') {
+                    item.style.display = '';
+                } else if (filter === 'comment') {
+                    item.style.display = hasComment ? '' : 'none';
+                } else if (filter === rating) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Helpful button
+    document.querySelectorAll('.shopee-helpful-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const reviewId = this.dataset.reviewId;
+            const helpfulNum = this.querySelector('.helpful-num');
+            const icon = this.querySelector('i');
+
+            if (this.classList.contains('liked')) return;
+
+            fetch(`/reviews/${reviewId}/helpful`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (helpfulNum) helpfulNum.textContent = `(${data.helpful_count})`;
+                    this.classList.add('liked');
+                    if (icon) {
+                        icon.classList.remove('fa-regular');
+                        icon.classList.add('fa-solid');
+                    }
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    });
+
+    // Detail Review Modal rating picker
+    const detailStarPicker = document.getElementById('detail-star-picker');
+    if (detailStarPicker) {
+        const ratingVal = document.getElementById('detail-review-rating-val');
+        const starLabel = document.getElementById('detail-star-label');
+        const stars = detailStarPicker.querySelectorAll('.star-item');
+        const starLabels = {
+            5: 'Tuyệt vời',
+            4: 'Hài lòng',
+            3: 'Bình thường',
+            2: 'Không hài lòng',
+            1: 'Rất tệ'
+        };
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const val = parseInt(this.dataset.value);
+                if (ratingVal) ratingVal.value = val;
+                if (starLabel) starLabel.textContent = starLabels[val] || '';
+                stars.forEach(s => {
+                    if (parseInt(s.dataset.value) <= val) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+    }
+
+    // Detail Modal desc pills
+    const detailDescPills = document.getElementById('detail-desc-match-pills');
+    if (detailDescPills) {
+        const inputDesc = document.getElementById('detail-review-match-val');
+        detailDescPills.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                detailDescPills.querySelectorAll('button').forEach(b => {
+                    b.classList.remove('btn-danger');
+                    b.classList.add('btn-outline-secondary');
+                });
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-danger');
+                if (inputDesc) inputDesc.value = this.dataset.val;
+            });
+        });
+    }
+
+    // Detail Modal quality pills
+    const detailQualityPills = document.getElementById('detail-quality-pills');
+    if (detailQualityPills) {
+        const inputQuality = document.getElementById('detail-review-quality-val');
+        detailQualityPills.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                detailQualityPills.querySelectorAll('button').forEach(b => {
+                    b.classList.remove('btn-danger');
+                    b.classList.add('btn-outline-secondary');
+                });
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-danger');
+                if (inputQuality) inputQuality.value = this.dataset.val;
+            });
+        });
+    }
+
+    updateStockForSelectedColor();
+});
+</script>
+@endpush

@@ -1,0 +1,43 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+
+class ProductSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $products = [
+            ['Quần jean nam', 'Quần', 350000, 100],
+            ['Áo thun nữ', 'Áo', 250000, 80],
+            ['Phụ kiện thời trang', 'Phụ kiện', 150000, 120],
+            ['Áo sơ mi nam', 'Áo', 300000, 50],
+            ['Quần short nữ', 'Quần', 280000, 60],
+            ['Balo mini', 'Phụ kiện', 400000, 40],
+            ['Áo khoác jean', 'Áo', 500000, 30],
+            ['Vòng tay đá', 'Phụ kiện', 180000, 70],
+            ['Quần tây nam', 'Quần', 320000, 90],
+            ['Áo hoodie', 'Áo', 450000, 55],
+        ];
+
+        foreach ($products as [$name, $categoryName, $price, $quantity]) {
+            $category = Category::firstOrCreate(
+                ['name' => $categoryName],
+                ['slug' => Str::slug($categoryName)]
+            );
+
+            Product::firstOrCreate(
+                ['name' => $name, 'category_id' => $category->id],
+                [
+                    'slug' => Str::slug($name),
+                    'price' => $price,
+                    'stock_quantity' => $quantity,
+                ]
+            );
+        }
+    }
+}

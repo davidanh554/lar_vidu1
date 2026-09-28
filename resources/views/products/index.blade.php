@@ -1,0 +1,527 @@
+@extends('layouts.store')
+
+@section('title', 'VUA TABLET - Cửa Hàng Máy Tính Bảng & Phụ Kiện Hàng Đầu')
+
+@section('content')
+<div class="container my-5">
+    <!-- Ticketbox-Style Billboard Tech Ad Carousel -->
+    <div class="ticket-billboard-wrapper mb-5 position-relative">
+        <div id="ticketBillboardCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <!-- Indicators / Navigation Dots -->
+            <div class="carousel-indicators mb-n4">
+                <button type="button" data-bs-target="#ticketBillboardCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#ticketBillboardCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
+
+            <!-- Carousel Slides -->
+            <div class="carousel-inner">
+                <!-- Slide 1: iPad Pro M4 & Galaxy Tab S9 Ultra -->
+                <div class="carousel-item active">
+                    <div class="row g-3 g-lg-4">
+                        <!-- Banner 1: iPad Pro M4 -->
+                        <div class="col-12 col-md-6">
+                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ route('products.show', 3) }}'">
+                                <img src="{{ asset('images/banners/banner_ipad_pro.jpg') }}" alt="iPad Pro M4" class="w-100 h-100 object-fit-cover">
+                                <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
+                                            <i class="fa-brands fa-apple me-1"></i> Apple Flagship
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <a href="{{ route('products.show', 3) }}" class="btn billboard-btn rounded-pill px-4 py-2">
+                                            Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                        </a>
+                                        <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
+                                            <i class="fa-solid fa-bolt text-warning me-1"></i> Chip M4 AI
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Banner 2: Galaxy Tab S9 Ultra -->
+                        <div class="col-12 col-md-6">
+                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ route('products.show', 4) }}'">
+                                <img src="{{ asset('images/banners/banner_galaxy_tab.jpg') }}" alt="Galaxy Tab S9 Ultra & Laptop" class="w-100 h-100 object-fit-cover">
+                                <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
+                                            <i class="fa-solid fa-laptop me-1"></i> Laptop & Tablet 2-in-1
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <a href="{{ route('products.show', 4) }}" class="btn billboard-btn rounded-pill px-4 py-2">
+                                            Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                        </a>
+                                        <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
+                                            <i class="fa-solid fa-pen-fancy text-info me-1"></i> Kèm S-Pen
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Xiaomi Pad 6 Pro & Ultra-Thin Laptop Sale -->
+                <div class="carousel-item">
+                    <div class="row g-3 g-lg-4">
+                        <!-- Banner 3: Xiaomi Pad 6 Pro -->
+                        <div class="col-12 col-md-6">
+                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ route('products.show', 5) }}'">
+                                <img src="{{ asset('images/banners/banner_xiaomi_gaming.jpg') }}" alt="Xiaomi Pad 6 Pro Beast Mode" class="w-100 h-100 object-fit-cover">
+                                <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
+                                            <i class="fa-solid fa-gamepad me-1"></i> Gaming & Làm Việc 144Hz
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <a href="{{ route('products.show', 5) }}" class="btn billboard-btn rounded-pill px-4 py-2">
+                                            Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                        </a>
+                                        <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
+                                            <i class="fa-solid fa-microchip text-success me-1"></i> Snap 8+ Gen 1
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Banner 4: Ultra-Thin Laptop & 2-in-1 Mega Sale -->
+                        <div class="col-12 col-md-6">
+                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='#products-section'">
+                                <img src="{{ asset('images/banners/banner_laptop_promo.jpg') }}" alt="Laptop & Tablet Mega Sale" class="w-100 h-100 object-fit-cover">
+                                <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
+                                            <i class="fa-solid fa-tags me-1"></i> Mega Tech Sale 40% OFF
+                                        </span>
+                                    </div>
+                                    <div class="d-flex align-items-end justify-content-between">
+                                        <a href="#products-section" class="btn billboard-btn rounded-pill px-4 py-2">
+                                            Khám phá ngay <i class="fa-solid fa-arrow-down ms-1 small"></i>
+                                        </a>
+                                        <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
+                                            <i class="fa-solid fa-shield-check text-warning me-1"></i> Trả Góp 0%
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Left & Right Arrow Controls (Ticketbox Style) -->
+            <button class="carousel-control-prev billboard-nav-btn" type="button" data-bs-target="#ticketBillboardCarousel" data-bs-slide="prev" aria-label="Previous">
+                <span class="billboard-nav-icon"><i class="fa-solid fa-chevron-left"></i></span>
+            </button>
+            <button class="carousel-control-next billboard-nav-btn" type="button" data-bs-target="#ticketBillboardCarousel" data-bs-slide="next" aria-label="Next">
+                <span class="billboard-nav-icon"><i class="fa-solid fa-chevron-right"></i></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Shoppertainment Video Banner Strip -->
+    <div class="video-promo-strip p-3 mb-4 rounded-4 d-flex flex-wrap align-items-center justify-content-between gap-3 shadow-sm" style="background: linear-gradient(135deg, rgba(17, 20, 28, 0.95), rgba(6, 78, 59, 0.65)); border: 1px solid rgba(0, 255, 135, 0.35);">
+        <div class="d-flex align-items-center gap-3">
+            <div class="video-promo-icon-box d-flex align-items-center justify-content-center rounded-circle" style="width: 48px; height: 48px; background: rgba(0, 255, 135, 0.15); border: 1px solid rgba(0, 255, 135, 0.4); flex-shrink: 0;">
+                <i class="fa-solid fa-circle-play text-emerald fs-4"></i>
+            </div>
+            <div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-danger rounded-pill px-2 py-0" style="font-size: 0.7rem;">MỚI</span>
+                    <h6 class="mb-0 fw-bold text-white">Lướt Video Giải Trí • Tích Xu Giảm Tiền Trực Tiếp Khi Mua Hàng</h6>
+                </div>
+                <p class="text-white-50 small mb-0 mt-1">Xem video ngắn 30s tích lũy Xu (1 Xu = 500₫ tiền mặt), trừ thẳng vào đơn hàng iPad & phụ kiện khi thanh toán!</p>
+            </div>
+        </div>
+        <a href="{{ route('videos.index') }}" class="btn btn-emerald-glow rounded-pill px-4 py-2 fw-bold text-decoration-none d-inline-flex align-items-center gap-2 flex-shrink-0">
+            <i class="fa-solid fa-coins text-warning me-1"></i>
+            <span>Cày Xu Mua Hàng</span>
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div class="card card-modern p-4 mb-4" id="products-section">
+        <form id="filter-form" action="{{ route('home') }}" method="GET" class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="filter-search" name="search" class="form-control bg-light border-start-0 ps-0" placeholder="Tìm theo tên máy, chip, ram..." value="{{ request('search') }}" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <select id="filter-brand" name="brand_id" class="form-select bg-light">
+                    <option value="">-- Tất cả thương hiệu --</option>
+                    @foreach($brands as $brand)
+                        <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                            {{ $brand->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-5 d-flex flex-wrap gap-2 align-items-center">
+                <input type="hidden" id="filter-category" name="category_id" value="{{ request('category_id') }}">
+                <button type="submit" id="btn-submit-filter" class="btn btn-modern-primary px-3 rounded-pill">
+                    <i class="fa-solid fa-filter me-1"></i> Lọc
+                </button>
+                <button type="button" id="btn-reset-filter" class="btn btn-modern-outline rounded-pill {{ (request('search') || request('category_id') || request('brand_id')) ? '' : 'd-none' }}">
+                    <i class="fa-solid fa-rotate-left me-1"></i> Xóa lọc
+                </button>
+                <a href="{{ route('ai.advisor') }}" class="btn btn-emerald-glow rounded-pill px-3 py-1 fw-bold text-decoration-none d-inline-flex align-items-center" title="Trắc nghiệm 5 câu hỏi nhanh tìm iPad phù hợp nhất">
+                    <i class="fa-solid fa-wand-magic-sparkles me-1 text-warning"></i> AI Chọn iPad Hộ Tôi
+                </a>
+            </div>
+        </form>
+
+        <!-- Category Chip Pills -->
+        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top align-items-center" id="category-pills">
+            <span class="text-muted fw-bold me-2 small"><i class="fa-solid fa-layer-group me-1"></i>Danh mục:</span>
+            <a href="{{ route('home', array_merge(request()->except('category_id', 'page'))) }}" 
+               class="chip-pill js-category-pill {{ !request('category_id') ? 'active' : '' }}"
+               data-cat-id="">
+                Tất cả
+            </a>
+            @foreach($categories as $cat)
+                <a href="{{ route('home', array_merge(request()->except('page'), ['category_id' => $cat->id])) }}" 
+                   class="chip-pill js-category-pill {{ request('category_id') == $cat->id ? 'active' : '' }}"
+                   data-cat-id="{{ $cat->id }}">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Products Wrapper with Loading Indicator -->
+    <div id="product-list-wrapper" class="position-relative">
+        <div class="product-ajax-loader">
+            <span class="spinner-border spinner-border-sm text-emerald" role="status" aria-hidden="true"></span>
+            <span>Đang tải sản phẩm...</span>
+        </div>
+        @include('products._product_list')
+    </div>
+</div>
+
+<!-- Toast thông báo giỏ hàng không reload -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    <div id="cartToast" class="toast align-items-center text-white bg-success border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex p-2">
+            <div class="toast-body d-flex align-items-center gap-2 fs-6">
+                <i id="cartToastIcon" class="fa-solid fa-circle-check fs-5"></i>
+                <span id="cartToastMsg">Đã thêm vào giỏ hàng thành công!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Toast Notification Setup
+    const cartToastEl = document.getElementById('cartToast');
+    const cartToast = cartToastEl ? new bootstrap.Toast(cartToastEl, { delay: 3000 }) : null;
+    const cartToastMsg = document.getElementById('cartToastMsg');
+    const cartToastIcon = document.getElementById('cartToastIcon');
+    const navCartCount = document.getElementById('nav-cart-count');
+
+    function showNotification(message, isSuccess = true) {
+        if (!cartToast) return;
+        cartToastEl.className = `toast align-items-center text-white ${isSuccess ? 'bg-success' : 'bg-danger'} border-0 shadow-lg rounded-4`;
+        if (cartToastIcon) {
+            cartToastIcon.className = isSuccess ? 'fa-solid fa-circle-check fs-5' : 'fa-solid fa-circle-exclamation fs-5';
+        }
+        if (cartToastMsg) {
+            cartToastMsg.textContent = message;
+        }
+        cartToast.show();
+    }
+
+    // 2. DOM Elements for AJAX Filter
+    const filterForm = document.getElementById('filter-form');
+    const searchInput = document.getElementById('filter-search');
+    const brandSelect = document.getElementById('filter-brand');
+    const categoryInput = document.getElementById('filter-category');
+    const btnSubmit = document.getElementById('btn-submit-filter');
+    const btnReset = document.getElementById('btn-reset-filter');
+    const productWrapper = document.getElementById('product-list-wrapper');
+    const categoryPills = document.querySelectorAll('.js-category-pill');
+
+    let debounceTimer = null;
+    let abortController = null;
+
+    // Helper: Build URL from filter form state
+    function buildFilterUrl(page = null) {
+        const params = new URLSearchParams();
+        const searchVal = searchInput ? searchInput.value.trim() : '';
+        const brandVal = brandSelect ? brandSelect.value : '';
+        const catVal = categoryInput ? categoryInput.value : '';
+
+        if (searchVal) params.set('search', searchVal);
+        if (brandVal) params.set('brand_id', brandVal);
+        if (catVal) params.set('category_id', catVal);
+        if (page) params.set('page', page);
+
+        const queryString = params.toString();
+        return '{{ route('home') }}' + (queryString ? '?' + queryString : '');
+    }
+
+    // Helper: Update active UI state for category pills & reset button
+    function updateFilterUI() {
+        const catVal = categoryInput ? categoryInput.value : '';
+        categoryPills.forEach(pill => {
+            const pillCatId = pill.getAttribute('data-cat-id') || '';
+            if (pillCatId === catVal) {
+                pill.classList.add('active');
+            } else {
+                pill.classList.remove('active');
+            }
+        });
+
+        const hasFilter = (searchInput && searchInput.value.trim() !== '') || 
+                          (brandSelect && brandSelect.value !== '') || 
+                          (categoryInput && categoryInput.value !== '');
+        if (btnReset) {
+            if (hasFilter) {
+                btnReset.classList.remove('d-none');
+            } else {
+                btnReset.classList.add('d-none');
+            }
+        }
+    }
+
+    // Core AJAX Fetch function
+    function fetchProducts(url, updateHistory = true, shouldScroll = false) {
+        if (abortController) {
+            abortController.abort();
+        }
+        abortController = new AbortController();
+
+        if (productWrapper) {
+            productWrapper.classList.add('is-loading');
+        }
+
+        const originalBtnHtml = btnSubmit ? btnSubmit.innerHTML : '';
+        if (btnSubmit) {
+            btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Đang lọc...`;
+            btnSubmit.disabled = true;
+        }
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            signal: abortController.signal
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (productWrapper && data.html !== undefined) {
+                productWrapper.innerHTML = `
+                    <div class="product-ajax-loader">
+                        <span class="spinner-border spinner-border-sm text-emerald" role="status" aria-hidden="true"></span>
+                        <span>Đang tải sản phẩm...</span>
+                    </div>` + data.html;
+            }
+
+            if (updateHistory) {
+                window.history.pushState({ path: url }, '', url);
+            }
+
+            updateFilterUI();
+
+            if (shouldScroll) {
+                const section = document.getElementById('products-section');
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        })
+        .catch(err => {
+            if (err.name !== 'AbortError') {
+                console.error('AJAX Filter error:', err);
+                showNotification('Có lỗi khi tải danh sách sản phẩm. Vui lòng thử lại!', false);
+            }
+        })
+        .finally(() => {
+            if (productWrapper) {
+                productWrapper.classList.remove('is-loading');
+            }
+            if (btnSubmit) {
+                btnSubmit.innerHTML = originalBtnHtml;
+                btnSubmit.disabled = false;
+            }
+        });
+    }
+
+    // Event: Form Submit (Click "Lọc" or Enter in search)
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            clearTimeout(debounceTimer);
+            const url = buildFilterUrl();
+            fetchProducts(url, true, false);
+        });
+    }
+
+    // Event: Live Search with Debounce (typing)
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const url = buildFilterUrl();
+                fetchProducts(url, true, false);
+            }, 350);
+        });
+    }
+
+    // Event: Change Brand Select
+    if (brandSelect) {
+        brandSelect.addEventListener('change', function() {
+            clearTimeout(debounceTimer);
+            const url = buildFilterUrl();
+            fetchProducts(url, true, false);
+        });
+    }
+
+    // Event: Click Category Chip Pills
+    categoryPills.forEach(pill => {
+        pill.addEventListener('click', function(e) {
+            e.preventDefault();
+            clearTimeout(debounceTimer);
+            const catId = this.getAttribute('data-cat-id') || '';
+            if (categoryInput) {
+                categoryInput.value = catId;
+            }
+            const url = buildFilterUrl();
+            fetchProducts(url, true, false);
+        });
+    });
+
+    // Event: Click Reset Filter button
+    function resetAllFilters() {
+        clearTimeout(debounceTimer);
+        if (searchInput) searchInput.value = '';
+        if (brandSelect) brandSelect.value = '';
+        if (categoryInput) categoryInput.value = '';
+        const cleanUrl = '{{ route('home') }}';
+        fetchProducts(cleanUrl, true, false);
+    }
+
+    if (btnReset) {
+        btnReset.addEventListener('click', function(e) {
+            e.preventDefault();
+            resetAllFilters();
+        });
+    }
+
+    // Event: Click Reset Button from Empty State via delegation
+    document.addEventListener('click', function(e) {
+        const resetBtn = e.target.closest('.js-btn-reset-filter');
+        if (resetBtn) {
+            e.preventDefault();
+            resetAllFilters();
+        }
+    });
+
+    // Event: Click Pagination Links via delegation
+    document.addEventListener('click', function(e) {
+        const pageLink = e.target.closest('.ajax-pagination-wrapper a.page-link');
+        if (pageLink && pageLink.href) {
+            e.preventDefault();
+            fetchProducts(pageLink.href, true, true);
+        }
+    });
+
+    // Event: Browser Back / Forward buttons (popstate)
+    window.addEventListener('popstate', function() {
+        const params = new URLSearchParams(window.location.search);
+        if (searchInput) searchInput.value = params.get('search') || '';
+        if (brandSelect) brandSelect.value = params.get('brand_id') || '';
+        if (categoryInput) categoryInput.value = params.get('category_id') || '';
+        updateFilterUI();
+        fetchProducts(window.location.href, false, false);
+    });
+
+    // 3. Event Delegation for Add to Cart without page reload
+    document.addEventListener('submit', function(e) {
+        const form = e.target.closest('.ajax-add-cart-form');
+        if (!form) return;
+
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('.btn-ajax-add');
+        const originalHtml = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Đang thêm...`;
+        }
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => {
+            return response.json().then(data => ({
+                status: response.status,
+                data: data
+            }));
+        })
+        .then(({ status, data }) => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+                return;
+            }
+
+            if (data.success) {
+                if (navCartCount && data.cart_count !== undefined) {
+                    navCartCount.textContent = data.cart_count;
+                    navCartCount.classList.remove('d-none');
+                }
+
+                showNotification(data.message || 'Đã thêm sản phẩm vào giỏ hàng thành công!', true);
+
+                if (submitBtn) {
+                    submitBtn.innerHTML = `<i class="fa-solid fa-check me-1"></i> Đã thêm!`;
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalHtml;
+                    }, 1200);
+                }
+            } else {
+                showNotification(data.message || 'Có lỗi xảy ra, vui lòng thử lại!', false);
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalHtml;
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi thêm giỏ hàng:', error);
+            showNotification('Không thể kết nối máy chủ. Vui lòng thử lại!', false);
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHtml;
+            }
+        });
+    });
+});
+</script>
+@endpush
