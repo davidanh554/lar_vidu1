@@ -17,6 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'payment/momo/*',
         ]);
 
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
