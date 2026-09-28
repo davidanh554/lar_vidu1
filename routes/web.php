@@ -71,6 +71,11 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+Route::post('/email/quick-verify', function (Request $request) {
+    $request->user()->markEmailAsVerified();
+    return redirect()->route('home')->with('success', 'Kích hoạt tài khoản thành công! Chào mừng bạn đến với VUA TABLET.');
+})->middleware('auth')->name('verification.quick');
+
 
 
 // 6. GHN Locations API Routes

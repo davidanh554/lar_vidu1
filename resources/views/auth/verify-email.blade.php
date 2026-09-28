@@ -36,9 +36,16 @@
             </ul>
         </div>
 
-        <form method="POST" action="{{ route('verification.send') }}" class="mb-3">
+        <form method="POST" action="{{ route('verification.quick') }}" class="mb-3">
             @csrf
             <button type="submit" class="btn btn-emerald w-100 py-2 fw-bold rounded-pill shadow-sm">
+                <i class="fa-solid fa-circle-check me-2"></i> Kích hoạt tài khoản ngay
+            </button>
+        </form>
+
+        <form method="POST" action="{{ route('verification.send') }}" class="mb-3">
+            @csrf
+            <button type="submit" class="btn btn-outline-light w-100 py-2 rounded-pill shadow-sm small">
                 <i class="fa-solid fa-paper-plane me-2"></i> Gửi lại email xác thực
             </button>
         </form>
