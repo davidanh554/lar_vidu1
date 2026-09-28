@@ -3,6 +3,12 @@
 @section('title', 'VUA TABLET - Cửa Hàng Máy Tính Bảng & Phụ Kiện Hàng Đầu')
 
 @section('content')
+@php
+    $bannerIpadTarget = isset($bannerIpad) && $bannerIpad ? route('products.show', $bannerIpad->id) : '#products-section';
+    $bannerGalaxyTarget = isset($bannerGalaxy) && $bannerGalaxy ? route('products.show', $bannerGalaxy->id) : '#products-section';
+    $bannerXiaomiTarget = isset($bannerXiaomi) && $bannerXiaomi ? route('products.show', $bannerXiaomi->id) : '#products-section';
+@endphp
+
 <div class="container my-5">
     <!-- Ticketbox-Style Billboard Tech Ad Carousel -->
     <div class="ticket-billboard-wrapper mb-5 position-relative">
@@ -20,7 +26,7 @@
                     <div class="row g-3 g-lg-4">
                         <!-- Banner 1: iPad Pro M4 -->
                         <div class="col-12 col-md-6">
-                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ route('products.show', 3) }}'">
+                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ $bannerIpadTarget }}'">
                                 <img src="{{ asset('images/banners/banner_ipad_pro.jpg') }}" alt="iPad Pro M4" class="w-100 h-100 object-fit-cover">
                                 <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
                                     <div class="d-flex align-items-center justify-content-between">
@@ -29,7 +35,7 @@
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
-                                        <a href="{{ route('products.show', 3) }}" class="btn billboard-btn rounded-pill px-4 py-2">
+                                        <a href="{{ $bannerIpadTarget }}" class="btn billboard-btn rounded-pill px-4 py-2">
                                             Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
                                         </a>
                                         <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
@@ -42,7 +48,7 @@
 
                         <!-- Banner 2: Galaxy Tab S9 Ultra -->
                         <div class="col-12 col-md-6">
-                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ route('products.show', 4) }}'">
+                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ $bannerGalaxyTarget }}'">
                                 <img src="{{ asset('images/banners/banner_galaxy_tab.jpg') }}" alt="Galaxy Tab S9 Ultra & Laptop" class="w-100 h-100 object-fit-cover">
                                 <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
                                     <div class="d-flex align-items-center justify-content-between">
@@ -51,7 +57,7 @@
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
-                                        <a href="{{ route('products.show', 4) }}" class="btn billboard-btn rounded-pill px-4 py-2">
+                                        <a href="{{ $bannerGalaxyTarget }}" class="btn billboard-btn rounded-pill px-4 py-2">
                                             Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
                                         </a>
                                         <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
@@ -69,7 +75,7 @@
                     <div class="row g-3 g-lg-4">
                         <!-- Banner 3: Xiaomi Pad 6 Pro -->
                         <div class="col-12 col-md-6">
-                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ route('products.show', 5) }}'">
+                            <div class="billboard-banner-card position-relative overflow-hidden rounded-4 shadow-lg" onclick="window.location.href='{{ $bannerXiaomiTarget }}'">
                                 <img src="{{ asset('images/banners/banner_xiaomi_gaming.jpg') }}" alt="Xiaomi Pad 6 Pro Beast Mode" class="w-100 h-100 object-fit-cover">
                                 <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
                                     <div class="d-flex align-items-center justify-content-between">
@@ -78,7 +84,7 @@
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
-                                        <a href="{{ route('products.show', 5) }}" class="btn billboard-btn rounded-pill px-4 py-2">
+                                        <a href="{{ $bannerXiaomiTarget }}" class="btn billboard-btn rounded-pill px-4 py-2">
                                             Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
                                         </a>
                                         <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">

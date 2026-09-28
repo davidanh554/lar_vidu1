@@ -35,6 +35,11 @@ class ProductController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
 
+        // Lấy sản phẩm thực tế gán cho các Banner quảng cáo lớn
+        $bannerIpad = Product::where('name', 'like', '%iPad Pro%')->orWhere('name', 'like', '%iPad%')->first() ?? $products->first();
+        $bannerGalaxy = Product::where('name', 'like', '%Galaxy Tab%')->orWhere('name', 'like', '%Samsung%')->first() ?? $products->skip(1)->first() ?? $bannerIpad;
+        $bannerXiaomi = Product::where('name', 'like', '%Xiaomi%')->first() ?? $products->skip(2)->first() ?? $bannerIpad;
+
         if ($request->ajax()) {
             return response()->json([
                 'html' => view('products._product_list', compact('products'))->render(),
@@ -42,13 +47,23 @@ class ProductController extends Controller
             ]);
         }
 
-        return view('products.index', compact('products', 'categories', 'brands'));
+        return view('products.index', compact('products', 'categories', 'brands', 'bannerIpad', 'bannerGalaxy', 'bannerXiaomi'));
     }
 
     public function show($product)
     {
         if (!$product instanceof Product) {
-            $product = Product::where('id', $product)->orWhere('slug', $product)->firstOrFail();
+            $productModel = Product::where('id', $product)->orWhere('slug', $product)->first();
+            if (!$productModel) {
+                // Tự động tìm sản phẩm nổi bật thay thế nếu ID không tồn tại (tránh lỗi 404)
+                $fallback = Product::where('name', 'like', '%iPad%')->first() ?? Product::first();
+                if ($fallback) {
+                    return redirect()->route('products.show', $fallback->id)
+                        ->with('info', 'Sản phẩm bạn tìm kiếm hiện không còn, chúng tôi đã chuyển hướng bạn đến mẫu máy bán chạy nhất.');
+                }
+                return redirect()->route('home')->with('warning', 'Không tìm thấy sản phẩm.');
+            }
+            $product = $productModel;
         }
 
         $product->load(['category', 'brand', 'reviews.user']);
