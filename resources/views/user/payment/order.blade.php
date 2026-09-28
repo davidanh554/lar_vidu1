@@ -59,7 +59,14 @@
                             @endphp
                             <tr>
                                 <td class="ps-4">
-                                    <span class="fw-bold text-primary font-monospace">#{{ $order->id }}</span>
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span class="fw-bold text-primary font-monospace">#{{ $order->id }}</span>
+                                        @if(in_array($order->id, $newlyUpdatedOrderIds ?? []))
+                                            <span class="badge bg-danger rounded-pill px-2 py-1 ms-1 small" style="font-size: 0.68rem;" title="Admin vừa cập nhật trạng thái mới cho đơn hàng này!">
+                                                <i class="fa-solid fa-bell me-1"></i>Mới cập nhật
+                                            </span>
+                                        @endif
+                                    </div>
                                     <div class="small text-muted">{{ $order->created_at ? $order->created_at->format('d/m/Y H:i') : '' }}</div>
                                 </td>
                                 <td>

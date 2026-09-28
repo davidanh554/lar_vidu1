@@ -39,9 +39,15 @@
 
     <!-- Admin Modern Chat Widget -->
     <div id="admin-chat-box" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999;">
-        <button id="chat-toggle" class="btn shadow-lg d-flex align-items-center gap-2">
+        @php
+            $adminUnreadCount = \App\Models\Message::where('receiver_id', auth()->id())->where('is_read', false)->count();
+        @endphp
+        <button id="chat-toggle" class="btn shadow-lg d-flex align-items-center gap-2 position-relative">
             <i class="fa-solid fa-headset fs-5"></i>
             <span>Tư vấn khách hàng</span>
+            <span id="admin-chat-badge" class="badge rounded-pill bg-danger {{ $adminUnreadCount > 0 ? '' : 'd-none' }}" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;">
+                {{ $adminUnreadCount }}
+            </span>
         </button>
 
         <div id="chat-popup" class="card shadow-lg border-0" style="display: none; width: 620px; height: 560px; border-radius: 20px; overflow: hidden;">

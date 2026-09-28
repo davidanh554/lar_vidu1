@@ -51,6 +51,11 @@ class ChatController extends Controller
     {
         $userId = Auth::id();
 
+        // Đánh dấu tin nhắn admin gửi cho user là đã đọc
+        Message::where('receiver_id', $userId)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
         // Tìm Admin để lọc tin nhắn qua lại
         $admin = User::where('role', 'admin')->first();
         $adminId = $admin ? $admin->id : 1;
@@ -71,5 +76,44 @@ class ChatController extends Controller
             ->get();
 
         return response()->json($messages);
+    }
+
+    /**
+     * Đánh dấu tất cả tin nhắn gửi cho User là đã đọc
+     */
+    public function markAsRead()
+    {
+        if (Auth::check()) {
+            Message::where('receiver_id', Auth::id())
+                ->where('is_read', false)
+                ->update(['is_read' => true]);
+        }
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Lấy số lượng thông báo chưa đọc (tin nhắn + cập nhật đơn hàng)
+     */
+    public function unreadNotifications()
+    {
+        if (!Auth::check()) {
+            return response()->json([
+                'unread_messages' => 0,
+                'unread_orders' => 0,
+            ]);
+        }
+
+        $unreadMessages = Message::where('receiver_id', Auth::id())
+            ->where('is_read', false)
+            ->count();
+
+        $unreadOrders = \App\Models\Order::where('user_id', Auth::id())
+            ->where('has_unread_update', true)
+            ->count();
+
+        return response()->json([
+            'unread_messages' => $unreadMessages,
+            'unread_orders' => $unreadOrders,
+        ]);
     }
 }

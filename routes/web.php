@@ -139,10 +139,12 @@ Route::get('/lucky-wheel/status', [LuckyWheelController::class, 'getStatus'])->n
 Route::post('/lucky-wheel/spin', [LuckyWheelController::class, 'spin'])->name('luckywheel.spin');
 Route::get('/lucky-wheel/my-coupons', [LuckyWheelController::class, 'myCoupons'])->name('luckywheel.myCoupons');
 
-// Chat User
+// Chat User & Notifications
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::post('/chat/send', [UserChatController::class, 'send'])->name('chat.send');
     Route::get('/chat/messages', [UserChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/mark-read', [UserChatController::class, 'markAsRead'])->name('chat.markRead');
+    Route::get('/notifications/unread-count', [UserChatController::class, 'unreadNotifications'])->name('notifications.unread');
 });
 
 // ==========================================

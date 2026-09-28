@@ -296,6 +296,15 @@ class OrderController extends Controller
 
     public function orderHistory()
     {
+        $newlyUpdatedOrderIds = Order::where('user_id', Auth::id())
+            ->where('has_unread_update', true)
+            ->pluck('id')
+            ->toArray();
+
+        if (!empty($newlyUpdatedOrderIds)) {
+            Order::whereIn('id', $newlyUpdatedOrderIds)->update(['has_unread_update' => false]);
+        }
+
         $ordersQuery = Order::where('user_id', Auth::id())
             ->with(['items.product']);
 
@@ -310,16 +319,20 @@ class OrderController extends Controller
         $orders = $ordersQuery->orderByDesc('created_at')->paginate(10);
 
         if (view()->exists('user.payment.order')) {
-            return view('user.payment.order', compact('orders'));
+            return view('user.payment.order', compact('orders', 'newlyUpdatedOrderIds'));
         }
 
-        return view('orders.index', compact('orders'));
+        return view('orders.index', compact('orders', 'newlyUpdatedOrderIds'));
     }
 
     public function show(Order $order)
     {
         if ($order->user_id !== Auth::id() && (!Auth::user() || !Auth::user()->isAdmin())) {
             abort(403);
+        }
+
+        if ($order->user_id === Auth::id() && $order->has_unread_update) {
+            $order->update(['has_unread_update' => false]);
         }
 
         $withRelations = ['items.product', 'reviews'];

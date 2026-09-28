@@ -47,6 +47,12 @@ class ChatController extends Controller
     {
         $adminId = Auth::id();
 
+        // Đánh dấu các tin nhắn user gửi tới admin là đã đọc
+        Message::where('sender_id', $userId)
+            ->where('receiver_id', $adminId)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
         return Message::with('sender')
             ->where(function ($q) use ($userId, $adminId) {
                 $q->where('sender_id', $userId)->where('receiver_id', $adminId);
@@ -73,7 +79,7 @@ class ChatController extends Controller
             'sender_id'   => Auth::id(),
             'receiver_id' => $request->user_id,
             'content'     => $request->message,
-            'is_read'     => true // Admin gửi thì mặc định là đã đọc (hoặc xử lý sau)
+            'is_read'     => false // Người nhận (khách hàng) chưa đọc
         ]);
 
         return response()->json($message);

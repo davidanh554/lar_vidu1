@@ -1,8 +1,15 @@
 @auth
+@php
+    $unreadChatCount = \App\Models\Message::where('receiver_id', Auth::id())->where('is_read', false)->count();
+@endphp
 <div id="chat-box" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999;">
     <!-- Nút mở chat tròn nổi bật -->
-    <button id="chat-toggle" class="btn rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 15px;" title="Chat với chúng tôi">
+    <button id="chat-toggle" class="btn rounded-circle shadow-lg d-flex align-items-center justify-content-center position-relative" style="width: 60px; height: 60px; font-size: 15px;" title="Chat với chúng tôi">
         <i class="fa-solid fa-comments fs-4"></i>
+        <!-- Chấm đỏ số tin nhắn mới -->
+        <span id="chat-unread-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $unreadChatCount > 0 ? '' : 'd-none' }}" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+            {{ $unreadChatCount }}
+        </span>
     </button>
 
     <!-- Khung chat popup Liquid Glass -->
@@ -46,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const sendBtn = document.getElementById("send-btn");
     const input = document.getElementById("chat-input");
     const chatBox = document.getElementById("chat-messages");
+    const chatBadge = document.getElementById("chat-unread-badge");
 
     if (!toggleBtn) return;
 
@@ -63,6 +71,19 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleBtn.onclick = () => {
         chatPopup.style.display = "block";
         toggleBtn.classList.add("d-none");
+        if (chatBadge) {
+            chatBadge.classList.add("d-none");
+            chatBadge.textContent = "0";
+        }
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        fetch("{{ route('user.chat.markRead') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": csrfToken,
+                "Accept": "application/json"
+            }
+        }).catch(() => {});
+
         loadMessages();
         setTimeout(() => input.focus(), 200);
     };
@@ -160,6 +181,37 @@ document.addEventListener("DOMContentLoaded", function () {
             loadMessages();
         }
     }, 3000);
+
+    // Kiểm tra thông báo nền (tin nhắn mới + cập nhật đơn hàng)
+    function pollNotifications() {
+        fetch("{{ route('user.notifications.unread') }}")
+            .then(res => res.json())
+            .then(data => {
+                // Cập nhật badge tin nhắn nếu khung chat đang đóng
+                if (chatBadge && chatPopup.style.display !== "block") {
+                    if (data.unread_messages > 0) {
+                        chatBadge.textContent = data.unread_messages;
+                        chatBadge.classList.remove("d-none");
+                    } else {
+                        chatBadge.classList.add("d-none");
+                    }
+                }
+
+                // Cập nhật badge trên nút "Đơn hàng của tôi"
+                const orderBadge = document.getElementById("nav-order-badge");
+                if (orderBadge) {
+                    if (data.unread_orders > 0) {
+                        orderBadge.textContent = data.unread_orders;
+                        orderBadge.classList.remove("d-none");
+                    } else {
+                        orderBadge.classList.add("d-none");
+                    }
+                }
+            })
+            .catch(() => {});
+    }
+
+    setInterval(pollNotifications, 5000);
 });
 </script>
 @endauth

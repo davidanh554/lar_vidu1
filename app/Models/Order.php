@@ -21,11 +21,16 @@ class Order extends Model
         'coins_discount',
         'status',
         'shipping_status',
+        'has_unread_update',
         // Thêm 4 trường bên dưới cho GHN:
         'ghn_order_code',
         'ghn_total_fee',
         'to_district_id',
         'to_ward_code',
+    ];
+
+    protected $casts = [
+        'has_unread_update' => 'boolean',
     ];
     public function paymentTransactions(): HasMany
     {

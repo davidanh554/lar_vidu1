@@ -211,9 +211,9 @@ class FinanceController extends Controller
             }
 
             if ($newStatus === 'paid') {
-                $order->update(['status' => 'cod_paid']);
+                $order->update(['status' => 'cod_paid', 'has_unread_update' => true]);
             } elseif (in_array($newStatus, ['pending', 'failed'], true)) {
-                $order->update(['status' => 'cod_ordered']);
+                $order->update(['status' => 'cod_ordered', 'has_unread_update' => true]);
             }
         });
 

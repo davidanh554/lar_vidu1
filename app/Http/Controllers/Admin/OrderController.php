@@ -164,6 +164,7 @@ class OrderController extends Controller
         }
 
         $order->shipping_status = $request->shipping_status;
+        $order->has_unread_update = true;
         $order->save();
 
         return back()->with('success', 'Cập nhật trạng thái giao hàng thành công!');
@@ -189,6 +190,7 @@ class OrderController extends Controller
             }
 
             $order->shipping_status = $request->shipping_status;
+            $order->has_unread_update = true;
             $order->save();
             $updatedCount++;
         }
