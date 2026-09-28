@@ -50,7 +50,7 @@ Route::post('/videos/{video}/like', [VideoShoppingController::class, 'toggleLike
 // 3. Routes Giỏ hàng (Bắt buộc đăng nhập để xem và quản lý giỏ hàng)
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::match(['get', 'post'], '/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
     Route::post('/cart/change-color', [CartController::class, 'changeColor'])->name('cart.changeColor');
     Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');

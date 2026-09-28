@@ -43,6 +43,10 @@ class CartController extends Controller
 
     public function add(Request $request, $id)
     {
+        if ($request->isMethod('get')) {
+            return redirect()->route('products.show', $id);
+        }
+
         $isAjax = $request->ajax() || $request->wantsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest';
 
         if (!auth()->check()) {
