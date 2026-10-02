@@ -161,11 +161,11 @@
 
             <div class="col-md-3">
                 <!-- Custom Dark Glass Dropdown for Brand Filter -->
-                <div class="custom-brand-dropdown position-relative">
+                <div class="custom-brand-dropdown position-relative" style="z-index: 1000;">
                     <input type="hidden" id="filter-brand" name="brand_id" value="{{ request('brand_id') }}">
                     
                     <button type="button" class="btn filter-dropdown-toggle w-100 d-flex align-items-center justify-content-between rounded-pill" 
-                            id="brandDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                            id="brandDropdownBtn" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                         <span class="d-flex align-items-center text-truncate">
                             <span id="selected-brand-label">
                                 @php
@@ -177,7 +177,7 @@
                         <i class="fa-solid fa-chevron-down ms-2 small dropdown-chevron text-white-50"></i>
                     </button>
 
-                    <ul class="dropdown-menu dropdown-menu-dark custom-dropdown-menu shadow-lg border-0 w-100 p-2" aria-labelledby="brandDropdownBtn">
+                    <ul class="dropdown-menu dropdown-menu-dark custom-dropdown-menu shadow-lg border-0 w-100 p-2" aria-labelledby="brandDropdownBtn" style="z-index: 9999;">
                         <li>
                             <button type="button" class="dropdown-item rounded-3 py-2 px-3 d-flex align-items-center justify-content-between js-brand-item {{ !request('brand_id') ? 'active' : '' }}" data-brand-id="" data-brand-name="-- Tất cả thương hiệu --">
                                 <span>-- Tất cả thương hiệu --</span>
