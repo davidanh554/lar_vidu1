@@ -167,7 +167,6 @@
                     <button type="button" class="btn filter-dropdown-toggle w-100 d-flex align-items-center justify-content-between rounded-pill" 
                             id="brandDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="d-flex align-items-center text-truncate">
-                            <i class="fa-solid fa-layer-group me-2 small" style="color: #34d399;"></i>
                             <span id="selected-brand-label">
                                 @php
                                     $currentBrand = $brands->firstWhere('id', request('brand_id'));

@@ -12,7 +12,7 @@
     <button id="support-chat-toggle" class="btn rounded-circle d-flex align-items-center justify-content-center position-relative support-toggle-btn" 
             style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(15, 23, 42, 0.75) 100%) !important; backdrop-filter: blur(28px) saturate(210%) !important; -webkit-backdrop-filter: blur(28px) saturate(210%) !important; border: 1.5px solid rgba(255, 255, 255, 0.25) !important; border-top: 1.5px solid rgba(255, 255, 255, 0.75) !important; color: #fff; box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.45), 0 14px 35px rgba(0, 0, 0, 0.6) !important;" 
             title="Hỗ trợ khách hàng (Gặp Admin)">
-        <i class="fa-solid fa-headset fs-5 text-white"></i>
+        <span class="fw-bold" style="font-size: 0.82rem; letter-spacing: 0.5px;">CSKH</span>
         
         <!-- Chấm đỏ số tin nhắn mới -->
         <span id="support-unread-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $unreadChatCount > 0 ? '' : 'd-none' }}" 
@@ -31,7 +31,7 @@
             <div class="d-flex align-items-center gap-2">
                 <div class="rounded-circle d-flex align-items-center justify-content-center" 
                      style="width: 36px; height: 36px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4);">
-                    <i class="fa-solid fa-headset" style="color: #60a5fa; font-size: 0.95rem;"></i>
+                    <span class="fw-bold text-white" style="font-size: 0.72rem;">CSKH</span>
                 </div>
                 <div>
                     <div class="fw-bold text-white small" style="font-size: 0.92rem;">Hỗ trợ khách hàng</div>
@@ -40,8 +40,8 @@
                     </small>
                 </div>
             </div>
-            <button id="support-chat-close" class="btn btn-sm text-white-50 hover-text-white p-1" title="Đóng">
-                <i class="fa-solid fa-xmark fs-5"></i>
+            <button id="support-chat-close" class="btn btn-sm text-white-50 hover-text-white p-1" title="Đóng" style="font-size: 1.25rem; line-height: 1;">
+                &times;
             </button>
         </div>
 

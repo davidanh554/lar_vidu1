@@ -6,7 +6,7 @@
 <div class="container my-5">
     <div class="mb-4">
         <a href="{{ route('home') }}" class="btn btn-modern-outline btn-sm rounded-pill">
-            <i class="fa-solid fa-arrow-left me-1"></i> Quay lại trang chủ
+            Quay lại trang chủ
         </a>
     </div>
 
@@ -47,20 +47,20 @@
 
                 <!-- Cấu hình nhanh -->
                 <div class="d-flex flex-wrap gap-2 mb-3">
-                    @if($product->chip) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill"><i class="fa-solid fa-microchip me-1 text-primary"></i>{{ $product->chip }}</span> @endif
-                    @if($product->ram) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill"><i class="fa-solid fa-memory me-1 text-primary"></i>{{ $product->ram }}</span> @endif
-                    @if($product->screen_size) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill"><i class="fa-solid fa-expand me-1 text-primary"></i>{{ $product->screen_size }}</span> @endif
+                    @if($product->chip) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill">{{ $product->chip }}</span> @endif
+                    @if($product->ram) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill">{{ $product->ram }}</span> @endif
+                    @if($product->screen_size) <span class="badge bg-light text-secondary border px-3 py-2 rounded-pill">{{ $product->screen_size }}</span> @endif
                 </div>
 
                 <!-- Tồn kho theo màu đã chọn -->
                 <div class="mb-4" id="color-stock-badge-container">
                     @if($isOutOfStock)
                         <span class="badge-soft badge-soft-danger py-2 px-3">
-                            <i class="fa-solid fa-circle-xmark"></i> Tạm hết hàng
+                            Tạm hết hàng
                         </span>
                     @else
                         <span class="badge-soft badge-soft-success py-2 px-3" id="stock-status-badge">
-                            <i class="fa-solid fa-circle-check"></i> Tổng kho: {{ $totalStock }} sản phẩm
+                            Tổng kho: {{ $totalStock }} sản phẩm
                         </span>
                     @endif
                 </div>
@@ -110,8 +110,7 @@
                                        {{ $shouldCheck ? 'checked' : '' }} 
                                        {{ (!$isAvailable && $isOutOfStock) ? 'disabled' : '' }}>
                                 
-                                <label class="btn btn-outline-secondary btn-sm px-3 py-2 rounded-pill d-flex align-items-center gap-1 {{ !$isAvailable ? 'opacity-50' : '' }}" for="color{{ $index }}">
-                                    <i class="fa-solid fa-circle-dot small"></i>
+                                <label class="btn btn-outline-secondary btn-sm px-3 py-2 rounded-pill d-flex align-items-center gap-2 {{ !$isAvailable ? 'opacity-50' : '' }}" for="color{{ $index }}">
                                     <span>{{ $variant['name'] }}</span>
                                     @if($vQty > 0)
                                         <span class="badge bg-white text-dark border ms-1 font-monospace">Còn {{ $vQty }}</span>
@@ -128,9 +127,9 @@
                         <label class="form-label fw-bold">Số lượng đặt mua:</label>
                         <div class="d-flex align-items-center gap-3">
                             <div class="d-flex align-items-center gap-1">
-                                <button class="stepper-btn" type="button" id="btn-qty-minus"><i class="fa-solid fa-minus fs-6"></i></button>
+                                <button class="stepper-btn" type="button" id="btn-qty-minus">−</button>
                                 <input type="number" name="quantity" id="input-quantity" value="1" min="1" max="1" class="stepper-input fw-bold" required>
-                                <button class="stepper-btn" type="button" id="btn-qty-plus"><i class="fa-solid fa-plus fs-6"></i></button>
+                                <button class="stepper-btn" type="button" id="btn-qty-plus">+</button>
                             </div>
                             <span class="text-muted small" id="color-stock-note"></span>
                         </div>
@@ -139,23 +138,23 @@
                     <!-- Bộ nút hành động -->
                     <div class="d-flex gap-3 mb-4">
                         <button type="submit" name="action" value="add" id="btn-add-cart" class="btn btn-modern-outline btn-lg flex-fill rounded-pill fs-6 py-3">
-                            <i class="fa-solid fa-cart-plus me-2 text-primary"></i> Thêm vào giỏ
+                            Thêm vào giỏ
                         </button>
                         <button type="submit" name="action" value="buy_now" id="btn-buy-now" class="btn btn-modern-primary btn-lg flex-fill rounded-pill fs-6 fw-bold py-3">
-                            <i class="fa-solid fa-bolt me-2"></i> Mua ngay
+                            Mua ngay
                         </button>
                     </div>
                 </form>
 
                 <!-- Box Chính sách & Bảo hành -->
                 <div class="card bg-light border-0 rounded-4 p-4">
-                    <div class="d-flex align-items-center mb-2 text-primary fw-bold">
-                        <i class="fa-solid fa-shield-halved me-2"></i> Chính sách ưu đãi & Cam kết tại VUA TABLET
+                    <div class="mb-2 text-primary fw-bold">
+                        Chính sách ưu đãi & Cam kết tại VUA TABLET
                     </div>
-                    <ul class="list-unstyled mb-0 text-muted small lh-lg">
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Sản phẩm chính hãng 100%, bảo hành 12 tháng tại các TTBH ủy quyền.</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Đổi mới trong 30 ngày đầu tiên nếu máy phát sinh lỗi phần cứng NSX.</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Giao hàng hỏa tốc toàn quốc qua GHN Express, kiểm tra hàng trước khi nhận.</li>
+                    <ul class="mb-0 text-muted small lh-lg ps-3">
+                        <li>Sản phẩm chính hãng 100%, bảo hành 12 tháng tại các TTBH ủy quyền.</li>
+                        <li>Đổi mới trong 30 ngày đầu tiên nếu máy phát sinh lỗi phần cứng NSX.</li>
+                        <li>Giao hàng hỏa tốc toàn quốc qua GHN Express, kiểm tra hàng trước khi nhận.</li>
                     </ul>
                 </div>
             </div>
@@ -163,7 +162,7 @@
 
         <!-- Mô tả chi tiết -->
         <div class="border-top mt-5 pt-4">
-            <h4 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-circle-info me-2 text-primary"></i>Mô tả chi tiết sản phẩm</h4>
+            <h4 class="fw-bold mb-3 text-dark">Mô tả chi tiết sản phẩm</h4>
             <div class="text-secondary lh-lg fs-6">
                 {{ $product->description ?? 'Chưa có thông tin mô tả chi tiết cho sản phẩm này.' }}
             </div>
@@ -408,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (stock > 0) {
             stockBadge.className = 'badge-soft badge-soft-success py-2 px-3';
-            stockBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Màu <strong>${colorName}</strong>: Còn <strong>${stock}</strong> máy`;
+            stockBadge.innerHTML = `Màu <strong>${colorName}</strong>: Còn <strong>${stock}</strong> máy`;
             colorNote.textContent = `(Tối đa ${stock} sản phẩm cho màu ${colorName})`;
             
             qtyInput.disabled = false;
@@ -422,11 +421,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             btnAddCart.disabled = false;
             btnBuyNow.disabled = false;
-            btnAddCart.innerHTML = `<i class="fa-solid fa-cart-plus me-2 text-primary"></i> Thêm vào giỏ`;
-            btnBuyNow.innerHTML = `<i class="fa-solid fa-bolt me-2"></i> Mua ngay`;
+            btnAddCart.innerHTML = `Thêm vào giỏ`;
+            btnBuyNow.innerHTML = `Mua ngay`;
         } else {
             stockBadge.className = 'badge-soft badge-soft-danger py-2 px-3';
-            stockBadge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Màu <strong>${colorName}</strong>: Đã hết hàng`;
+            stockBadge.innerHTML = `Màu <strong>${colorName}</strong>: Đã hết hàng`;
             colorNote.textContent = `(Màu này tạm thời hết hàng)`;
             
             qtyInput.value = 0;
@@ -435,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             btnAddCart.disabled = true;
             btnBuyNow.disabled = true;
-            btnAddCart.innerHTML = `<i class="fa-solid fa-circle-xmark me-2"></i> Hết hàng`;
+            btnAddCart.innerHTML = `Hết hàng`;
             btnBuyNow.innerHTML = `Hết hàng`;
         }
     }
@@ -510,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     showNotification(data.message || 'Đã thêm sản phẩm vào giỏ hàng thành công!', true);
 
-                    btnAddCart.innerHTML = `<i class="fa-solid fa-check me-1"></i> Đã thêm!`;
+                    btnAddCart.innerHTML = `Đã thêm!`;
                     setTimeout(() => {
                         btnAddCart.disabled = false;
                         btnAddCart.innerHTML = originalHtml;
