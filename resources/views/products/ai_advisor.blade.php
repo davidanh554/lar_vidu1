@@ -527,14 +527,14 @@
     color: #064e3b;
     font-weight: 700;
     border: none;
-    box-shadow: 0 0 20px rgba(0, 255, 135, 0.5);
-    transition: all 0.25s ease;
+    box-shadow: none !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-emerald-glow:hover {
     background: linear-gradient(135deg, #047857 0%, #059669 50%, #34d399 100%);
     color: #ffffff;
-    box-shadow: 0 0 30px rgba(0, 255, 135, 0.8);
-    transform: translateY(-1px);
+    box-shadow: 0 0 25px rgba(0, 255, 135, 0.85), 0 0 40px rgba(52, 211, 153, 0.5) !important;
+    transform: translateY(-2px);
 }
 
 /* Radar Animation Loading */

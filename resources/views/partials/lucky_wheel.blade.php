@@ -577,11 +577,14 @@
     color: #064e3b;
     font-weight: 700;
     border: none;
-    box-shadow: 0 0 20px rgba(0, 255, 135, 0.5);
+    box-shadow: none !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-emerald-glow:hover {
     background: linear-gradient(135deg, #047857 0%, #059669 50%, #34d399 100%);
     color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 255, 135, 0.8), 0 0 35px rgba(52, 211, 153, 0.45) !important;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {

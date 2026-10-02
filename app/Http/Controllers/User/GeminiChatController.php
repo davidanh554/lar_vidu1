@@ -34,7 +34,7 @@ class GeminiChatController extends Controller
             return response()->json([
                 'success' => true,
                 'need_key' => true,
-                'reply' => "👋 **Chào bạn! Tôi là Trợ lý AI VUA TABLET.**\n\nHiện tại hệ thống đang chờ Quản trị viên cập nhật `GEMINI_API_KEY` trong tệp cấu hình `.env` để kích hoạt tính năng trò chuyện trực tiếp với Google Gemini.\n\n👉 **Bạn cần hỗ trợ ngay?** Vui lòng bấm vào nút **🎧 Hỗ trợ khách hàng** ở góc dưới màn hình để chat trực tiếp với nhân viên tư vấn của shop nhé!",
+                'reply' => "**Chào bạn! Tôi là Trợ lý AI VUA TABLET.**\n\nHiện tại hệ thống đang được Quản trị viên cập nhật cấu hình kết nối.\n\n**Bạn cần hỗ trợ ngay?** Vui lòng bấm vào nút **Hỗ trợ khách hàng** ở góc dưới màn hình để chat trực tiếp với nhân viên tư vấn của shop nhé!",
             ]);
         }
 
@@ -183,7 +183,8 @@ NGUYÊN TẮC GIAO TIẾP:
    - Thanh toán: Hỗ trợ tiền mặt khi nhận hàng (COD), Chuyển khoản, hoặc Ví điện tử MoMo.
    - Ưu đãi: Vòng quay may mắn (Lucky Wheel) trúng Voucher giảm giá mỗi ngày; Tích lũy Xu mua sắm khi xem video shopping & mua hàng.
 6. HỖ TRỢ KHÁCH HÀNG (QUAN TRỌNG):
-   - Nếu khách hàng cần khiếu nại, hủy/sửa đơn hàng gấp, xử lý bảo hành người thật, hoặc muốn gặp trực tiếp nhân viên / Quản trị viên: Hãy lịch sự hướng dẫn khách bấm vào nút **"🎧 Hỗ trợ khách hàng"** (màu xanh ở góc dưới màn hình) để nhắn tin trực tiếp với nhân viên hỗ trợ VUA TABLET.
+   - Nếu khách hàng cần khiếu nại, hủy/sửa đơn hàng gấp, xử lý bảo hành người thật, hoặc muốn gặp trực tiếp nhân viên / Quản trị viên: Hãy lịch sự hướng dẫn khách bấm vào nút **"Hỗ trợ khách hàng"** (màu xanh ở góc dưới màn hình) để nhắn tin trực tiếp với nhân viên hỗ trợ VUA TABLET.
+7. TUYỆT ĐỐI KHÔNG giới thiệu hoặc đề cập đến tên 'Google Gemini', 'Google AI' hoặc bất kỳ công nghệ nền tảng thứ ba nào. Chỉ xưng là 'Trợ lý AI VUA TABLET' hoặc 'Em'. Không dùng biểu tượng robot.
 
 DANH SÁCH MÁY TÍNH BẢNG ĐANG KINH DOANH TẠI VUA TABLET:
 {$productsContext}

@@ -141,7 +141,7 @@
                         <button type="submit" name="action" value="add" id="btn-add-cart" class="btn btn-modern-outline btn-lg flex-fill rounded-pill fs-6 py-3">
                             <i class="fa-solid fa-cart-plus me-2 text-primary"></i> Thêm vào giỏ
                         </button>
-                        <button type="submit" name="action" value="buy_now" id="btn-buy-now" class="btn btn-modern-primary btn-lg flex-fill rounded-pill fs-6 fw-bold py-3 shadow">
+                        <button type="submit" name="action" value="buy_now" id="btn-buy-now" class="btn btn-modern-primary btn-lg flex-fill rounded-pill fs-6 fw-bold py-3">
                             <i class="fa-solid fa-bolt me-2"></i> Mua ngay
                         </button>
                     </div>

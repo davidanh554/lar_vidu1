@@ -84,10 +84,10 @@
                 </div>
                 <div class="pt-3 border-top w-100" style="border-color: rgba(255, 255, 255, 0.08) !important;">
                     <small class="text-white-50 d-block mb-2" style="font-size: 0.75rem;">Cần giải đáp thắc mắc ngay lập tức?</small>
-                    <button type="button" class="btn btn-sm rounded-pill px-3 py-1 text-white" 
-                            style="background: #1e293b; border: 1px solid rgba(52, 211, 153, 0.4);" 
+                    <button type="button" class="btn btn-sm rounded-pill px-3 py-1 text-white fw-semibold" 
+                            style="background: #1e293b; border: 1px solid rgba(52, 211, 153, 0.4); font-size: 0.82rem;" 
                             onclick="window.switchFromSupportToGemini()">
-                        <i class="fa-solid fa-wand-magic-sparkles me-1" style="color: #34d399;"></i> Chat với Trợ lý AI Gemini (24/7)
+                        Chat với Trợ lý AI (24/7)
                     </button>
                 </div>
             </div>

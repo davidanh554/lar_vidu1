@@ -617,13 +617,14 @@
     background: linear-gradient(135deg, #00ff87, #10b981);
     color: #064e3b;
     border: none;
-    box-shadow: 0 4px 15px rgba(0, 255, 135, 0.3);
+    box-shadow: none !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .btn-emerald-glow:hover {
     background: #00ff87;
     color: #064e3b;
-    box-shadow: 0 6px 20px rgba(0, 255, 135, 0.5);
-    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(0, 255, 135, 0.8), 0 0 35px rgba(52, 211, 153, 0.45) !important;
+    transform: translateY(-2px);
 }
 </style>
 
