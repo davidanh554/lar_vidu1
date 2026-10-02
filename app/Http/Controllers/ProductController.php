@@ -11,6 +11,57 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        // 1. Đảm bảo đầy đủ các thương hiệu máy tính bảng phổ biến trong hệ thống
+        $standardBrands = [
+            ['slug' => 'apple', 'name' => 'Apple', 'description' => 'Máy tính bảng Apple iPad & Phụ kiện'],
+            ['slug' => 'samsung', 'name' => 'Samsung', 'description' => 'Máy tính bảng Samsung Galaxy Tab'],
+            ['slug' => 'xiaomi', 'name' => 'Xiaomi', 'description' => 'Máy tính bảng Xiaomi Pad & Redmi Pad'],
+            ['slug' => 'lenovo', 'name' => 'Lenovo', 'description' => 'Máy tính bảng Lenovo Tab'],
+            ['slug' => 'huawei', 'name' => 'Huawei', 'description' => 'Máy tính bảng Huawei MatePad'],
+        ];
+
+        foreach ($standardBrands as $b) {
+            Brand::firstOrCreate(['slug' => $b['slug']], $b);
+        }
+
+        $brands = Brand::orderByRaw("FIELD(slug, 'apple', 'samsung', 'xiaomi', 'lenovo', 'huawei') ASC, name ASC")->get();
+
+        // 2. Tự động đồng bộ brand_id cho các sản phẩm chưa được gán thương hiệu
+        $samsungBrand = $brands->firstWhere('slug', 'samsung');
+        if ($samsungBrand) {
+            Product::where(function($q) {
+                $q->where('name', 'LIKE', '%Samsung%')->orWhere('name', 'LIKE', '%Galaxy%');
+            })->where(function($q) use ($samsungBrand) {
+                $q->whereNull('brand_id')->orWhere('brand_id', '!=', $samsungBrand->id);
+            })->update(['brand_id' => $samsungBrand->id]);
+        }
+
+        $xiaomiBrand = $brands->firstWhere('slug', 'xiaomi');
+        if ($xiaomiBrand) {
+            Product::where(function($q) {
+                $q->where('name', 'LIKE', '%Xiaomi%')->orWhere('name', 'LIKE', '%Redmi%');
+            })->where(function($q) use ($xiaomiBrand) {
+                $q->whereNull('brand_id')->orWhere('brand_id', '!=', $xiaomiBrand->id);
+            })->update(['brand_id' => $xiaomiBrand->id]);
+        }
+
+        $lenovoBrand = $brands->firstWhere('slug', 'lenovo');
+        if ($lenovoBrand) {
+            Product::where('name', 'LIKE', '%Lenovo%')
+                ->where(function($q) use ($lenovoBrand) {
+                    $q->whereNull('brand_id')->orWhere('brand_id', '!=', $lenovoBrand->id);
+                })->update(['brand_id' => $lenovoBrand->id]);
+        }
+
+        $appleBrand = $brands->firstWhere('slug', 'apple');
+        if ($appleBrand) {
+            Product::where(function($q) {
+                $q->where('name', 'LIKE', '%iPad%')->orWhere('name', 'LIKE', '%Apple%');
+            })->where(function($q) use ($appleBrand) {
+                $q->whereNull('brand_id')->orWhere('brand_id', '!=', $appleBrand->id);
+            })->update(['brand_id' => $appleBrand->id]);
+        }
+
         $query = Product::with(['category', 'brand']);
 
         if ($request->filled('category_id')) {
@@ -33,7 +84,6 @@ class ProductController extends Controller
 
         $products = $query->latest()->paginate(12)->withQueryString();
         $categories = Category::all();
-        $brands = Brand::all();
 
         // Lấy sản phẩm thực tế gán cho các Banner quảng cáo lớn
         $bannerIpad = Product::where('name', 'like', '%iPad Pro%')->orWhere('name', 'like', '%iPad%')->first() ?? $products->first();
