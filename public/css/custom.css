@@ -40,10 +40,10 @@
     --card-border: var(--glass-border);
     --card-border-hover: var(--glass-border-hover);
     
-    /* Glows & Shadows */
-    --glow-laser: 0 0 25px rgba(0, 255, 135, 0.4), 0 0 10px rgba(16, 185, 129, 0.3);
-    --glow-card-hover: 0 16px 40px -5px rgba(0, 255, 135, 0.35), 0 0 25px rgba(16, 185, 129, 0.25);
-    --shadow-card: var(--glass-specular), 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 255, 135, 0.06);
+    /* Clean Modern Shadows (No Neon Green Blur) */
+    --glow-laser: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --glow-card-hover: 0 16px 36px -5px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
+    --shadow-card: var(--glass-specular), 0 12px 30px -8px rgba(0, 0, 0, 0.6);
     
     /* Squircles */
     --radius-card: 22px;
@@ -143,8 +143,8 @@ body {
 
 .filter-input-custom:focus {
     background-color: rgba(255, 255, 255, 0.12) !important;
-    border-color: var(--emerald-laser) !important;
-    box-shadow: 0 0 0 3px rgba(0, 255, 135, 0.25), 0 0 20px rgba(0, 255, 135, 0.2) !important;
+    border-color: rgba(16, 185, 129, 0.6) !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
     outline: none !important;
 }
 
@@ -178,32 +178,70 @@ body {
     transform: translateY(-50%) scale(1.12);
 }
 
-/* Custom Filter Select */
-.filter-select-custom {
+/* Custom Brand Dropdown & Select */
+.filter-dropdown-toggle {
     background-color: rgba(255, 255, 255, 0.07) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     color: #ffffff !important;
     border-radius: 9999px !important;
     padding: 0.65rem 1.25rem !important;
     font-size: 0.92rem !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
 }
 
-.filter-select-custom:focus {
+.filter-dropdown-toggle:hover {
     background-color: rgba(255, 255, 255, 0.12) !important;
-    border-color: var(--emerald-laser) !important;
-    box-shadow: 0 0 0 3px rgba(0, 255, 135, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.filter-dropdown-toggle:focus,
+.filter-dropdown-toggle.show {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(16, 185, 129, 0.6) !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+    color: #ffffff !important;
     outline: none !important;
 }
 
-.filter-select-custom option {
-    background-color: #11141c;
-    color: #ffffff;
+.custom-dropdown-menu {
+    background: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    margin-top: 6px !important;
+    backdrop-filter: blur(16px) !important;
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: 1050;
+}
+
+.custom-dropdown-menu .dropdown-item {
+    color: #cbd5e1 !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    border-radius: 10px !important;
+    transition: all 0.15s ease !important;
+    background: transparent !important;
+    cursor: pointer;
+}
+
+.custom-dropdown-menu .dropdown-item:hover {
+    background: #334155 !important;
+    color: #34d399 !important;
+}
+
+.custom-dropdown-menu .dropdown-item.active {
+    background: rgba(16, 185, 129, 0.18) !important;
+    color: #34d399 !important;
+    font-weight: 600 !important;
 }
 
 /* Filter Action Buttons & Count Badge */
 .filter-action-btn {
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: all 0.2s ease !important;
 }
 
 .filter-action-btn:hover {
@@ -211,19 +249,19 @@ body {
 }
 
 .filter-count-badge {
-    background: rgba(0, 255, 135, 0.1);
-    border: 1px solid rgba(0, 255, 135, 0.3);
-    color: var(--emerald-laser);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
     padding: 0.3rem 0.85rem;
     border-radius: 9999px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .filter-count-badge.badge-pulse {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(0, 255, 135, 0.5);
-    background: rgba(0, 255, 135, 0.25);
+    transform: scale(1.05);
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
 }
 
 /* Category Chip Pills Modern Effects */
@@ -524,14 +562,14 @@ main {
 }
 
 .billboard-btn {
-    background: linear-gradient(135deg, #00ff87 0%, #10b981 100%) !important;
-    color: #022c16 !important;
+    background: #059669 !important;
+    color: #ffffff !important;
     font-size: 0.9rem !important;
-    font-weight: 800 !important;
+    font-weight: 700 !important;
     letter-spacing: 0.3px;
     border: none !important;
-    box-shadow: 0 4px 18px rgba(0, 255, 135, 0.45) !important;
-    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -539,10 +577,10 @@ main {
 }
 
 .billboard-btn:hover {
-    background: #ffffff !important;
-    color: #022c16 !important;
-    transform: scale(1.06);
-    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.7), 0 0 30px rgba(0, 255, 135, 0.6) !important;
+    background: #10b981 !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Billboard Arrow Nav Buttons */
@@ -552,11 +590,11 @@ main {
     top: 50% !important;
     transform: translateY(-50%) !important;
     border-radius: 50% !important;
-    background: rgba(14, 20, 22, 0.82) !important;
-    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    background: rgba(14, 20, 22, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     backdrop-filter: blur(12px) !important;
     opacity: 0.9 !important;
-    transition: all 0.25s ease !important;
+    transition: all 0.2s ease !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -571,10 +609,10 @@ main {
 }
 
 .billboard-nav-btn:hover {
-    background: rgba(0, 255, 135, 0.25) !important;
-    border-color: var(--emerald-laser) !important;
+    background: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
     opacity: 1 !important;
-    box-shadow: 0 0 20px rgba(0, 255, 135, 0.45) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
 }
 
 .billboard-nav-icon {
@@ -772,18 +810,18 @@ main {
 }
 
 /* ============================================================
-   EMERALD BUTTONS (STAGE CONCERT CTA)
+   CLEAN MODERN BUTTONS (NO NEON GLUR GLOW)
    ============================================================ */
 .btn-primary,
 .btn-modern-primary {
-    background: var(--gradient-emerald-laser) !important;
-    border: none !important;
-    color: #022c16 !important;
+    background: #059669 !important;
+    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+    color: #ffffff !important;
     border-radius: var(--radius-pill);
-    font-weight: 800;
-    padding: 0.65rem 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 255, 135, 0.4), 0 0 15px rgba(16, 185, 129, 0.3);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 700;
+    padding: 0.6rem 1.4rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -793,15 +831,38 @@ main {
 
 .btn-primary:hover,
 .btn-modern-primary:hover {
-    background: var(--gradient-emerald-hover) !important;
-    box-shadow: 0 8px 30px rgba(0, 255, 135, 0.65), 0 0 25px rgba(16, 185, 129, 0.5);
-    transform: translateY(-2px);
-    color: #022c16 !important;
+    background: #047857 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+    transform: translateY(-1px);
+    color: #ffffff !important;
 }
 
 .btn-modern-outline {
-    background: rgba(16, 185, 129, 0.08) !important;
-    color: #6ee7b7 !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #e2e8f0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: var(--radius-pill) !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1.25rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-modern-outline:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-emerald-glow {
+    background: rgba(16, 185, 129, 0.12) !important;
+    color: #34d399 !important;
     border: 1px solid rgba(16, 185, 129, 0.35) !important;
     border-radius: var(--radius-pill) !important;
     font-weight: 700 !important;
@@ -810,14 +871,15 @@ main {
     align-items: center !important;
     gap: 0.35rem !important;
     text-decoration: none !important;
+    box-shadow: none !important;
     transition: all 0.2s ease !important;
 }
 
-.btn-modern-outline:hover {
-    background: rgba(16, 185, 129, 0.22) !important;
-    border-color: var(--emerald-laser) !important;
-    color: var(--emerald-laser) !important;
-    box-shadow: 0 0 18px rgba(0, 255, 135, 0.35) !important;
+.btn-emerald-glow:hover {
+    background: #059669 !important;
+    border-color: #059669 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
     transform: translateY(-1px) !important;
 }
 

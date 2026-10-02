@@ -160,14 +160,41 @@
             </div>
 
             <div class="col-md-3">
-                <select id="filter-brand" name="brand_id" class="form-select filter-select-custom">
-                    <option value="">-- Tất cả thương hiệu --</option>
-                    @foreach($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
-                            {{ $brand->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <!-- Custom Dark Glass Dropdown for Brand Filter -->
+                <div class="custom-brand-dropdown position-relative">
+                    <input type="hidden" id="filter-brand" name="brand_id" value="{{ request('brand_id') }}">
+                    
+                    <button type="button" class="btn filter-dropdown-toggle w-100 d-flex align-items-center justify-content-between rounded-pill" 
+                            id="brandDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="d-flex align-items-center text-truncate">
+                            <i class="fa-solid fa-layer-group me-2 small" style="color: #34d399;"></i>
+                            <span id="selected-brand-label">
+                                @php
+                                    $currentBrand = $brands->firstWhere('id', request('brand_id'));
+                                @endphp
+                                {{ $currentBrand ? $currentBrand->name : '-- Tất cả thương hiệu --' }}
+                            </span>
+                        </span>
+                        <i class="fa-solid fa-chevron-down ms-2 small dropdown-chevron text-white-50"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-dark custom-dropdown-menu shadow-lg border-0 w-100 p-2" aria-labelledby="brandDropdownBtn">
+                        <li>
+                            <button type="button" class="dropdown-item rounded-3 py-2 px-3 d-flex align-items-center justify-content-between js-brand-item {{ !request('brand_id') ? 'active' : '' }}" data-brand-id="" data-brand-name="-- Tất cả thương hiệu --">
+                                <span>-- Tất cả thương hiệu --</span>
+                                <i class="fa-solid fa-check small text-emerald check-icon {{ !request('brand_id') ? '' : 'd-none' }}" style="color: #34d399;"></i>
+                            </button>
+                        </li>
+                        @foreach($brands as $brand)
+                            <li>
+                                <button type="button" class="dropdown-item rounded-3 py-2 px-3 d-flex align-items-center justify-content-between js-brand-item {{ request('brand_id') == $brand->id ? 'active' : '' }}" data-brand-id="{{ $brand->id }}" data-brand-name="{{ $brand->name }}">
+                                    <span>{{ $brand->name }}</span>
+                                    <i class="fa-solid fa-check small text-emerald check-icon {{ request('brand_id') == $brand->id ? '' : 'd-none' }}" style="color: #34d399;"></i>
+                                </button>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
 
             <div class="col-md-5 d-flex flex-wrap gap-2 align-items-center">
@@ -433,14 +460,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Event: Change Brand Select
-    if (brandSelect) {
-        brandSelect.addEventListener('change', function() {
+    // Event: Click Brand Dropdown Item
+    const brandItems = document.querySelectorAll('.js-brand-item');
+    const selectedBrandLabel = document.getElementById('selected-brand-label');
+
+    brandItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
             clearTimeout(debounceTimer);
+            const brandId = this.getAttribute('data-brand-id') || '';
+            const brandName = this.getAttribute('data-brand-name') || '-- Tất cả thương hiệu --';
+
+            if (brandSelect) {
+                brandSelect.value = brandId;
+            }
+
+            if (selectedBrandLabel) {
+                selectedBrandLabel.textContent = brandName;
+            }
+
+            // Update active state and checkmarks
+            brandItems.forEach(i => {
+                const isSelected = (i === this);
+                i.classList.toggle('active', isSelected);
+                const check = i.querySelector('.check-icon');
+                if (check) {
+                    check.classList.toggle('d-none', !isSelected);
+                }
+            });
+
+            updateFilterUI();
             const url = buildFilterUrl();
             fetchProducts(url, true, false);
         });
-    }
+    });
 
     // Event: Click Category Chip Pills
     categoryPills.forEach(pill => {
@@ -463,6 +516,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (filterClearBtn) filterClearBtn.classList.add('d-none');
         if (brandSelect) brandSelect.value = '';
         if (categoryInput) categoryInput.value = '';
+        if (selectedBrandLabel) selectedBrandLabel.textContent = '-- Tất cả thương hiệu --';
+
+        brandItems.forEach((i, idx) => {
+            const isFirst = (idx === 0);
+            i.classList.toggle('active', isFirst);
+            const check = i.querySelector('.check-icon');
+            if (check) check.classList.toggle('d-none', !isFirst);
+        });
+
         const cleanUrl = '{{ route('home') }}';
         fetchProducts(cleanUrl, true, false);
     }

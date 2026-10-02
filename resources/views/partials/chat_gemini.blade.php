@@ -1,142 +1,156 @@
 <!-- ============================================================
-     WIDGET CHATBOT AI GEMINI (TỰ ĐỘNG TRẢ LỜI 24/7)
+     WIDGET CHATBOT AI GEMINI (TỰ ĐỘNG TRẢ LỜI 24/7) - DARK TECH EDITION
      ============================================================ -->
-<div id="gemini-chat-widget" style="position: fixed; bottom: 96px; right: 24px; z-index: 9998;">
-    <!-- Nút tròn Chatbot AI Gemini nổi bật -->
+<div id="gemini-chat-widget" style="position: fixed; bottom: 88px; right: 24px; z-index: 9998;">
+    <!-- Nút tròn Chatbot AI Gemini Dark Minimalist -->
     <button id="gemini-chat-toggle" class="btn rounded-circle shadow-lg d-flex align-items-center justify-content-center position-relative gemini-toggle-btn" 
-            style="width: 60px; height: 60px; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%); color: #fff; border: 2px solid rgba(255,255,255,0.4);" 
+            style="width: 54px; height: 54px; background: #151a26; border: 1.5px solid rgba(52, 211, 153, 0.4); color: #fff;" 
             title="Trợ lý AI Gemini (Tự động 24/7)">
-        <i class="fa-solid fa-wand-magic-sparkles fs-4"></i>
+        <i class="fa-solid fa-wand-magic-sparkles fs-5" style="color: #34d399;"></i>
         
-        <!-- Huy hiệu AI phát sáng -->
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm" 
-              style="font-size: 0.65rem; border: 2px solid #fff; padding: 0.25rem 0.45rem;">
-            AI 24/7
+        <!-- Huy hiệu AI nhỏ gọn -->
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success shadow-sm" 
+              style="font-size: 0.62rem; padding: 2px 6px; border: 2px solid #0b0f19; font-weight: 700;">
+            AI
         </span>
-        
-        <!-- Nhãn nhỏ bên dưới icon -->
-        <span class="gemini-btn-label">AI Tư vấn</span>
     </button>
 
-    <!-- Khung chat popup Gemini AI -->
+    <!-- Khung chat popup Gemini AI Dark Theme -->
     <div id="gemini-chat-popup" class="card shadow-lg border-0" 
-         style="display: none; width: 380px; max-width: calc(100vw - 32px); height: 550px; max-height: calc(100vh - 48px); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 45px rgba(124, 58, 237, 0.25) !important;">
+         style="display: none; width: 380px; max-width: calc(100vw - 32px); height: 540px; max-height: calc(100vh - 48px); border-radius: 18px; overflow: hidden; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12) !important; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7) !important;">
         
-        <!-- Header -->
-        <div class="card-header text-white d-flex justify-content-between align-items-center p-3" 
-             style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%); border-bottom: none;">
+        <!-- Header: Dark Tech -->
+        <div class="card-header d-flex justify-content-between align-items-center p-3" 
+             style="background: #1e293b; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
             <div class="d-flex align-items-center gap-2">
-                <div class="rounded-circle bg-white bg-opacity-20 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
-                    <i class="fa-solid fa-robot fs-5 text-white"></i>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                     style="width: 36px; height: 36px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.3);">
+                    <i class="fa-solid fa-robot" style="color: #34d399; font-size: 0.95rem;"></i>
                 </div>
                 <div>
-                    <div class="fw-bold text-white small d-flex align-items-center gap-1" style="font-size: 0.95rem;">
+                    <div class="fw-bold text-white small d-flex align-items-center gap-1" style="font-size: 0.92rem;">
                         <span>Trợ lý AI Gemini</span>
-                        <span class="badge bg-white text-dark rounded-pill px-2 py-0" style="font-size: 0.62rem; font-weight: 700;">Google AI</span>
+                        <span class="badge rounded-pill" style="font-size: 0.6rem; background: rgba(255,255,255,0.1); color: #cbd5e1;">Google AI</span>
                     </div>
                     <small class="d-flex align-items-center text-white-50" style="font-size: 0.72rem;">
-                        <i class="fa-solid fa-circle text-info me-1" style="font-size: 0.45rem;"></i> Trả lời tự động tức thì
+                        <i class="fa-solid fa-circle text-success me-1" style="font-size: 0.45rem;"></i> Trực tuyến 24/7
                     </small>
                 </div>
             </div>
             <div class="d-flex align-items-center gap-1">
-                <button id="gemini-chat-clear" class="btn btn-sm text-white opacity-75 hover-opacity-100 p-1" title="Làm mới cuộc trò chuyện">
+                <button id="gemini-chat-clear" class="btn btn-sm text-white-50 hover-text-white p-1" title="Làm mới cuộc trò chuyện">
                     <i class="fa-solid fa-rotate-right fs-6"></i>
                 </button>
-                <button id="gemini-chat-close" class="btn btn-sm text-white opacity-75 hover-opacity-100 p-1" title="Đóng khung chat">
+                <button id="gemini-chat-close" class="btn btn-sm text-white-50 hover-text-white p-1" title="Đóng khung chat">
                     <i class="fa-solid fa-xmark fs-5"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Thanh câu hỏi gợi ý nhanh (Chips) -->
-        <div class="bg-light p-2 border-bottom d-flex gap-2 overflow-x-auto gemini-chips-container" style="white-space: nowrap; scrollbar-width: none;">
-            <button class="btn btn-sm btn-white border rounded-pill shadow-xs py-1 px-2 text-dark small gemini-chip" data-prompt="Tư vấn cho tôi iPad dưới 10 triệu đáng mua nhất hiện nay">
-                💡 iPad dưới 10 triệu?
+        <!-- Thanh câu hỏi gợi ý nhanh (Chips) - ĐÃ SỬA LỖI MẤT CHỮ VÀ CÂN ĐỐI PADDING -->
+        <div class="gemini-chips-container">
+            <button type="button" class="gemini-chip" data-prompt="Tư vấn cho tôi iPad dưới 10 triệu đáng mua nhất hiện nay">
+                <span>💡 iPad dưới 10 triệu?</span>
             </button>
-            <button class="btn btn-sm btn-white border rounded-pill shadow-xs py-1 px-2 text-dark small gemini-chip" data-prompt="Tôi cần iPad vẽ vời và học tập thì nên chọn loại nào tốt nhất?">
-                🎨 Vẽ & Ghi chép
+            <button type="button" class="gemini-chip" data-prompt="Tôi cần iPad vẽ vời và học tập thì nên chọn loại nào tốt nhất?">
+                <span>🎨 Vẽ & Ghi chép</span>
             </button>
-            <button class="btn btn-sm btn-white border rounded-pill shadow-xs py-1 px-2 text-dark small gemini-chip" data-prompt="So sánh ưu nhược điểm giữa iPad Air 5 và iPad Pro M2">
-                ⚡ So sánh Air 5 & Pro M2
+            <button type="button" class="gemini-chip" data-prompt="So sánh ưu nhược điểm giữa iPad Air 5 và iPad Pro M2">
+                <span>⚡ So sánh Air 5 & Pro M2</span>
             </button>
-            <button class="btn btn-sm btn-white border rounded-pill shadow-xs py-1 px-2 text-dark small gemini-chip" data-prompt="Chính sách bảo hành và đổi trả của shop như thế nào?">
-                🛡️ Chính sách bảo hành
+            <button type="button" class="gemini-chip" data-prompt="Chính sách bảo hành và đổi trả của shop như thế nào?">
+                <span>🛡️ Chính sách bảo hành</span>
             </button>
-            <button class="btn btn-sm btn-white border rounded-pill shadow-xs py-1 px-2 text-dark small gemini-chip" data-prompt="Shop giao hàng qua đơn vị nào và mất bao lâu?">
-                🚚 Thời gian giao hàng
+            <button type="button" class="gemini-chip" data-prompt="Shop giao hàng qua đơn vị nào và mất bao lâu?">
+                <span>🚚 Thời gian giao hàng</span>
             </button>
         </div>
 
-        <!-- Khung hiển thị tin nhắn -->
-        <div id="gemini-chat-messages" class="card-body p-3 flex-grow-1" style="height: 320px; overflow-y: auto; background: #f8fafc;">
+        <!-- Khung hiển thị tin nhắn (Dark Mode) -->
+        <div id="gemini-chat-messages" class="card-body p-3 flex-grow-1" style="height: 320px; overflow-y: auto; background: #0b0f19;">
             <!-- Tin nhắn chào mừng mặc định -->
             <div class="d-flex mb-3 align-items-start gap-2">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 text-white" 
-                     style="width: 32px; height: 32px; background: linear-gradient(135deg, #4f46e5, #7c3aed); font-size: 0.85rem;">
-                    <i class="fa-solid fa-robot"></i>
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                     style="width: 32px; height: 32px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.3);">
+                    <i class="fa-solid fa-robot" style="color: #34d399; font-size: 0.85rem;"></i>
                 </div>
                 <div class="gemini-msg-bubble gemini-bot-bubble">
-                    <p class="mb-2 fw-semibold text-primary" style="font-size: 0.82rem;">👋 Xin chào! Tôi là Trợ lý AI VUA TABLET.</p>
-                    <p class="mb-2">Tôi được tích hợp trí tuệ nhân tạo <strong>Google Gemini</strong>, am hiểu toàn bộ kho máy tính bảng & chính sách của cửa hàng.</p>
-                    <p class="mb-0 small text-muted">Hãy chọn câu hỏi gợi ý bên trên hoặc nhập nội dung bất kỳ để được tư vấn ngay lập tức nhé!</p>
+                    <p class="mb-2 fw-semibold text-emerald" style="font-size: 0.84rem; color: #34d399;">👋 Xin chào! Tôi là Trợ lý AI VUA TABLET.</p>
+                    <p class="mb-2">Tôi được tích hợp trí tuệ nhân tạo <strong>Google Gemini</strong>, nắm rõ toàn bộ kho máy tính bảng & chính sách của cửa hàng.</p>
+                    <p class="mb-0 small text-white-50">Hãy chọn câu hỏi gợi ý bên trên hoặc nhập nội dung bất kỳ để được tư vấn ngay lập tức nhé!</p>
                 </div>
             </div>
         </div>
 
-        <!-- Footer: Ô nhập câu hỏi -->
-        <div class="card-footer p-2 border-top bg-white" id="gemini-chat-footer">
+        <!-- Footer: Ô nhập câu hỏi (Dark Mode) -->
+        <div class="card-footer p-2 border-top" id="gemini-chat-footer" style="background: #1e293b; border-color: rgba(255, 255, 255, 0.08) !important;">
             <div class="input-group">
                 <input type="text" id="gemini-chat-input" class="form-control rounded-pill-start border-end-0 shadow-none" 
+                       style="background: #0b0f19; color: #ffffff; border-color: rgba(255, 255, 255, 0.15); font-size: 0.85rem;" 
                        placeholder="Hỏi AI về iPad, giá bán, so sánh..." autocomplete="off">
                 <button id="gemini-send-btn" class="btn rounded-pill-end px-3 text-white" 
-                        style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+                        style="background: #059669; border: 1px solid #059669;">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
             <div class="text-center mt-1">
-                <small class="text-muted" style="font-size: 0.68rem;">
-                    AI trả lời tự động. Cần gặp nhân viên thật? Bấm <a href="javascript:void(0)" onclick="window.switchFromGeminiToSupport()" class="text-success fw-bold text-decoration-none">Hỗ trợ khách hàng</a>
+                <small class="text-white-50" style="font-size: 0.68rem;">
+                    AI trả lời tự động. Cần người thật? Bấm <a href="javascript:void(0)" onclick="window.switchFromGeminiToSupport()" class="text-success fw-bold text-decoration-none" style="color: #34d399 !important;">Hỗ trợ khách hàng</a>
                 </small>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Thư viện Marked.js để hiển thị định dạng Markdown tuyệt đẹp -->
+<!-- Thư viện Marked.js để hiển thị định dạng Markdown -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
 .gemini-toggle-btn {
-    animation: geminiPulse 3s infinite;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-@keyframes geminiPulse {
-    0% {
-        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-    }
-    50% {
-        box-shadow: 0 4px 28px rgba(219, 39, 119, 0.7);
-    }
-    100% {
-        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-    }
+    transition: all 0.2s ease;
 }
 .gemini-toggle-btn:hover {
-    transform: scale(1.08) translateY(-2px);
-    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.6) !important;
+    transform: translateY(-2px);
+    background: #1e293b !important;
+    border-color: #34d399 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
 }
-.gemini-btn-label {
-    position: absolute;
-    bottom: -18px;
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #6366f1;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 1px 6px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.gemini-chips-container {
+    background: #141c2b;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
     white-space: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+.gemini-chips-container::-webkit-scrollbar {
+    display: none;
+}
+.gemini-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    cursor: pointer;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+.gemini-chip:hover {
+    background: #334155;
+    color: #34d399;
+    border-color: rgba(52, 211, 153, 0.5);
+    transform: translateY(-1px);
 }
 .gemini-msg-bubble {
     max-width: 85%;
@@ -147,18 +161,18 @@
     word-break: break-word;
 }
 .gemini-user-bubble {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-    color: #fff;
+    background: #059669;
+    color: #ffffff;
     margin-left: auto;
     border-bottom-right-radius: 4px;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 .gemini-bot-bubble {
-    background: #ffffff;
-    color: #1e293b;
+    background: #1e293b;
+    color: #e2e8f0;
     border-bottom-left-radius: 4px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 .gemini-bot-bubble p:last-child {
     margin-bottom: 0;
@@ -168,28 +182,28 @@
     padding-left: 1.2rem;
 }
 .gemini-bot-bubble a {
-    color: #4f46e5;
+    color: #34d399;
     font-weight: 600;
     text-decoration: underline;
 }
 .gemini-bot-bubble a:hover {
-    color: #db2777;
+    color: #6ee7b7;
 }
 .gemini-typing {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     padding: 8px 12px;
-    background: #fff;
-    border: 1px solid #e2e8f0;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     font-size: 0.8rem;
-    color: #64748b;
+    color: #94a3b8;
 }
 .gemini-typing-dot {
     width: 6px;
     height: 6px;
-    background: #7c3aed;
+    background: #34d399;
     border-radius: 50%;
     animation: geminiTyping 1.4s infinite ease-in-out both;
 }
@@ -199,18 +213,8 @@
     0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
     40% { transform: scale(1); opacity: 1; }
 }
-.gemini-chips-container::-webkit-scrollbar {
-    display: none;
-}
-.gemini-chip {
-    transition: all 0.2s ease;
-    font-size: 0.76rem !important;
-}
-.gemini-chip:hover {
-    background: #f1f5f9;
-    border-color: #7c3aed !important;
-    color: #7c3aed !important;
-    transform: translateY(-1px);
+.hover-text-white:hover {
+    color: #ffffff !important;
 }
 </style>
 
@@ -260,7 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Mở khung chat Gemini AI
     window.openGeminiChat = function() {
-        // Đóng chat Hỗ trợ khách hàng nếu đang mở
         if (window.closeSupportChat) {
             window.closeSupportChat();
         }
@@ -296,13 +299,13 @@ document.addEventListener("DOMContentLoaded", function () {
             sessionStorage.removeItem("gemini_chat_history");
             chatBox.innerHTML = `
                 <div class="d-flex mb-3 align-items-start gap-2">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 text-white" 
-                         style="width: 32px; height: 32px; background: linear-gradient(135deg, #4f46e5, #7c3aed); font-size: 0.85rem;">
-                        <i class="fa-solid fa-robot"></i>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                         style="width: 32px; height: 32px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.3);">
+                        <i class="fa-solid fa-robot" style="color: #34d399; font-size: 0.85rem;"></i>
                     </div>
                     <div class="gemini-msg-bubble gemini-bot-bubble">
-                        <p class="mb-2 fw-semibold text-primary" style="font-size: 0.82rem;">👋 Đã làm mới cuộc hội thoại!</p>
-                        <p class="mb-0 small text-muted">Bạn có thắc mắc gì về các dòng máy iPad hoặc chính sách của VUA TABLET? Hãy hỏi em nhé!</p>
+                        <p class="mb-2 fw-semibold text-emerald" style="font-size: 0.84rem; color: #34d399;">👋 Đã làm mới cuộc hội thoại!</p>
+                        <p class="mb-0 small text-white-50">Bạn có thắc mắc gì về các dòng máy iPad hoặc chính sách của VUA TABLET? Hãy hỏi em nhé!</p>
                     </div>
                 </div>
             `;
@@ -340,9 +343,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         div.innerHTML = `
-            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 text-white" 
-                 style="width: 30px; height: 30px; background: linear-gradient(135deg, #4f46e5, #7c3aed); font-size: 0.8rem;">
-                <i class="fa-solid fa-robot"></i>
+            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                 style="width: 30px; height: 30px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.3);">
+                <i class="fa-solid fa-robot" style="color: #34d399; font-size: 0.8rem;"></i>
             </div>
             <div class="gemini-msg-bubble gemini-bot-bubble">
                 ${htmlContent}
@@ -364,9 +367,9 @@ document.addEventListener("DOMContentLoaded", function () {
         div.id = id;
         div.className = "d-flex mb-3 align-items-start gap-2";
         div.innerHTML = `
-            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 text-white" 
-                 style="width: 30px; height: 30px; background: linear-gradient(135deg, #4f46e5, #7c3aed); font-size: 0.8rem;">
-                <i class="fa-solid fa-robot"></i>
+            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                 style="width: 30px; height: 30px; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.3);">
+                <i class="fa-solid fa-robot" style="color: #34d399; font-size: 0.8rem;"></i>
             </div>
             <div class="gemini-typing">
                 <span class="gemini-typing-dot"></span>
@@ -462,7 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Xử lý khi click vào các chip câu hỏi gợi ý nhanh
     chips.forEach(chip => {
         chip.onclick = function() {
             const prompt = this.getAttribute("data-prompt");
