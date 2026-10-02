@@ -31,15 +31,15 @@
                                 <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
-                                            <i class="fa-brands fa-apple me-1"></i> Apple Flagship
+                                            Apple Flagship
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <a href="{{ $bannerIpadTarget }}" class="btn billboard-btn rounded-pill px-4 py-2">
-                                            Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                            Xem chi tiết
                                         </a>
                                         <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
-                                            <i class="fa-solid fa-bolt text-warning me-1"></i> Chip M4 AI
+                                            Chip M4 AI
                                         </span>
                                     </div>
                                 </div>
@@ -53,15 +53,15 @@
                                 <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
-                                            <i class="fa-solid fa-laptop me-1"></i> Laptop & Tablet 2-in-1
+                                            Laptop & Tablet 2-in-1
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <a href="{{ $bannerGalaxyTarget }}" class="btn billboard-btn rounded-pill px-4 py-2">
-                                            Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                            Xem chi tiết
                                         </a>
                                         <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
-                                            <i class="fa-solid fa-pen-fancy text-info me-1"></i> Kèm S-Pen
+                                            Kèm S-Pen
                                         </span>
                                     </div>
                                 </div>
@@ -80,15 +80,15 @@
                                 <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
-                                            <i class="fa-solid fa-gamepad me-1"></i> Gaming & Làm Việc 144Hz
+                                            Gaming & Làm Việc 144Hz
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <a href="{{ $bannerXiaomiTarget }}" class="btn billboard-btn rounded-pill px-4 py-2">
-                                            Xem chi tiết <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                            Xem chi tiết
                                         </a>
                                         <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
-                                            <i class="fa-solid fa-microchip text-success me-1"></i> Snap 8+ Gen 1
+                                            Snap 8+ Gen 1
                                         </span>
                                     </div>
                                 </div>
@@ -102,15 +102,15 @@
                                 <div class="billboard-banner-overlay d-flex flex-column justify-content-between p-4">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <span class="badge bg-dark bg-opacity-75 text-emerald border border-emerald-subtle px-3 py-1 rounded-pill small fw-bold backdrop-blur">
-                                            <i class="fa-solid fa-tags me-1"></i> Mega Tech Sale 40% OFF
+                                            Mega Tech Sale 40% OFF
                                         </span>
                                     </div>
                                     <div class="d-flex align-items-end justify-content-between">
                                         <a href="#products-section" class="btn billboard-btn rounded-pill px-4 py-2">
-                                            Khám phá ngay <i class="fa-solid fa-arrow-down ms-1 small"></i>
+                                            Khám phá ngay
                                         </a>
                                         <span class="badge bg-black bg-opacity-60 text-white px-3 py-1 rounded-pill small backdrop-blur">
-                                            <i class="fa-solid fa-shield-check text-warning me-1"></i> Trả Góp 0%
+                                            Trả Góp 0%
                                         </span>
                                     </div>
                                 </div>
@@ -133,9 +133,6 @@
     <!-- Shoppertainment Video Banner Strip -->
     <div class="video-promo-strip p-3 mb-4 rounded-4 d-flex flex-wrap align-items-center justify-content-between gap-3 shadow-sm" style="background: linear-gradient(135deg, rgba(17, 20, 28, 0.95), rgba(6, 78, 59, 0.65)); border: 1px solid rgba(0, 255, 135, 0.35);">
         <div class="d-flex align-items-center gap-3">
-            <div class="video-promo-icon-box d-flex align-items-center justify-content-center rounded-circle" style="width: 48px; height: 48px; background: rgba(0, 255, 135, 0.15); border: 1px solid rgba(0, 255, 135, 0.4); flex-shrink: 0;">
-                <i class="fa-solid fa-circle-play text-emerald fs-4"></i>
-            </div>
             <div>
                 <div class="d-flex align-items-center gap-2">
                     <span class="badge bg-danger rounded-pill px-2 py-0" style="font-size: 0.7rem;">MỚI</span>
@@ -145,24 +142,25 @@
             </div>
         </div>
         <a href="{{ route('videos.index') }}" class="btn btn-emerald-glow rounded-pill px-4 py-2 fw-bold text-decoration-none d-inline-flex align-items-center gap-2 flex-shrink-0">
-            <i class="fa-solid fa-coins text-warning me-1"></i>
             <span>Cày Xu Mua Hàng</span>
-            <i class="fa-solid fa-arrow-right"></i>
         </a>
     </div>
 
-    <!-- Filter & Search Bar -->
-    <div class="card card-modern p-4 mb-4" id="products-section">
+    <!-- Filter & Search Bar with Laser Scanning Effect -->
+    <div class="card card-modern p-4 mb-4 filter-card-container position-relative overflow-hidden" id="products-section">
+        <!-- High-tech Scanning Laser Beam -->
+        <div id="filter-scan-line" class="filter-scan-line"></div>
+
         <form id="filter-form" action="{{ route('home') }}" method="GET" class="row g-3 align-items-center">
             <div class="col-md-4">
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="text" id="filter-search" name="search" class="form-control bg-light border-start-0 ps-0" placeholder="Tìm theo tên máy, chip, ram..." value="{{ request('search') }}" autocomplete="off">
+                <div class="filter-input-wrap position-relative">
+                    <input type="text" id="filter-search" name="search" class="form-control filter-input-custom" placeholder="Tìm theo tên máy, chip, ram..." value="{{ request('search') }}" autocomplete="off">
+                    <button type="button" id="filter-clear-btn" class="filter-clear-btn {{ request('search') ? '' : 'd-none' }}" aria-label="Xóa tìm kiếm">&times;</button>
                 </div>
             </div>
 
             <div class="col-md-3">
-                <select id="filter-brand" name="brand_id" class="form-select bg-light">
+                <select id="filter-brand" name="brand_id" class="form-select filter-select-custom">
                     <option value="">-- Tất cả thương hiệu --</option>
                     @foreach($brands as $brand)
                         <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
@@ -174,33 +172,38 @@
 
             <div class="col-md-5 d-flex flex-wrap gap-2 align-items-center">
                 <input type="hidden" id="filter-category" name="category_id" value="{{ request('category_id') }}">
-                <button type="submit" id="btn-submit-filter" class="btn btn-modern-primary px-3 rounded-pill">
-                    <i class="fa-solid fa-filter me-1"></i> Lọc
+                <button type="submit" id="btn-submit-filter" class="btn btn-modern-primary px-4 rounded-pill filter-action-btn">
+                    Lọc
                 </button>
-                <button type="button" id="btn-reset-filter" class="btn btn-modern-outline rounded-pill {{ (request('search') || request('category_id') || request('brand_id')) ? '' : 'd-none' }}">
-                    <i class="fa-solid fa-rotate-left me-1"></i> Xóa lọc
+                <button type="button" id="btn-reset-filter" class="btn btn-modern-outline rounded-pill filter-action-btn {{ (request('search') || request('category_id') || request('brand_id')) ? '' : 'd-none' }}">
+                    Xóa lọc
                 </button>
-                <a href="{{ route('ai.advisor') }}" class="btn btn-emerald-glow rounded-pill px-3 py-1 fw-bold text-decoration-none d-inline-flex align-items-center" title="Trắc nghiệm 5 câu hỏi nhanh tìm iPad phù hợp nhất">
-                    <i class="fa-solid fa-wand-magic-sparkles me-1 text-warning"></i> AI Chọn iPad Hộ Tôi
+                <a href="{{ route('ai.advisor') }}" class="btn btn-emerald-glow rounded-pill px-3 py-2 fw-bold text-decoration-none d-inline-flex align-items-center" title="Trắc nghiệm 5 câu hỏi nhanh tìm iPad phù hợp nhất">
+                    AI Chọn iPad Hộ Tôi
                 </a>
             </div>
         </form>
 
-        <!-- Category Chip Pills -->
-        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top align-items-center" id="category-pills">
-            <span class="text-muted fw-bold me-2 small"><i class="fa-solid fa-layer-group me-1"></i>Danh mục:</span>
-            <a href="{{ route('home', array_merge(request()->except('category_id', 'page'))) }}" 
-               class="chip-pill js-category-pill {{ !request('category_id') ? 'active' : '' }}"
-               data-cat-id="">
-                Tất cả
-            </a>
-            @foreach($categories as $cat)
-                <a href="{{ route('home', array_merge(request()->except('page'), ['category_id' => $cat->id])) }}" 
-                   class="chip-pill js-category-pill {{ request('category_id') == $cat->id ? 'active' : '' }}"
-                   data-cat-id="{{ $cat->id }}">
-                    {{ $cat->name }}
+        <!-- Category Chip Pills & Live Count Header -->
+        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top align-items-center justify-content-between" id="category-pills-bar">
+            <div class="d-flex flex-wrap gap-2 align-items-center" id="category-pills">
+                <span class="text-muted fw-bold me-2 small">Danh mục:</span>
+                <a href="{{ route('home', array_merge(request()->except('category_id', 'page'))) }}" 
+                   class="chip-pill js-category-pill {{ !request('category_id') ? 'active' : '' }}"
+                   data-cat-id="">
+                    Tất cả
                 </a>
-            @endforeach
+                @foreach($categories as $cat)
+                    <a href="{{ route('home', array_merge(request()->except('page'), ['category_id' => $cat->id])) }}" 
+                       class="chip-pill js-category-pill {{ request('category_id') == $cat->id ? 'active' : '' }}"
+                       data-cat-id="{{ $cat->id }}">
+                        {{ $cat->name }}
+                    </a>
+                @endforeach
+            </div>
+            <div id="filter-results-badge" class="filter-count-badge small">
+                <span>{{ $products->total() }} sản phẩm</span>
+            </div>
         </div>
     </div>
 
@@ -208,7 +211,7 @@
     <div id="product-list-wrapper" class="position-relative">
         <div class="product-ajax-loader">
             <span class="spinner-border spinner-border-sm text-emerald" role="status" aria-hidden="true"></span>
-            <span>Đang tải sản phẩm...</span>
+            <span>Đang cập nhật...</span>
         </div>
         @include('products._product_list')
     </div>
@@ -251,12 +254,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 2. DOM Elements for AJAX Filter
+    const filterCard = document.querySelector('.filter-card-container');
     const filterForm = document.getElementById('filter-form');
     const searchInput = document.getElementById('filter-search');
+    const filterClearBtn = document.getElementById('filter-clear-btn');
     const brandSelect = document.getElementById('filter-brand');
     const categoryInput = document.getElementById('filter-category');
     const btnSubmit = document.getElementById('btn-submit-filter');
     const btnReset = document.getElementById('btn-reset-filter');
+    const filterResultsBadge = document.getElementById('filter-results-badge');
     const productWrapper = document.getElementById('product-list-wrapper');
     const categoryPills = document.querySelectorAll('.js-category-pill');
 
@@ -301,6 +307,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 btnReset.classList.add('d-none');
             }
         }
+
+        if (filterClearBtn && searchInput) {
+            if (searchInput.value.trim() !== '') {
+                filterClearBtn.classList.remove('d-none');
+            } else {
+                filterClearBtn.classList.add('d-none');
+            }
+        }
     }
 
     // Core AJAX Fetch function
@@ -310,6 +324,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         abortController = new AbortController();
 
+        if (filterCard) {
+            filterCard.classList.add('is-filtering');
+        }
         if (productWrapper) {
             productWrapper.classList.add('is-loading');
         }
@@ -337,8 +354,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 productWrapper.innerHTML = `
                     <div class="product-ajax-loader">
                         <span class="spinner-border spinner-border-sm text-emerald" role="status" aria-hidden="true"></span>
-                        <span>Đang tải sản phẩm...</span>
+                        <span>Đang cập nhật...</span>
                     </div>` + data.html;
+            }
+
+            if (filterResultsBadge && data.total !== undefined) {
+                filterResultsBadge.innerHTML = `<span>${data.total} sản phẩm</span>`;
+                filterResultsBadge.classList.add('badge-pulse');
+                setTimeout(() => filterResultsBadge.classList.remove('badge-pulse'), 600);
             }
 
             if (updateHistory) {
@@ -361,6 +384,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .finally(() => {
+            if (filterCard) {
+                filterCard.classList.remove('is-filtering');
+            }
             if (productWrapper) {
                 productWrapper.classList.remove('is-loading');
             }
@@ -384,11 +410,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event: Live Search with Debounce (typing)
     if (searchInput) {
         searchInput.addEventListener('input', function() {
+            if (filterClearBtn) {
+                filterClearBtn.classList.toggle('d-none', !this.value.trim());
+            }
             clearTimeout(debounceTimer);
+            if (filterCard) filterCard.classList.add('is-filtering');
             debounceTimer = setTimeout(() => {
                 const url = buildFilterUrl();
                 fetchProducts(url, true, false);
-            }, 350);
+            }, 300);
+        });
+    }
+
+    // Event: Click clear search button (&times;)
+    if (filterClearBtn && searchInput) {
+        filterClearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            filterClearBtn.classList.add('d-none');
+            searchInput.focus();
+            const url = buildFilterUrl();
+            fetchProducts(url, true, false);
         });
     }
 
@@ -419,6 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function resetAllFilters() {
         clearTimeout(debounceTimer);
         if (searchInput) searchInput.value = '';
+        if (filterClearBtn) filterClearBtn.classList.add('d-none');
         if (brandSelect) brandSelect.value = '';
         if (categoryInput) categoryInput.value = '';
         const cleanUrl = '{{ route('home') }}';

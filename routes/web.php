@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\FinanceController;
 use App\Http\Controllers\User\LuckyWheelController;
 use App\Http\Controllers\User\AIAdvisorController;
 use App\Http\Controllers\User\VideoShoppingController;
+use App\Http\Controllers\User\GeminiChatController;
 
 // 1. Routes Xác thực (Auth)
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -35,6 +36,9 @@ Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->nam
 // 2. Routes Công khai dành cho Khách hàng
 Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+// Chatbot AI Gemini (Tự động 24/7)
+Route::post('/ai-chat/send', [GeminiChatController::class, 'chat'])->name('ai.chat.send');
 
 // AI Tư vấn chọn iPad hộ tôi
 Route::get('/ai-advisor', [AIAdvisorController::class, 'index'])->name('ai.advisor');

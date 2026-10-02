@@ -3,7 +3,6 @@
         <div class="row g-4">
             <div class="col-lg-4">
                 <div class="d-flex align-items-center mb-3">
-                    <i class="fa-solid fa-tablet-screen-button text-primary fs-3 me-2"></i>
                     <span class="fs-4 fw-bold text-white tracking-tight">VUA TABLET</span>
                 </div>
                 <p class="small text-muted mb-3">
@@ -30,10 +29,10 @@
             <div class="col-6 col-lg-3">
                 <h6 class="text-white fw-bold mb-3">Chính sách & Hỗ trợ</h6>
                 <ul class="list-unstyled small d-flex flex-column gap-2 mb-0">
-                    <li><a href="{{ route('orders.index') }}" class="text-decoration-none text-secondary hover-white"><i class="fa-solid fa-truck-fast me-1 text-primary"></i> Tra cứu đơn hàng GHN</a></li>
-                    <li><span class="text-secondary"><i class="fa-solid fa-shield-halved me-1 text-success"></i> Bảo hành chính hãng 12T</span></li>
-                    <li><span class="text-secondary"><i class="fa-solid fa-rotate-left me-1 text-warning"></i> Đổi mới trong 30 ngày</span></li>
-                    <li><span class="text-secondary"><i class="fa-solid fa-credit-card me-1 text-info"></i> MoMo & COD toàn quốc</span></li>
+                    <li><a href="{{ route('orders.index') }}" class="text-decoration-none text-secondary hover-white">Tra cứu đơn hàng GHN</a></li>
+                    <li><span class="text-secondary">Bảo hành chính hãng 12T</span></li>
+                    <li><span class="text-secondary">Đổi mới trong 30 ngày</span></li>
+                    <li><span class="text-secondary">MoMo & COD toàn quốc</span></li>
                 </ul>
             </div>
 
@@ -41,10 +40,10 @@
                 <h6 class="text-white fw-bold mb-3">Tổng đài hỗ trợ</h6>
                 <div class="p-3 rounded-4 bg-white bg-opacity-5 border border-white border-opacity-10 mb-2">
                     <div class="small text-muted mb-1">Hotline tư vấn (Miễn phí):</div>
-                    <div class="fw-bold text-white fs-5"><i class="fa-solid fa-phone text-primary me-2"></i>1800 6868</div>
+                    <div class="fw-bold text-white fs-5">1800 6868</div>
                 </div>
                 <div class="small text-muted">
-                    <i class="fa-solid fa-clock me-1 text-secondary"></i> Làm việc: 8h00 - 21h30 (Cả T7, CN)
+                    Làm việc: 8h00 - 21h30 (Cả T7, CN)
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <!-- Products Grid -->
 <div class="row g-4">
-    @forelse($products as $product)
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+    @forelse($products as $index => $product)
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 product-grid-item" style="--item-idx: {{ $index }};">
             <div class="product-card">
                 
                 <!-- Click vào ảnh để xem chi tiết -->
@@ -15,8 +15,8 @@
                         @if($product->image)
                             <img src="{{ asset($product->image) }}" class="img-fluid" alt="{{ $product->name }}">
                         @else
-                            <div class="d-flex align-items-center justify-content-center h-100 text-muted">
-                                <i class="fa-solid fa-tablet-screen-button fs-1"></i>
+                            <div class="d-flex align-items-center justify-content-center h-100 text-muted small fw-medium">
+                                <span>Vua Tablet</span>
                             </div>
                         @endif
                     </div>
@@ -50,14 +50,14 @@
                         <!-- Cặp nút: Thêm giỏ hàng & Mua ngay -->
                         @if($product->stock_quantity <= 0)
                             <button class="btn btn-secondary btn-sm w-100 rounded-pill" disabled>
-                                <i class="fa-solid fa-ban me-1"></i> Tạm hết hàng
+                                Tạm hết hàng
                             </button>
                         @else
                             <div class="d-flex gap-2">
                                 <form action="{{ route('cart.add', $product->id) }}" method="POST" class="flex-grow-1 ajax-add-cart-form">
                                     @csrf
                                     <button type="submit" class="btn btn-modern-outline btn-sm w-100 btn-ajax-add">
-                                        <i class="fa-solid fa-cart-plus me-1 text-primary"></i>Thêm giỏ
+                                        Thêm vào giỏ
                                     </button>
                                 </form>
 
@@ -78,12 +78,11 @@
     @empty
         <div class="col-12 text-center py-5">
             <div class="card card-modern py-5">
-                <i class="fa-solid fa-box-open fs-1 mb-3 text-muted"></i>
-                <h4 class="fw-bold">Không tìm thấy sản phẩm nào phù hợp</h4>
-                <p class="text-muted mb-3">Vui lòng kiểm tra lại từ khóa tìm kiếm hoặc bỏ chọn các bộ lọc.</p>
+                <h4 class="fw-bold mb-2">Không tìm thấy sản phẩm nào phù hợp</h4>
+                <p class="text-muted mb-3">Vui lòng kiểm tra lại từ khóa tìm kiếm hoặc chọn danh mục khác.</p>
                 <div>
                     <button type="button" class="btn btn-modern-primary btn-sm rounded-pill px-4 js-btn-reset-filter">
-                        <i class="fa-solid fa-rotate-left me-1"></i> Xem tất cả sản phẩm
+                        Xem tất cả sản phẩm
                     </button>
                 </div>
             </div>

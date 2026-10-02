@@ -60,7 +60,8 @@
     <!-- Unified Storefront Footer -->
     @include('partials.footer_store')
 
-    <!-- Livechat Floating Widget (for logged in customers) -->
+    <!-- Chat Widgets: AI Gemini (Tự động 24/7) & Hỗ trợ khách hàng (Gặp Admin) -->
+    @include('partials.chat_gemini')
     @include('partials.chat_user')
 
     <!-- Lucky Wheel Floating Widget & Popup Modal (Ẩn ở trang Đăng nhập / Đăng ký) -->

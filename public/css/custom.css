@@ -79,38 +79,226 @@ body {
     min-height: 100vh;
 }
 
-/* AJAX Product Loading State */
+/* ============================================================
+   AJAX PRODUCT FILTER & SEARCH INTERACTIVE ANIMATIONS
+   ============================================================ */
+.filter-card-container {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.filter-card-container.is-filtering {
+    border-color: rgba(0, 255, 135, 0.45) !important;
+    box-shadow: 0 0 25px rgba(0, 255, 135, 0.25) !important;
+}
+
+/* High-tech Scanning Laser Beam */
+.filter-scan-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: transparent;
+    overflow: hidden;
+    display: none;
+    z-index: 5;
+}
+
+.filter-card-container.is-filtering .filter-scan-line {
+    display: block;
+}
+
+.filter-scan-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -40%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--emerald-laser), #ffffff, var(--emerald-laser), transparent);
+    box-shadow: 0 0 15px var(--emerald-laser);
+    animation: laserScan 0.85s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes laserScan {
+    0% { left: -40%; }
+    100% { left: 100%; }
+}
+
+/* Custom Filter Input & Clear Button */
+.filter-input-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.filter-input-custom {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-radius: 9999px !important;
+    padding: 0.65rem 2.4rem 0.65rem 1.25rem !important;
+    font-size: 0.92rem !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.filter-input-custom:focus {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: var(--emerald-laser) !important;
+    box-shadow: 0 0 0 3px rgba(0, 255, 135, 0.25), 0 0 20px rgba(0, 255, 135, 0.2) !important;
+    outline: none !important;
+}
+
+.filter-input-custom::placeholder {
+    color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.filter-clear-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    color: #ffffff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.filter-clear-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-50%) scale(1.12);
+}
+
+/* Custom Filter Select */
+.filter-select-custom {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-radius: 9999px !important;
+    padding: 0.65rem 1.25rem !important;
+    font-size: 0.92rem !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.filter-select-custom:focus {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: var(--emerald-laser) !important;
+    box-shadow: 0 0 0 3px rgba(0, 255, 135, 0.25) !important;
+    outline: none !important;
+}
+
+.filter-select-custom option {
+    background-color: #11141c;
+    color: #ffffff;
+}
+
+/* Filter Action Buttons & Count Badge */
+.filter-action-btn {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.filter-action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.filter-count-badge {
+    background: rgba(0, 255, 135, 0.1);
+    border: 1px solid rgba(0, 255, 135, 0.3);
+    color: var(--emerald-laser);
+    padding: 0.3rem 0.85rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.filter-count-badge.badge-pulse {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 135, 0.5);
+    background: rgba(0, 255, 135, 0.25);
+}
+
+/* Category Chip Pills Modern Effects */
+.chip-pill {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.chip-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 135, 0.25);
+    color: #ffffff !important;
+}
+
+.chip-pill.active {
+    box-shadow: 0 0 16px rgba(0, 255, 135, 0.4) !important;
+    transform: scale(1.04);
+}
+
+/* AJAX Product Loading State & Smooth Staggered Cascade */
 #product-list-wrapper {
     position: relative;
-    transition: opacity 0.25s ease, filter 0.25s ease;
+    transition: opacity 0.25s ease;
     min-height: 250px;
 }
+
 #product-list-wrapper.is-loading {
-    opacity: 0.45;
+    opacity: 0.55;
     pointer-events: none;
-    filter: blur(1px);
 }
+
 .product-ajax-loader {
     position: absolute;
     top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10;
+    z-index: 100;
     display: none;
-    background: rgba(18, 25, 24, 0.92);
+    background: rgba(17, 20, 28, 0.95);
     border: 1px solid var(--emerald-laser);
-    box-shadow: 0 8px 30px rgba(0, 255, 135, 0.35);
-    padding: 0.6rem 1.4rem;
+    box-shadow: 0 8px 30px rgba(0, 255, 135, 0.45);
+    padding: 0.65rem 1.6rem;
     border-radius: 9999px;
     color: #ffffff;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     align-items: center;
-    gap: 0.6rem;
-    backdrop-filter: blur(10px);
+    gap: 0.75rem;
+    backdrop-filter: blur(12px);
+    animation: loaderPulse 1s ease-in-out infinite alternate;
 }
+
+@keyframes loaderPulse {
+    from { transform: translateX(-50%) scale(0.97); }
+    to { transform: translateX(-50%) scale(1.03); }
+}
+
 #product-list-wrapper.is-loading .product-ajax-loader {
     display: inline-flex;
+}
+
+/* Staggered Cascade Animation for Product Cards */
+.product-grid-item {
+    animation: productCardFadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--item-idx, 0) * 35ms);
+}
+
+@keyframes productCardFadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* ============================================================
