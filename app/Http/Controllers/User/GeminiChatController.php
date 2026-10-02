@@ -17,6 +17,16 @@ class GeminiChatController extends Controller
      */
     public function chat(Request $request)
     {
+        // 0. Bắt buộc đăng nhập để nhận tư vấn từ AI
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'require_login' => true,
+                'reply' => "Vui lòng đăng nhập tài khoản để nhận tư vấn từ Trợ lý AI!",
+                'redirect' => route('login'),
+            ], 401);
+        }
+
         $request->validate([
             'message' => 'required|string|max:1500',
             'history' => 'nullable|array',

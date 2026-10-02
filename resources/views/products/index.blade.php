@@ -608,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 showNotification(data.message || 'Đã thêm sản phẩm vào giỏ hàng thành công!', true);
 
                 if (submitBtn) {
-                    submitBtn.innerHTML = `<i class="fa-solid fa-check me-1"></i> Đã thêm!`;
+                    submitBtn.innerHTML = `Đã thêm!`;
                     setTimeout(() => {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalHtml;

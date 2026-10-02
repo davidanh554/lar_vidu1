@@ -67,27 +67,29 @@
             <!-- Guest: Lời mời đăng nhập để liên hệ Admin -->
             <div class="card-body p-4 text-center d-flex flex-column justify-content-center align-items-center" style="height: 440px; background: rgba(11, 15, 25, 0.6) !important;">
                 <div class="rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" 
-                     style="width: 64px; height: 64px; background: rgba(0, 245, 155, 0.15); border: 1px solid rgba(0, 245, 155, 0.35);">
-                    <i class="fa-solid fa-user-lock fs-3" style="color: #00f59b;"></i>
+                     style="width: 64px; height: 64px; background: rgba(0, 245, 155, 0.15); border: 1.5px solid rgba(0, 245, 155, 0.4); box-shadow: 0 0 25px rgba(0, 245, 155, 0.25);">
+                    <span class="fw-bold" style="color: #00f59b; font-size: 1.2rem; letter-spacing: 0.5px;">CSKH</span>
                 </div>
-                <h6 class="fw-bold text-white mb-2">Đăng nhập để gặp Tư vấn viên</h6>
-                <p class="text-white-50 small mb-4" style="line-height: 1.5; font-size: 0.82rem;">
-                    Vui lòng đăng nhập tài khoản để bộ phận Hỗ trợ khách hàng có thể kiểm tra đơn hàng và lưu lịch sử giải đáp giúp bạn!
+                <h6 class="fw-bold text-white mb-2" style="font-size: 1.05rem;">Đăng nhập để gặp Tư vấn viên</h6>
+                <p class="text-white-50 small mb-4 px-2" style="line-height: 1.6; font-size: 0.84rem;">
+                    Vui lòng đăng nhập tài khoản để bộ phận Hỗ trợ khách hàng có thể kiểm tra đơn hàng và giải đáp chi tiết cho bạn!
                 </p>
                 <div class="d-flex gap-2 w-100 justify-content-center mb-3">
-                    <a href="{{ route('login') }}" class="btn btn-sm rounded-pill px-4 fw-bold" style="background: linear-gradient(135deg, #00f59b 0%, #00d674 100%); color: #022c16; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);">
-                        <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Đăng nhập
+                    <a href="{{ route('login') }}" class="btn btn-sm rounded-pill px-4 fw-bold" 
+                       style="background: linear-gradient(135deg, #00f59b 0%, #00d674 100%); color: #022c16; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 245, 155, 0.35);">
+                        Đăng nhập
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-outline-light btn-sm rounded-pill px-3 opacity-75">
+                    <a href="{{ route('register') }}" class="btn btn-outline-light btn-sm rounded-pill px-4" 
+                       style="border-color: rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.05);">
                         Đăng ký
                     </a>
                 </div>
                 <div class="pt-3 border-top w-100" style="border-color: rgba(255, 255, 255, 0.1) !important;">
-                    <small class="text-white-50 d-block mb-2" style="font-size: 0.75rem;">Cần giải đáp thắc mắc ngay lập tức?</small>
+                    <small class="text-white-50 d-block mb-2" style="font-size: 0.75rem;">Muốn trải nghiệm tư vấn thông minh?</small>
                     <button type="button" class="btn btn-sm rounded-pill px-3 py-1 text-white fw-semibold" 
                             style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(0, 245, 155, 0.4); font-size: 0.82rem;" 
                             onclick="window.switchFromSupportToGemini()">
-                        Chat với Trợ lý AI (24/7)
+                        Khám phá Trợ lý AI (24/7)
                     </button>
                 </div>
             </div>
