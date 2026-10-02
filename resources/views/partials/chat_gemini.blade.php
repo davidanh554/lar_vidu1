@@ -2,27 +2,27 @@
      WIDGET CHATBOT AI (TỰ ĐỘNG TRẢ LỜI 24/7) - DARK TECH EDITION
      ============================================================ -->
 <div id="gemini-chat-widget" style="position: fixed; bottom: 88px; right: 24px; z-index: 9998;">
-    <!-- Nút tròn Chatbot AI Dark Minimalist -->
-    <button id="gemini-chat-toggle" class="btn rounded-circle shadow-lg d-flex align-items-center justify-content-center position-relative gemini-toggle-btn" 
-            style="width: 54px; height: 54px; background: #151a26; border: 1.5px solid rgba(52, 211, 153, 0.4); color: #34d399; font-weight: 800; font-size: 1.15rem; letter-spacing: 0.5px;" 
+    <!-- Nút tròn Chatbot AI Liquid Glass iOS 27 -->
+    <button id="gemini-chat-toggle" class="btn rounded-circle d-flex align-items-center justify-content-center position-relative gemini-toggle-btn" 
+            style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(15, 23, 42, 0.75) 100%) !important; backdrop-filter: blur(28px) saturate(210%) !important; -webkit-backdrop-filter: blur(28px) saturate(210%) !important; border: 1.5px solid rgba(0, 245, 155, 0.5) !important; border-top: 1.5px solid rgba(255, 255, 255, 0.8) !important; color: #00f59b !important; font-weight: 800; font-size: 1.18rem; letter-spacing: 0.5px; box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.45), 0 14px 35px rgba(0, 0, 0, 0.6) !important;" 
             title="Trợ lý AI (Tự động 24/7)">
         AI
     </button>
 
-    <!-- Khung chat popup AI Dark Theme -->
-    <div id="gemini-chat-popup" class="card shadow-lg border-0" 
-         style="display: none; width: 380px; max-width: calc(100vw - 32px); height: 540px; max-height: calc(100vh - 48px); border-radius: 18px; overflow: hidden; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12) !important; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7) !important;">
+    <!-- Khung chat popup AI Liquid Glass iOS 27 -->
+    <div id="gemini-chat-popup" class="card border-0" 
+         style="display: none; width: 380px; max-width: calc(100vw - 32px); height: 540px; max-height: calc(100vh - 48px); border-radius: 20px; overflow: hidden; background: rgba(15, 23, 42, 0.78) !important; backdrop-filter: blur(35px) saturate(210%) contrast(106%) !important; -webkit-backdrop-filter: blur(35px) saturate(210%) contrast(106%) !important; border: 1px solid rgba(255, 255, 255, 0.18) !important; border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), inset 0 -1px 2px rgba(0, 0, 0, 0.35), 0 25px 60px rgba(0, 0, 0, 0.8) !important;">
         
-        <!-- Header: Dark Tech -->
+        <!-- Header: Liquid Glass -->
         <div class="card-header d-flex justify-content-between align-items-center p-3" 
-             style="background: #1e293b; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+             style="background: rgba(30, 41, 59, 0.55) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;">
             <div class="d-flex align-items-center gap-2">
                 <div>
                     <div class="fw-bold text-white small" style="font-size: 0.95rem;">
                         Trợ lý AI
                     </div>
                     <small class="d-flex align-items-center text-white-50" style="font-size: 0.72rem;">
-                        <span class="d-inline-block rounded-circle bg-success me-1" style="width: 7px; height: 7px;"></span> Trực tuyến 24/7
+                        <span class="d-inline-block rounded-circle me-1" style="width: 7px; height: 7px; background: #00f59b; box-shadow: 0 0 8px #00f59b;"></span> Trực tuyến 24/7
                     </small>
                 </div>
             </div>
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <!-- Thanh câu hỏi gợi ý nhanh (Chips) - KHÔNG DÙNG ICON/EMOJI -->
+        <!-- Thanh câu hỏi gợi ý nhanh (Chips) - Liquid Glass Pills -->
         <div class="gemini-chips-container">
             <button type="button" class="gemini-chip" data-prompt="Tư vấn cho tôi iPad dưới 10 triệu đáng mua nhất hiện nay">
                 <span>iPad dưới 10 triệu?</span>
@@ -55,32 +55,32 @@
             </button>
         </div>
 
-        <!-- Khung hiển thị tin nhắn (Dark Mode) -->
-        <div id="gemini-chat-messages" class="card-body p-3 flex-grow-1" style="height: 320px; overflow-y: auto; background: #0b0f19;">
+        <!-- Khung hiển thị tin nhắn (Liquid Glass Background) -->
+        <div id="gemini-chat-messages" class="card-body p-3 flex-grow-1" style="height: 320px; overflow-y: auto; background: rgba(11, 15, 25, 0.6) !important;">
             <!-- Tin nhắn chào mừng mặc định -->
             <div class="d-flex mb-3 align-items-start">
                 <div class="gemini-msg-bubble gemini-bot-bubble">
-                    <p class="mb-2 fw-semibold" style="font-size: 0.86rem; color: #34d399;">Xin chào! Tôi là Trợ lý AI VUA TABLET.</p>
+                    <p class="mb-2 fw-semibold" style="font-size: 0.88rem; color: #00f59b;">Xin chào! Tôi là Trợ lý AI VUA TABLET.</p>
                     <p class="mb-2">Tôi nắm rõ toàn bộ thông tin kho máy tính bảng & chính sách của cửa hàng.</p>
                     <p class="mb-0 small text-white-50">Hãy chọn câu hỏi gợi ý bên trên hoặc nhập nội dung bất kỳ để được tư vấn ngay lập tức nhé!</p>
                 </div>
             </div>
         </div>
 
-        <!-- Footer: Ô nhập câu hỏi (Dark Mode) -->
-        <div class="card-footer p-2 border-top" id="gemini-chat-footer" style="background: #1e293b; border-color: rgba(255, 255, 255, 0.08) !important;">
+        <!-- Footer: Ô nhập câu hỏi (Liquid Glass) -->
+        <div class="card-footer p-2 border-top" id="gemini-chat-footer" style="background: rgba(30, 41, 59, 0.6) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; border-color: rgba(255, 255, 255, 0.1) !important;">
             <div class="input-group">
                 <input type="text" id="gemini-chat-input" class="form-control rounded-pill-start border-end-0 shadow-none" 
-                       style="background: #0b0f19; color: #ffffff; border-color: rgba(255, 255, 255, 0.15); font-size: 0.85rem;" 
+                       style="background: rgba(11, 15, 25, 0.7); color: #ffffff; border-color: rgba(255, 255, 255, 0.18); font-size: 0.85rem;" 
                        placeholder="Hỏi AI về iPad, giá bán, so sánh..." autocomplete="off">
-                <button id="gemini-send-btn" class="btn rounded-pill-end px-3 text-white fw-bold" 
-                        style="background: #059669; border: 1px solid #059669; font-size: 0.85rem;">
+                <button id="gemini-send-btn" class="btn rounded-pill-end px-3 fw-bold" 
+                        style="background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important; color: #022c16 !important; border: 1px solid rgba(255, 255, 255, 0.4) !important; border-top: 1.5px solid rgba(255, 255, 255, 0.7) !important; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6) !important; font-size: 0.85rem;">
                     Gửi
                 </button>
             </div>
             <div class="text-center mt-1">
                 <small class="text-white-50" style="font-size: 0.68rem;">
-                    AI trả lời tự động. Cần người thật? Bấm <a href="javascript:void(0)" onclick="window.switchFromGeminiToSupport()" class="text-success fw-bold text-decoration-none" style="color: #34d399 !important;">Hỗ trợ khách hàng</a>
+                    AI trả lời tự động. Cần người thật? Bấm <a href="javascript:void(0)" onclick="window.switchFromGeminiToSupport()" class="fw-bold text-decoration-none" style="color: #00f59b !important;">Hỗ trợ khách hàng</a>
                 </small>
             </div>
         </div>
@@ -92,16 +92,16 @@
 
 <style>
 .gemini-toggle-btn {
-    transition: all 0.2s ease;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .gemini-toggle-btn:hover {
-    transform: translateY(-2px);
-    background: #1e293b !important;
-    border-color: #34d399 !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-2px) scale(1.05);
+    background: linear-gradient(135deg, rgba(0, 245, 155, 0.25) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+    border-color: #00f59b !important;
+    box-shadow: 0 0 25px rgba(0, 245, 155, 0.85), inset 0 2px 4px rgba(255, 255, 255, 0.6) !important;
 }
 .gemini-chips-container {
-    background: #141c2b;
+    background: rgba(15, 23, 42, 0.45);
     padding: 10px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
@@ -119,22 +119,27 @@
     align-items: center;
     justify-content: center;
     height: 32px;
-    padding: 0 12px;
+    padding: 0 13px;
     font-size: 0.78rem;
-    font-weight: 500;
-    color: #cbd5e1;
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-weight: 600;
+    color: #f1f5f9;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
     border-radius: 9999px;
     cursor: pointer;
     flex-shrink: 0;
     line-height: 1;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .gemini-chip:hover {
-    background: #334155;
-    color: #34d399;
-    border-color: rgba(52, 211, 153, 0.5);
+    background: rgba(0, 245, 155, 0.18);
+    color: #00f59b;
+    border-color: #00f59b;
+    box-shadow: 0 0 16px rgba(0, 245, 155, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     transform: translateY(-1px);
 }
 .gemini-msg-bubble {
@@ -146,18 +151,24 @@
     word-break: break-word;
 }
 .gemini-user-bubble {
-    background: #059669;
-    color: #ffffff;
+    background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important;
+    color: #022c16 !important;
+    font-weight: 700 !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.35) !important;
     margin-left: auto;
     border-bottom-right-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 .gemini-bot-bubble {
-    background: #1e293b;
-    color: #e2e8f0;
+    background: rgba(30, 41, 59, 0.65) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    color: #f1f5f9;
     border-bottom-left-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 4px 15px rgba(0, 0, 0, 0.25) !important;
 }
 .gemini-bot-bubble p:last-child {
     margin-bottom: 0;
@@ -167,28 +178,31 @@
     padding-left: 1.2rem;
 }
 .gemini-bot-bubble a {
-    color: #34d399;
-    font-weight: 600;
+    color: #00f59b;
+    font-weight: 700;
     text-decoration: underline;
 }
 .gemini-bot-bubble a:hover {
-    color: #6ee7b7;
+    color: #26ffb2;
 }
 .gemini-typing {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     padding: 8px 12px;
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(30, 41, 59, 0.65);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.35);
     border-radius: 14px;
     font-size: 0.8rem;
-    color: #94a3b8;
+    color: #cbd5e1;
 }
 .gemini-typing-dot {
     width: 6px;
     height: 6px;
-    background: #34d399;
+    background: #00f59b;
+    box-shadow: 0 0 6px #00f59b;
     border-radius: 50%;
     animation: geminiTyping 1.4s infinite ease-in-out both;
 }
@@ -285,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
             chatBox.innerHTML = `
                 <div class="d-flex mb-3 align-items-start">
                     <div class="gemini-msg-bubble gemini-bot-bubble">
-                        <p class="mb-2 fw-semibold" style="font-size: 0.86rem; color: #34d399;">Đã làm mới cuộc hội thoại!</p>
+                        <p class="mb-2 fw-semibold" style="font-size: 0.88rem; color: #00f59b;">Đã làm mới cuộc hội thoại!</p>
                         <p class="mb-0 small text-white-50">Bạn có thắc mắc gì về các dòng máy iPad hoặc chính sách của VUA TABLET? Hãy nhắn tin để em tư vấn nhé!</p>
                     </div>
                 </div>

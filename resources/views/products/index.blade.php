@@ -182,14 +182,14 @@
                         <li>
                             <button type="button" class="dropdown-item rounded-3 py-2 px-3 d-flex align-items-center justify-content-between js-brand-item {{ !request('brand_id') ? 'active' : '' }}" data-brand-id="" data-brand-name="-- Tất cả thương hiệu --">
                                 <span>-- Tất cả thương hiệu --</span>
-                                <i class="fa-solid fa-check small text-emerald check-icon {{ !request('brand_id') ? '' : 'd-none' }}" style="color: #34d399;"></i>
+                                <i class="fa-solid fa-check small check-icon {{ !request('brand_id') ? '' : 'd-none' }}" style="color: #00f59b;"></i>
                             </button>
                         </li>
                         @foreach($brands as $brand)
                             <li>
                                 <button type="button" class="dropdown-item rounded-3 py-2 px-3 d-flex align-items-center justify-content-between js-brand-item {{ request('brand_id') == $brand->id ? 'active' : '' }}" data-brand-id="{{ $brand->id }}" data-brand-name="{{ $brand->name }}">
                                     <span>{{ $brand->name }}</span>
-                                    <i class="fa-solid fa-check small text-emerald check-icon {{ request('brand_id') == $brand->id ? '' : 'd-none' }}" style="color: #34d399;"></i>
+                                    <i class="fa-solid fa-check small check-icon {{ request('brand_id') == $brand->id ? '' : 'd-none' }}" style="color: #00f59b;"></i>
                                 </button>
                             </li>
                         @endforeach

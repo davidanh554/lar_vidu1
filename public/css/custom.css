@@ -9,41 +9,43 @@
 :root {
     --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     
-    /* Neon Emerald & Concert Green Palette */
-    --emerald-laser: #00ff87;
-    --emerald-primary: #10b981;
-    --emerald-dark: #059669;
-    --emerald-deep: #064e3b;
+    /* Neon Emerald & Concert Green Palette - iOS 27 Luminous Tech */
+    --emerald-laser: #00ffaa;
+    --emerald-primary: #00f59b;
+    --emerald-bright: #26ffb2;
+    --emerald-vibrant: #00d674;
+    --emerald-dark: #00b862;
+    --emerald-deep: #022c16;
     --emerald-cyan: #34d399;
     --gold-star: #fbbf24;
     
     /* Gradients */
-    --gradient-emerald-laser: linear-gradient(135deg, #059669 0%, #10b981 50%, #00ff87 100%);
-    --gradient-emerald-hover: linear-gradient(135deg, #047857 0%, #059669 50%, #34d399 100%);
-    --gradient-emerald-text: linear-gradient(135deg, #00ff87 0%, #34d399 60%, #a7f3d0 100%);
+    --gradient-emerald-laser: linear-gradient(135deg, #00f59b 0%, #00d674 50%, #05b865 100%);
+    --gradient-emerald-hover: linear-gradient(135deg, #26ffb2 0%, #00f59b 100%);
+    --gradient-emerald-text: linear-gradient(135deg, #00ffaa 0%, #34d399 60%, #a7f3d0 100%);
     --primary-gradient: var(--gradient-emerald-laser);
     --primary-gradient-hover: var(--gradient-emerald-hover);
     
-    /* Liquid Glass & Concert Stage */
-    --surface-bg: #11141c;
-    --surface-darker: #0d0f17;
-    --glass-bg: rgba(18, 26, 25, 0.65);
-    --glass-bg-hover: rgba(24, 36, 34, 0.78);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --glass-border-top: rgba(255, 255, 255, 0.32);
-    --glass-border-hover: rgba(0, 255, 135, 0.55);
-    --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.35);
-    --glass-blur: blur(26px) saturate(190%) contrast(105%);
+    /* iOS 27 Liquid Glass System */
+    --surface-bg: #0d121f;
+    --surface-darker: #080c15;
+    --glass-bg: rgba(15, 23, 42, 0.68);
+    --glass-bg-hover: rgba(22, 34, 56, 0.78);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --glass-border-top: rgba(255, 255, 255, 0.45);
+    --glass-border-hover: rgba(0, 245, 155, 0.65);
+    --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.38), inset 0 -1px 2px 0 rgba(0, 0, 0, 0.35);
+    --glass-blur: blur(32px) saturate(210%) contrast(106%);
 
     --card-bg: var(--glass-bg);
     --card-hover-bg: var(--glass-bg-hover);
     --card-border: var(--glass-border);
     --card-border-hover: var(--glass-border-hover);
     
-    /* Clean Modern Shadows (No Neon Green Blur) */
+    /* Liquid Glass Shadows */
     --glow-laser: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --glow-card-hover: 0 16px 36px -5px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
-    --shadow-card: var(--glass-specular), 0 12px 30px -8px rgba(0, 0, 0, 0.6);
+    --glow-card-hover: 0 20px 45px -5px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.2);
+    --shadow-card: var(--glass-specular), 0 20px 45px -10px rgba(0, 0, 0, 0.75);
     
     /* Squircles */
     --radius-card: 22px;
@@ -178,41 +180,46 @@ body {
     transform: translateY(-50%) scale(1.12);
 }
 
-/* Custom Brand Dropdown & Select */
+/* Custom Brand Dropdown & Select - iOS 27 Liquid Glass */
 .filter-dropdown-toggle {
-    background-color: rgba(255, 255, 255, 0.07) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
     color: #ffffff !important;
     border-radius: 9999px !important;
     padding: 0.65rem 1.25rem !important;
     font-size: 0.92rem !important;
     font-weight: 500 !important;
-    transition: all 0.2s ease !important;
-    box-shadow: none !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .filter-dropdown-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
     color: #ffffff !important;
 }
 
 .filter-dropdown-toggle:focus,
 .filter-dropdown-toggle.show {
-    background-color: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(16, 185, 129, 0.6) !important;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: #00f59b !important;
+    box-shadow: 0 0 0 3px rgba(0, 245, 155, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
     color: #ffffff !important;
     outline: none !important;
 }
 
 .custom-dropdown-menu {
-    background: #1e293b !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    background: rgba(15, 23, 42, 0.82) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 18px !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 20px 45px rgba(0, 0, 0, 0.75) !important;
     margin-top: 6px !important;
-    backdrop-filter: blur(16px) !important;
+    backdrop-filter: blur(32px) saturate(210%) !important;
+    -webkit-backdrop-filter: blur(32px) saturate(210%) !important;
     max-height: 280px;
     overflow-y: auto;
     z-index: 1050;
@@ -222,21 +229,21 @@ body {
     color: #cbd5e1 !important;
     font-size: 0.88rem !important;
     font-weight: 500 !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     transition: all 0.15s ease !important;
     background: transparent !important;
     cursor: pointer;
 }
 
 .custom-dropdown-menu .dropdown-item:hover {
-    background: #334155 !important;
-    color: #34d399 !important;
+    background: rgba(0, 245, 155, 0.15) !important;
+    color: #00f59b !important;
 }
 
 .custom-dropdown-menu .dropdown-item.active {
-    background: rgba(16, 185, 129, 0.18) !important;
-    color: #34d399 !important;
-    font-weight: 600 !important;
+    background: rgba(0, 245, 155, 0.22) !important;
+    color: #00f59b !important;
+    font-weight: 700 !important;
 }
 
 /* Filter Action Buttons & Count Badge */
@@ -562,14 +569,17 @@ main {
 }
 
 .billboard-btn {
-    background: #059669 !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #00f59b 0%, #00d674 50%, #05b865 100%) !important;
+    color: #022c16 !important;
     font-size: 0.9rem !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     letter-spacing: 0.3px;
-    border: none !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.2s ease !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -577,10 +587,11 @@ main {
 }
 
 .billboard-btn:hover {
-    background: #10b981 !important;
-    color: #ffffff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.65), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    background: linear-gradient(135deg, #26ffb2 0%, #00f59b 100%) !important;
+    color: #011d0e !important;
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 0 28px rgba(0, 245, 155, 0.95), 0 0 50px rgba(0, 214, 116, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.85) !important;
 }
 
 /* Billboard Arrow Nav Buttons */
@@ -662,7 +673,7 @@ main {
 }
 
 /* ============================================================
-   EMERALD CAPSULE FILTER CHIPS
+   EMERALD CAPSULE FILTER CHIPS - IOS 27 LIQUID GLASS
    ============================================================ */
 .chip-pill {
     display: inline-flex;
@@ -671,28 +682,31 @@ main {
     border-radius: var(--radius-pill);
     font-size: 0.88rem;
     font-weight: 600;
-    color: #cbd5e1;
-    background: rgba(18, 25, 24, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(12px);
+    color: #f1f5f9;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.45);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     text-decoration: none;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .chip-pill:hover {
-    color: var(--emerald-laser);
-    border-color: rgba(0, 255, 135, 0.6);
-    background: rgba(22, 34, 30, 0.95);
-    box-shadow: 0 0 20px rgba(0, 255, 135, 0.35);
+    color: #00f59b;
+    border-color: #00f59b;
+    background: rgba(0, 245, 155, 0.16);
+    box-shadow: 0 0 20px rgba(0, 245, 155, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
 }
 
 .chip-pill.active {
-    background: var(--gradient-emerald-laser) !important;
+    background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important;
     color: #022c16 !important;
-    border-color: transparent !important;
-    box-shadow: 0 4px 22px rgba(0, 255, 135, 0.5), 0 0 15px rgba(16, 185, 129, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.75) !important;
+    box-shadow: 0 0 24px rgba(0, 245, 155, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
     font-weight: 800;
 }
 
@@ -815,16 +829,22 @@ main {
 /* ============================================================
    CLEAN BUTTONS (SHARP AT IDLE, GLOW ON HOVER)
    ============================================================ */
+/* ============================================================
+   LIQUID GLASS BUTTONS - IOS 27 SPEC (BRIGHT EMERALD)
+   ============================================================ */
 .btn-primary,
 .btn-modern-primary {
-    background: #059669 !important;
-    border: 1px solid rgba(16, 185, 129, 0.3) !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #00f59b 0%, #00d674 50%, #05b865 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+    color: #022c16 !important;
+    font-weight: 800 !important;
     border-radius: var(--radius-pill);
-    font-weight: 700;
     padding: 0.6rem 1.4rem;
-    box-shadow: none !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), inset 0 -2px 3px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -834,17 +854,18 @@ main {
 
 .btn-primary:hover,
 .btn-modern-primary:hover {
-    background: #10b981 !important;
-    border-color: #34d399 !important;
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.8), 0 0 35px rgba(52, 211, 153, 0.45) !important;
-    transform: translateY(-2px);
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #26ffb2 0%, #00f59b 100%) !important;
+    border-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 0 28px rgba(0, 245, 155, 0.95), 0 0 50px rgba(0, 214, 116, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.85) !important;
+    transform: translateY(-2px) scale(1.02);
+    color: #011d0e !important;
 }
 
 .btn-modern-outline {
-    background: rgba(255, 255, 255, 0.06) !important;
-    color: #e2e8f0 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #f8fafc !important;
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.5) !important;
     border-radius: var(--radius-pill) !important;
     font-weight: 600 !important;
     padding: 0.5rem 1.25rem !important;
@@ -852,22 +873,25 @@ main {
     align-items: center !important;
     gap: 0.35rem !important;
     text-decoration: none !important;
-    box-shadow: none !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .btn-modern-outline:hover {
-    background: rgba(16, 185, 129, 0.15) !important;
-    border-color: #34d399 !important;
-    color: #34d399 !important;
-    box-shadow: 0 0 18px rgba(52, 211, 153, 0.7) !important;
+    background: rgba(0, 245, 155, 0.18) !important;
+    border-color: #00f59b !important;
+    color: #00f59b !important;
+    box-shadow: 0 0 22px rgba(0, 245, 155, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
     transform: translateY(-2px) !important;
 }
 
 .btn-emerald-glow {
-    background: rgba(16, 185, 129, 0.12) !important;
-    color: #34d399 !important;
-    border: 1px solid rgba(16, 185, 129, 0.35) !important;
+    background: linear-gradient(135deg, rgba(0, 245, 155, 0.18) 0%, rgba(16, 185, 129, 0.12) 100%) !important;
+    color: #00f59b !important;
+    border: 1px solid rgba(0, 245, 155, 0.45) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important;
     border-radius: var(--radius-pill) !important;
     font-weight: 700 !important;
     padding: 0.5rem 1.25rem !important;
@@ -875,16 +899,18 @@ main {
     align-items: center !important;
     gap: 0.35rem !important;
     text-decoration: none !important;
-    box-shadow: none !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .btn-emerald-glow:hover {
-    background: #059669 !important;
-    border-color: #10b981 !important;
-    color: #ffffff !important;
-    box-shadow: 0 0 22px rgba(16, 185, 129, 0.85), 0 0 35px rgba(52, 211, 153, 0.45) !important;
-    transform: translateY(-2px) !important;
+    background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important;
+    border-color: rgba(255, 255, 255, 0.9) !important;
+    color: #022c16 !important;
+    box-shadow: 0 0 28px rgba(0, 245, 155, 0.95), 0 0 50px rgba(0, 214, 116, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.85) !important;
+    transform: translateY(-2px) scale(1.02) !important;
 }
 
 /* ============================================================

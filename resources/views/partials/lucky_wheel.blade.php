@@ -573,18 +573,22 @@
     color: #cbd5e1;
 }
 .btn-emerald-glow {
-    background: linear-gradient(135deg, #059669 0%, #10b981 50%, #00ff87 100%);
-    color: #064e3b;
+    background: linear-gradient(135deg, rgba(0, 245, 155, 0.18) 0%, rgba(16, 185, 129, 0.12) 100%) !important;
+    color: #00f59b !important;
     font-weight: 700;
-    border: none;
-    box-shadow: none !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(0, 245, 155, 0.45) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-emerald-glow:hover {
-    background: linear-gradient(135deg, #047857 0%, #059669 50%, #34d399 100%);
-    color: #ffffff;
-    box-shadow: 0 0 20px rgba(0, 255, 135, 0.8), 0 0 35px rgba(52, 211, 153, 0.45) !important;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important;
+    border-color: rgba(255, 255, 255, 0.9) !important;
+    color: #022c16 !important;
+    box-shadow: 0 0 28px rgba(0, 245, 155, 0.95), 0 0 50px rgba(0, 214, 116, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.85) !important;
+    transform: translateY(-2px) scale(1.02);
 }
 
 @media (max-width: 768px) {
