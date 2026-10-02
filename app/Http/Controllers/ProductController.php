@@ -97,7 +97,11 @@ class ProductController extends Controller
             ]);
         }
 
-        return view('products.index', compact('products', 'categories', 'brands', 'bannerIpad', 'bannerGalaxy', 'bannerXiaomi'));
+        return response()
+            ->view('products.index', compact('products', 'categories', 'brands', 'bannerIpad', 'bannerGalaxy', 'bannerXiaomi'))
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function show($product)

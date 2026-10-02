@@ -86,6 +86,7 @@ body {
    ============================================================ */
 .filter-card-container {
     transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    overflow: visible !important;
 }
 
 .filter-card-container.is-filtering {
@@ -212,17 +213,17 @@ body {
 }
 
 .custom-dropdown-menu {
-    background: rgba(15, 23, 42, 0.82) !important;
-    border: 1px solid rgba(255, 255, 255, 0.16) !important;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+    background: rgba(15, 23, 42, 0.94) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.6) !important;
     border-radius: 18px !important;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 20px 45px rgba(0, 0, 0, 0.75) !important;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35), 0 25px 60px rgba(0, 0, 0, 0.9) !important;
     margin-top: 6px !important;
-    backdrop-filter: blur(32px) saturate(210%) !important;
-    -webkit-backdrop-filter: blur(32px) saturate(210%) !important;
-    max-height: 280px;
+    backdrop-filter: blur(36px) saturate(210%) !important;
+    -webkit-backdrop-filter: blur(36px) saturate(210%) !important;
+    max-height: 380px;
     overflow-y: auto;
-    z-index: 1050;
+    z-index: 1080 !important;
 }
 
 .custom-dropdown-menu .dropdown-item {

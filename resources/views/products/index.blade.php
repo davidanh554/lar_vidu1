@@ -147,7 +147,7 @@
     </div>
 
     <!-- Filter & Search Bar with Laser Scanning Effect -->
-    <div class="card card-modern p-4 mb-4 filter-card-container position-relative overflow-hidden" id="products-section">
+    <div class="card card-modern p-4 mb-4 filter-card-container position-relative overflow-visible" id="products-section">
         <!-- High-tech Scanning Laser Beam -->
         <div id="filter-scan-line" class="filter-scan-line"></div>
 
@@ -489,6 +489,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             updateFilterUI();
+
+            // Đóng menu dropdown sau khi chọn để không che khuất danh mục
+            const dropdownBtn = document.getElementById('brandDropdownBtn');
+            if (dropdownBtn && typeof bootstrap !== 'undefined') {
+                const bsDropdown = bootstrap.Dropdown.getOrCreateInstance(dropdownBtn);
+                if (bsDropdown) {
+                    bsDropdown.hide();
+                }
+            }
+
             const url = buildFilterUrl();
             fetchProducts(url, true, false);
         });
