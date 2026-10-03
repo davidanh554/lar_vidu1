@@ -62,6 +62,16 @@ class ProductController extends Controller
             })->where(function($q) use ($appleBrand) {
                 $q->whereNull('brand_id')->orWhere('brand_id', '!=', $appleBrand->id);
             })->update(['brand_id' => $appleBrand->id]);
+
+            $ipadCat = Category::where('slug', 'ipad')->first();
+            if ($ipadCat) {
+                Product::where('name', 'LIKE', '%iPad%')
+                    ->where('category_id', '!=', $ipadCat->id)
+                    ->whereHas('category', function($q) {
+                        $q->where('slug', 'like', '%samsung%')->orWhere('slug', 'like', '%xiaomi%')->orWhere('slug', 'like', '%lenovo%');
+                    })
+                    ->update(['category_id' => $ipadCat->id]);
+            }
         }
 
         $query = Product::with(['category', 'brand']);
@@ -76,15 +86,59 @@ class ProductController extends Controller
 
         if ($request->filled('search')) {
             $search = trim($request->search);
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('chip', 'LIKE', "%{$search}%")
-                  ->orWhere('ram', 'LIKE', "%{$search}%")
-                  ->orWhere('description', 'LIKE', "%{$search}%");
+            $words = array_values(array_filter(explode(' ', $search), fn($w) => mb_strlen(trim($w)) > 0));
+
+            $query->where(function($q) use ($search, $words) {
+                // 1. Tên sản phẩm khớp trọn vẹn cụm từ
+                $q->where('name', 'LIKE', "%{$search}%");
+
+                // 2. Tên sản phẩm chứa tất cả các từ khóa rời rạc (ví dụ: 'bút apple', 'ipad 128gb')
+                if (count($words) > 1) {
+                    $q->orWhere(function($subQ) use ($words) {
+                        foreach ($words as $w) {
+                            $subQ->where('name', 'LIKE', "%{$w}%");
+                        }
+                    });
+                }
+
+                // 3. Khớp theo Hãng sản xuất (Brand: Apple, Samsung, Xiaomi, Lenovo, Huawei)
+                $q->orWhereHas('brand', function($bQ) use ($search) {
+                    $bQ->where('name', 'LIKE', "%{$search}%");
+                });
+
+                // 4. Khớp theo Danh mục (Category: iPad, Phụ Kiện, Galaxy Tab...)
+                $q->orWhereHas('category', function($cQ) use ($search) {
+                    $cQ->where('name', 'LIKE', "%{$search}%");
+                });
+
+                // 5. Khớp thông số cấu hình (Chỉ khi từ khóa tìm kiếm là thông số như 128gb, 256gb, M2, Snapdragon...)
+                if (preg_match('/(gb|tb|snapdragon|m[1-4]|dimensity|helio|bionic|[0-9]+)/i', $search)) {
+                    $q->orWhere('chip', 'LIKE', "%{$search}%")
+                      ->orWhere('storage', 'LIKE', "%{$search}%")
+                      ->orWhere('ram', 'LIKE', "%{$search}%");
+                }
             });
+
+            // Ưu tiên kết quả chính xác nhất lên đầu danh sách:
+            // 1. Tên bắt đầu bằng từ khóa tìm kiếm
+            // 2. Tên chứa từ khóa tìm kiếm
+            // 3. Khớp thông số/hãng/danh mục
+            $query->orderByRaw("
+                CASE 
+                    WHEN name LIKE ? THEN 1
+                    WHEN name LIKE ? THEN 2
+                    ELSE 3
+                END ASC
+            ", ["{$search}%", "%{$search}%"]);
         }
 
-        $products = $query->latest()->paginate(12)->withQueryString();
+        if (!$request->filled('search')) {
+            $query->latest();
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $products = $query->paginate(12)->withQueryString();
         $categories = Category::all();
 
         // Lấy sản phẩm thực tế gán cho các Banner quảng cáo lớn
