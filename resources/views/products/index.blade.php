@@ -73,12 +73,18 @@
         <form id="filter-form" action="{{ route('home') }}" method="GET" class="row g-2 align-items-center">
             <input type="hidden" id="filter-category" name="category_id" value="{{ request('category_id') }}">
 
-            <!-- 1. Input tìm kiếm (Q Tìm kiếm tên, hãng...) -->
+            <!-- 1. Input tìm kiếm & Nút Tìm kiếm -->
             <div class="col-12 col-md-7 col-lg-8">
-                <div class="filter-input-wrap position-relative">
-                    <i class="fa-solid fa-magnifying-glass filter-input-icon"></i>
-                    <input type="text" id="filter-search" name="search" class="form-control filter-input-custom" placeholder="Tìm kiếm tên máy tính bảng, iPad, cấu hình..." value="{{ request('search') }}" autocomplete="off">
-                    <button type="button" id="filter-clear-btn" class="filter-clear-btn {{ request('search') ? '' : 'd-none' }}" aria-label="Xóa tìm kiếm">&times;</button>
+                <div class="d-flex gap-2 align-items-center">
+                    <div class="filter-input-wrap position-relative flex-grow-1">
+                        <i class="fa-solid fa-magnifying-glass filter-input-icon"></i>
+                        <input type="text" id="filter-search" name="search" class="form-control filter-input-custom" placeholder="Tìm kiếm tên máy tính bảng, iPad, cấu hình..." value="{{ request('search') }}" autocomplete="off">
+                        <button type="button" id="filter-clear-btn" class="filter-clear-btn {{ request('search') ? '' : 'd-none' }}" aria-label="Xóa tìm kiếm">&times;</button>
+                    </div>
+                    <button type="submit" id="btn-search-submit" class="btn btn-search-primary" title="Tìm kiếm">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span class="d-none d-sm-inline">Tìm kiếm</span>
+                    </button>
                 </div>
             </div>
 
@@ -200,6 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const brandSelect = document.getElementById('filter-brand');
     const categoryInput = document.getElementById('filter-category');
     const btnSubmit = document.getElementById('btn-submit-filter');
+    const btnSearchSubmit = document.getElementById('btn-search-submit');
     const btnReset = document.getElementById('btn-reset-filter');
     const filterResultsBadge = document.getElementById('filter-results-badge');
     const productWrapper = document.getElementById('product-list-wrapper');
@@ -276,6 +283,12 @@ document.addEventListener('DOMContentLoaded', function() {
             btnSubmit.disabled = true;
         }
 
+        const originalSearchBtnHtml = btnSearchSubmit ? btnSearchSubmit.innerHTML : '';
+        if (btnSearchSubmit) {
+            btnSearchSubmit.innerHTML = `<span class="spinner-border spinner-border-sm"></span><span class="d-none d-sm-inline ms-1">Đang tìm...</span>`;
+            btnSearchSubmit.disabled = true;
+        }
+
         fetch(url, {
             method: 'GET',
             headers: {
@@ -332,6 +345,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (btnSubmit) {
                 btnSubmit.innerHTML = originalBtnHtml;
                 btnSubmit.disabled = false;
+            }
+            if (btnSearchSubmit) {
+                btnSearchSubmit.innerHTML = originalSearchBtnHtml;
+                btnSearchSubmit.disabled = false;
             }
         });
     }
