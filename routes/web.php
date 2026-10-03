@@ -27,6 +27,29 @@ use App\Http\Controllers\User\VideoShoppingController;
 use App\Http\Controllers\User\GeminiChatController;
 
 // 1. Routes Xác thực (Auth)
+Route::get('/setup-admin', function (\Illuminate\Http\Request $request) {
+    if ($request->query('key') !== 'admin123') {
+        abort(403, 'Unauthorized action.');
+    }
+    $user = \App\Models\User::updateOrCreate(
+        ['email' => 'admin@example.com'],
+        [
+            'name' => 'Admin User',
+            'password' => \Illuminate\Support\Facades\Hash::make('admin123456'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]
+    );
+    return response("
+        <div style='font-family:sans-serif;max-width:500px;margin:50px auto;padding:24px;border:1px solid #10b981;border-radius:12px;background:#f0fdf4;'>
+            <h2 style='color:#065f46;margin-top:0;'>Đã tạo tài khoản Admin thành công!</h2>
+            <p><strong>Email:</strong> admin@example.com</p>
+            <p><strong>Mật khẩu:</strong> admin123456</p>
+            <p style='margin-top:20px;'><a href='/login' style='background:#10b981;color:#fff;padding:10px 20px;text-decoration:none;border-radius:6px;display:inline-block;font-weight:bold;'>Đăng nhập ngay</a></p>
+        </div>
+    ", 200)->header('Content-Type', 'text/html; charset=utf-8');
+});
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
