@@ -130,4 +130,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return max(0, (int)$diff);
     }
+
+    /**
+     * Lịch sử tin nhắn Chatbot AI của người dùng
+     */
+    public function aiChatMessages()
+    {
+        return $this->hasMany(\App\Models\AiChatMessage::class);
+    }
 }

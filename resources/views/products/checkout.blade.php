@@ -144,10 +144,10 @@
                     <hr class="my-3 border-secondary border-opacity-25">
 
                     <!-- Khung Mã Giảm Giá / Voucher từ Vòng Quay May Mắn -->
-                    <div class="mb-3 p-3 rounded-3" style="background: rgba(0, 255, 135, 0.05); border: 1px solid rgba(0, 255, 135, 0.25);">
+                    <div class="mb-3 p-3 rounded-3" style="background: rgba(79, 70, 229, 0.04); border: 1px solid rgba(79, 70, 229, 0.18);">
                         <label class="form-label fw-bold small text-dark d-flex align-items-center justify-content-between mb-2">
-                            <span><i class="fa-solid fa-ticket text-success me-1"></i> Mã giảm giá / Voucher</span>
-                            <span class="badge bg-success-subtle text-success small">Tối ưu chi phí</span>
+                            <span><i class="fa-solid fa-ticket text-primary me-1"></i> Mã giảm giá / Voucher</span>
+                            <span class="badge rounded-pill" style="background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; font-size: 0.72rem;">Tối ưu chi phí</span>
                         </label>
 
                         <div class="input-group mb-2">
@@ -163,7 +163,7 @@
                                 <small class="text-muted d-block mb-1"><i class="fa-solid fa-gift text-warning me-1"></i> Voucher từ Vòng Quay của bạn:</small>
                                 <div class="d-flex flex-wrap gap-1">
                                     @foreach($userCoupons as $uc)
-                                        <button type="button" class="btn btn-sm btn-outline-success py-0 px-2 rounded-pill font-monospace btn-quick-coupon" style="font-size: 0.75rem;" data-code="{{ $uc->coupon->code }}" title="{{ $uc->coupon->title }}">
+                                        <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 rounded-pill font-monospace btn-quick-coupon" style="font-size: 0.75rem;" data-code="{{ $uc->coupon->code }}" title="{{ $uc->coupon->title }}">
                                             {{ $uc->coupon->code }}
                                         </button>
                                     @endforeach

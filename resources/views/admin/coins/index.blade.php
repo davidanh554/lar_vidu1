@@ -4,17 +4,17 @@
 <div class="container-fluid px-0">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
-            <h3 class="fw-bold mb-1"><i class="fa-solid fa-coins text-warning me-2"></i>Quản Lý Xu & Hạn Mức Tích Xu</h3>
+            <h3 class="fw-bold mb-1">Quản Lý Xu & Hạn Mức Tích Xu</h3>
             <p class="text-muted small mb-0">Quản lý cơ chế tích xu xem video, tỷ lệ đổi tiền mặt (1 Xu = 500₫) và kiểm soát hạn mức nhận mỗi ngày</p>
         </div>
         <a href="{{ route('videos.index') }}" target="_blank" class="btn btn-outline-dark rounded-pill px-3 shadow-sm">
-            <i class="fa-solid fa-play me-1 text-danger"></i> Kiểm tra Giao diện Video
+            Kiểm tra Giao diện Video
         </a>
     </div>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm mb-4" role="alert">
-            <i class="fa-solid fa-circle-check me-2"></i>{{ session('success') }}
+            {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
@@ -23,54 +23,26 @@
     <div class="row g-3 mb-4">
         <div class="col-md-3">
             <div class="card shadow-sm border-0 rounded-4 p-3 bg-white">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 1.5rem;">
-                        <i class="fa-solid fa-coins"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small fw-semibold">TỔNG XU ĐANG CÓ</div>
-                        <div class="fs-4 fw-bold text-dark">{{ number_format($totalCoinsInCirculation) }} Xu</div>
-                    </div>
-                </div>
+                <div class="text-muted small fw-semibold">TỔNG XU ĐANG CÓ</div>
+                <div class="fs-4 fw-bold text-dark mt-1">{{ number_format($totalCoinsInCirculation) }} Xu</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card shadow-sm border-0 rounded-4 p-3 bg-white">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 1.3rem;">
-                        <i class="fa-solid fa-money-bill-wave"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small fw-semibold">QUY ĐỔI TIỀN MẶT</div>
-                        <div class="fs-4 fw-bold text-success">{{ number_format($totalMoneyValue) }}₫</div>
-                    </div>
-                </div>
+                <div class="text-muted small fw-semibold">QUY ĐỔI TIỀN MẶT</div>
+                <div class="fs-4 fw-bold text-success mt-1">{{ number_format($totalMoneyValue) }}₫</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card shadow-sm border-0 rounded-4 p-3 bg-white">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle bg-info bg-opacity-25 text-info d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 1.3rem;">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small fw-semibold">USER ĐANG TÍCH XU</div>
-                        <div class="fs-4 fw-bold text-info">{{ number_format($usersWithCoinsCount) }} người</div>
-                    </div>
-                </div>
+                <div class="text-muted small fw-semibold">USER ĐANG TÍCH XU</div>
+                <div class="fs-4 fw-bold text-info mt-1">{{ number_format($usersWithCoinsCount) }} người</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card shadow-sm border-0 rounded-4 p-3 bg-white">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; font-size: 1.3rem;">
-                        <i class="fa-solid fa-fire"></i>
-                    </div>
-                    <div>
-                        <div class="text-muted small fw-semibold">XU ĐÃ PHÁT HÔM NAY</div>
-                        <div class="fs-4 fw-bold text-primary">{{ number_format($coinsEarnedToday) }} Xu</div>
-                    </div>
-                </div>
+                <div class="text-muted small fw-semibold">XU ĐÃ PHÁT HÔM NAY</div>
+                <div class="fs-4 fw-bold text-primary mt-1">{{ number_format($coinsEarnedToday) }} Xu</div>
             </div>
         </div>
     </div>
@@ -78,7 +50,7 @@
     <!-- 2. Form Cấu Hình Hạn Mức Xu Toàn Hệ Thống -->
     <div class="card shadow-sm border-0 rounded-4 mb-4">
         <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
-            <h5 class="fw-bold mb-1"><i class="fa-solid fa-sliders text-primary me-2"></i>Cấu Hình Hạn Mức Thưởng & Tỷ Lệ Đổi Tiền Toàn Hệ Thống</h5>
+            <h5 class="fw-bold mb-1">Cấu Hình Hạn Mức Thưởng & Tỷ Lệ Đổi Tiền Toàn Hệ Thống</h5>
             <p class="text-muted small mb-0">Admin có toàn quyền thiết lập giới hạn nhận xu mỗi ngày và cơ chế vòng đếm thời gian</p>
         </div>
         <div class="card-body p-4">
@@ -129,7 +101,7 @@
                 <div class="form-check mt-3">
                     <input class="form-check-input" type="checkbox" name="sync_all_users" id="sync_all_users" value="1">
                     <label class="form-check-label fw-semibold text-danger" for="sync_all_users">
-                        <i class="fa-solid fa-arrows-rotate me-1"></i> Đồng bộ hạn mức ngày mới này cho toàn bộ khách hàng hiện tại ngay lập tức
+                        Đồng bộ hạn mức ngày mới này cho toàn bộ khách hàng hiện tại ngay lập tức
                     </label>
                 </div>
 

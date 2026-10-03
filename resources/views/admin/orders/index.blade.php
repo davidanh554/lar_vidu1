@@ -8,7 +8,7 @@
             <span class="text-muted small">Quản lý và cập nhật tiến trình xử lý đơn hàng</span>
         </div>
         <a href="{{ route('admin.reports.index') }}" class="btn btn-outline-primary btn-sm">
-            <i class="fa-solid fa-chart-line me-1"></i> Báo cáo doanh thu
+            Báo cáo doanh thu
         </a>
     </div>
 

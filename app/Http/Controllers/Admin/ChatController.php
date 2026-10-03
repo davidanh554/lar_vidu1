@@ -11,33 +11,68 @@ use Illuminate\Support\Facades\Auth;
 class ChatController extends Controller
 {
     /**
-     * Lấy danh sách những User đã từng nhắn tin với Admin
+     * Lấy danh sách những User, kèm tin nhắn gần nhất và số tin chưa đọc
+     * Sắp xếp người mới nhắn tin lên đầu tiên
      */
     public function getUsers()
     {
         $adminId = Auth::id();
 
-        // Lấy tất cả user (ngoại trừ chính admin đang đăng nhập)
-        // Ưu tiên người đã từng nhắn tin lên trước
-        $interactedIds = Message::where('receiver_id', $adminId)
-            ->orWhere('sender_id', $adminId)
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function($msg) use ($adminId) {
-                return $msg->sender_id == $adminId ? $msg->receiver_id : $msg->sender_id;
-            })
-            ->unique()
-            ->values()
-            ->toArray();
-
+        // 1. Lấy tất cả user khác admin
         $users = User::where('id', '!=', $adminId)
             ->select('id', 'name', 'email')
             ->get();
 
-        return $users->sortBy(function($u) use ($interactedIds) {
-            $index = array_search($u->id, $interactedIds);
-            return $index !== false ? $index : 999999;
+        // 2. Lấy toàn bộ tin nhắn liên quan tới Admin
+        $messages = Message::where('receiver_id', $adminId)
+            ->orWhere('sender_id', $adminId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Nhóm tin nhắn theo đối tác trò chuyện (partner_id)
+        $messagesByPartner = $messages->groupBy(function($msg) use ($adminId) {
+            return $msg->sender_id == $adminId ? $msg->receiver_id : $msg->sender_id;
+        });
+
+        // 3. Xây dựng danh sách kèm thông tin chi tiết
+        $userList = $users->map(function($user) use ($messagesByPartner, $adminId) {
+            $userMessages = $messagesByPartner->get($user->id);
+            $lastMsg = $userMessages ? $userMessages->first() : null; // Tin nhắn mới nhất vì đã sắp xếp desc
+            
+            // Đếm số tin nhắn user gửi tới admin chưa đọc
+            $unreadCount = $userMessages 
+                ? $userMessages->where('sender_id', $user->id)->where('is_read', false)->count() 
+                : 0;
+
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'unread_count' => $unreadCount,
+                'last_message' => $lastMsg ? $lastMsg->content : null,
+                'last_message_is_mine' => $lastMsg ? ($lastMsg->sender_id == $adminId) : false,
+                'last_message_time' => $lastMsg && $lastMsg->created_at ? $lastMsg->created_at->format('H:i') : null,
+                'last_message_date' => $lastMsg && $lastMsg->created_at ? $lastMsg->created_at->format('d/m') : null,
+                'last_message_timestamp' => $lastMsg && $lastMsg->created_at ? $lastMsg->created_at->timestamp : 0,
+            ];
+        });
+
+        // 4. Sắp xếp ưu tiên:
+        // - Người có tin nhắn mới nhất (last_message_timestamp cao nhất) lên ĐẦU TIÊN
+        // - Người chưa từng nhắn tin sắp xếp theo ID giảm dần
+        $sorted = $userList->sort(function($a, $b) {
+            if ($a['last_message_timestamp'] !== $b['last_message_timestamp']) {
+                return $b['last_message_timestamp'] <=> $a['last_message_timestamp'];
+            }
+            return $b['id'] <=> $a['id'];
         })->values();
+
+        $totalUnread = $userList->sum('unread_count');
+
+        return response()->json([
+            'users' => $sorted,
+            'total_unread' => $totalUnread
+        ]);
     }
 
     /**

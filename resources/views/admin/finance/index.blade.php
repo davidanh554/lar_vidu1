@@ -21,12 +21,12 @@
     <ul class="nav nav-tabs mb-4 border-bottom">
         <li class="nav-item">
             <a class="nav-link active fw-semibold" href="{{ route('admin.finance.index') }}">
-                <i class="fa-solid fa-chart-pie me-1"></i> Thống kê chỉ số
+                Thống kê chỉ số
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-secondary" href="{{ route('admin.finance.transactions') }}">
-                <i class="fa-solid fa-list-check me-1"></i> Giao dịch thanh toán
+                Giao dịch thanh toán
             </a>
         </li>
     </ul>

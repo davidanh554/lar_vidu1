@@ -124,12 +124,16 @@
 
                     <!-- Chọn số lượng -->
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Số lượng đặt mua:</label>
+                        <label class="form-label fw-bold text-dark mb-2">Số lượng đặt mua:</label>
                         <div class="d-flex align-items-center gap-3">
-                            <div class="d-flex align-items-center gap-1">
-                                <button class="stepper-btn" type="button" id="btn-qty-minus">−</button>
+                            <div class="quantity-stepper">
+                                <button class="stepper-btn" type="button" id="btn-qty-minus" aria-label="Giảm số lượng">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
                                 <input type="number" name="quantity" id="input-quantity" value="1" min="1" max="1" class="stepper-input fw-bold" required>
-                                <button class="stepper-btn" type="button" id="btn-qty-plus">+</button>
+                                <button class="stepper-btn" type="button" id="btn-qty-plus" aria-label="Tăng số lượng">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
                             </div>
                             <span class="text-muted small" id="color-stock-note"></span>
                         </div>
@@ -212,9 +216,13 @@
                         Có Bình Luận ({{ $withCommentCount ?? 0 }})
                     </button>
 
-                    @if($userEligibleOrder)
-                        <button type="button" class="btn btn-sm btn-danger rounded-pill px-3 ms-auto fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#productDetailReviewModal">
-                            <i class="fa-solid fa-pen-to-square me-1"></i> Viết đánh giá
+                    @if($canReview && $userEligibleOrder)
+                        <button type="button" class="btn btn-sm btn-dark rounded-pill px-3 ms-auto fw-bold shadow-sm" style="background-color: #0f172a; border-color: #0f172a;" data-bs-toggle="modal" data-bs-target="#productDetailReviewModal">
+                            Viết đánh giá
+                        </button>
+                    @else
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 ms-auto fw-semibold" id="btn-blocked-review" data-msg="{{ $reviewBlockedMessage }}" title="{{ $reviewBlockedMessage }}">
+                            Viết đánh giá
                         </button>
                     @endif
                 </div>
@@ -229,8 +237,11 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <div class="flex-fill">
-                                <div class="shopee-user-name mb-1">
-                                    {{ $rev->user->name ?? 'Người dùng' }}
+                                <div class="shopee-user-name mb-1 d-flex align-items-center flex-wrap gap-2">
+                                    <span>{{ $rev->user->name ?? 'Người dùng' }}</span>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-0" style="font-size: 0.68rem;">
+                                        Đã mua & nhận hàng
+                                    </span>
                                 </div>
                                 <div class="shopee-stars-rating small mb-1">
                                     @for($s = 1; $s <= 5; $s++)
@@ -314,13 +325,13 @@
                             <i class="fa-solid fa-star star-item active" data-value="4"></i>
                             <i class="fa-solid fa-star star-item active" data-value="5"></i>
                         </div>
-                        <span class="star-feedback-label fw-bold text-danger small" id="detail-star-label">Tuyệt vời</span>
+                        <span class="star-feedback-label fw-bold text-primary small" id="detail-star-label">Tuyệt vời</span>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary mb-1">Đúng với mô tả:</label>
                         <div class="d-flex gap-2 flex-wrap" id="detail-desc-match-pills">
-                            <button type="button" class="btn btn-sm btn-danger rounded-pill px-3" data-val="đúng">đúng</button>
+                            <button type="button" class="btn btn-sm btn-dark rounded-pill px-3" data-val="đúng">đúng</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="rất đúng">rất đúng</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="đúng một phần">đúng một phần</button>
                         </div>
@@ -329,7 +340,7 @@
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary mb-1">Chất lượng sản phẩm:</label>
                         <div class="d-flex gap-2 flex-wrap" id="detail-quality-pills">
-                            <button type="button" class="btn btn-sm btn-danger rounded-pill px-3" data-val="Tốt">Tốt</button>
+                            <button type="button" class="btn btn-sm btn-dark rounded-pill px-3" data-val="Tốt">Tốt</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="Tuyệt vời">Tuyệt vời</button>
                             <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-val="Bình thường">Bình thường</button>
                         </div>
@@ -342,7 +353,7 @@
                 </div>
                 <div class="modal-footer border-top px-4 py-3 bg-light">
                     <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">Gửi đánh giá</button>
+                    <button type="submit" class="btn btn-dark rounded-pill px-4 fw-bold" style="background-color: #0f172a; border-color: #0f172a;">Gửi đánh giá</button>
                 </div>
             </form>
         </div>
@@ -352,13 +363,13 @@
 
 <!-- Toast thông báo giỏ hàng không reload -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
-    <div id="cartToast" class="toast align-items-center text-white bg-success border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="cartToast" class="toast toast-modern align-items-center border-0 shadow-lg rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex p-2">
             <div class="toast-body d-flex align-items-center gap-2 fs-6">
-                <i id="cartToastIcon" class="fa-solid fa-circle-check fs-5"></i>
+                <i id="cartToastIcon" class="fa-solid fa-circle-check fs-5 text-indigo-light"></i>
                 <span id="cartToastMsg">Đã thêm vào giỏ hàng thành công!</span>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
@@ -384,8 +395,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const navCartCount = document.getElementById('nav-cart-count');
 
     function showNotification(message, isSuccess = true) {
-        cartToastEl.className = `toast align-items-center text-white ${isSuccess ? 'bg-success' : 'bg-danger'} border-0 shadow-lg rounded-4`;
-        cartToastIcon.className = isSuccess ? 'fa-solid fa-circle-check fs-5' : 'fa-solid fa-circle-exclamation fs-5';
+        cartToastEl.className = `toast toast-modern align-items-center ${isSuccess ? 'toast-modern-success' : 'toast-modern-danger'} border-0 shadow-lg rounded-4`;
+        cartToastIcon.className = isSuccess ? 'fa-solid fa-circle-check fs-5 text-indigo-light' : 'fa-solid fa-circle-exclamation fs-5 text-danger';
         cartToastMsg.textContent = message;
         cartToast.show();
     }
@@ -480,8 +491,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const originalHtml = btnAddCart.innerHTML;
             btnAddCart.disabled = true;
             btnAddCart.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Đang thêm...`;
+            const actionUrl = purchaseForm.getAttribute('action') || "{{ route('cart.add', $product->id) }}";
 
-            fetch(purchaseForm.action, {
+            fetch(actionUrl, {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -626,11 +638,11 @@ document.addEventListener('DOMContentLoaded', function() {
         detailDescPills.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('click', function() {
                 detailDescPills.querySelectorAll('button').forEach(b => {
-                    b.classList.remove('btn-danger');
+                    b.classList.remove('btn-dark');
                     b.classList.add('btn-outline-secondary');
                 });
                 this.classList.remove('btn-outline-secondary');
-                this.classList.add('btn-danger');
+                this.classList.add('btn-dark');
                 if (inputDesc) inputDesc.value = this.dataset.val;
             });
         });
@@ -643,13 +655,26 @@ document.addEventListener('DOMContentLoaded', function() {
         detailQualityPills.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('click', function() {
                 detailQualityPills.querySelectorAll('button').forEach(b => {
-                    b.classList.remove('btn-danger');
+                    b.classList.remove('btn-dark');
                     b.classList.add('btn-outline-secondary');
                 });
                 this.classList.remove('btn-outline-secondary');
-                this.classList.add('btn-danger');
+                this.classList.add('btn-dark');
                 if (inputQuality) inputQuality.value = this.dataset.val;
             });
+        });
+    }
+
+    // Detail Modal: Click listener for non-eligible review button
+    const btnBlockedReview = document.getElementById('btn-blocked-review');
+    if (btnBlockedReview) {
+        btnBlockedReview.addEventListener('click', function() {
+            const msg = this.dataset.msg || 'Bạn cần mua và nhận hàng thành công sản phẩm này mới có thể viết đánh giá.';
+            if (typeof showNotification === 'function') {
+                showNotification(msg, false);
+            } else {
+                alert(msg);
+            }
         });
     }
 

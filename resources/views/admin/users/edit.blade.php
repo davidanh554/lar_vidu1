@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="p-3 mb-3 rounded-3 bg-light border">
-                    <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-dharmachakra me-1"></i> Cấu hình Vòng Quay May Mắn (Lucky Wheel)</h6>
+                    <h6 class="fw-bold text-success mb-2">Cấu hình Vòng Quay May Mắn (Lucky Wheel)</h6>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small">Lượt quay tối đa mỗi ngày (24h):</label>
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="p-3 mb-3 rounded-3 bg-warning bg-opacity-10 border border-warning border-opacity-50">
-                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-coins text-warning me-1"></i> Cấu hình Xu Mua Hàng & Giới hạn Xu Xem Video Mỗi Ngày</h6>
+                    <h6 class="fw-bold text-dark mb-2">Cấu hình Xu Mua Hàng & Giới hạn Xu Xem Video Mỗi Ngày</h6>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small">Số Xu hiện tại trong ví:</label>

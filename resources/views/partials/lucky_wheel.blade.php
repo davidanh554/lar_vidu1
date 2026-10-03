@@ -8,19 +8,19 @@
         <div class="wheel-mini-inner">
             <div class="wheel-mini-spinner">
                 <svg viewBox="0 0 100 100" class="wheel-svg-mini">
-                    <circle cx="50" cy="50" r="46" fill="#11141c" stroke="#00ff87" stroke-width="4"/>
+                    <circle cx="50" cy="50" r="46" fill="#ffffff" stroke="#4f46e5" stroke-width="4"/>
                     <!-- 8 Slices -->
-                    <path d="M50 50 L50 4 A46 46 0 0 1 82.5 17.5 Z" fill="#059669"/>
+                    <path d="M50 50 L50 4 A46 46 0 0 1 82.5 17.5 Z" fill="#4f46e5"/>
                     <path d="M50 50 L82.5 17.5 A46 46 0 0 1 96 50 Z" fill="#1e293b"/>
-                    <path d="M50 50 L96 50 A46 46 0 0 1 82.5 82.5 Z" fill="#10b981"/>
-                    <path d="M50 50 L82.5 82.5 A46 46 0 0 1 50 96 Z" fill="#0f766e"/>
-                    <path d="M50 50 L50 96 A46 46 0 0 1 17.5 82.5 Z" fill="#1e293b"/>
-                    <path d="M50 50 L17.5 82.5 A46 46 0 0 1 4 50 Z" fill="#00ff87"/>
-                    <path d="M50 50 L4 50 A46 46 0 0 1 17.5 17.5 Z" fill="#047857"/>
-                    <path d="M50 50 L17.5 17.5 A46 46 0 0 1 50 4 Z" fill="#fbbf24"/>
+                    <path d="M50 50 L96 50 A46 46 0 0 1 82.5 82.5 Z" fill="#0284c7"/>
+                    <path d="M50 50 L82.5 82.5 A46 46 0 0 1 50 96 Z" fill="#6366f1"/>
+                    <path d="M50 50 L50 96 A46 46 0 0 1 17.5 82.5 Z" fill="#334155"/>
+                    <path d="M50 50 L17.5 82.5 A46 46 0 0 1 4 50 Z" fill="#10b981"/>
+                    <path d="M50 50 L4 50 A46 46 0 0 1 17.5 17.5 Z" fill="#7c3aed"/>
+                    <path d="M50 50 L17.5 17.5 A46 46 0 0 1 50 4 Z" fill="#f59e0b"/>
                     <!-- Center -->
-                    <circle cx="50" cy="50" r="14" fill="#11141c" stroke="#00ff87" stroke-width="2"/>
-                    <polygon points="50,42 46,54 54,54" fill="#fbbf24"/>
+                    <circle cx="50" cy="50" r="14" fill="#ffffff" stroke="#4f46e5" stroke-width="2"/>
+                    <polygon points="50,42 46,54 54,54" fill="#4f46e5"/>
                 </svg>
             </div>
             <div class="wheel-mini-pointer">▼</div>
@@ -35,12 +35,9 @@
         <div class="wheel-modal-card">
             <!-- Modal Header -->
             <div class="wheel-modal-header">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="wheel-header-icon"><i class="fa-solid fa-dharmachakra"></i></span>
-                    <div>
-                        <h4 class="wheel-modal-title mb-0">VÒNG QUAY MAY MẮN</h4>
-                        <small class="wheel-modal-subtitle">Quay mỗi ngày • 100% rinh mã giảm giá cực đỉnh</small>
-                    </div>
+                <div>
+                    <h4 class="wheel-modal-title mb-0">VÒNG QUAY MAY MẮN</h4>
+                    <small class="wheel-modal-subtitle">Quay mỗi ngày • 100% rinh mã giảm giá cực đỉnh</small>
                 </div>
                 <button type="button" id="wheel-modal-close" class="wheel-btn-close">&times;</button>
             </div>
@@ -73,13 +70,13 @@
                             <!-- Thẻ Lượt quay hôm nay -->
                             <div class="wheel-info-card mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="text-white-50 small">Lượt quay hôm nay:</span>
+                                    <span class="text-muted small">Lượt quay hôm nay:</span>
                                     <span id="wheel-spins-left" class="fw-bold fs-5 text-emerald-laser">1 lượt</span>
                                 </div>
                                 <div class="progress wheel-progress mb-2">
                                     <div id="wheel-spins-bar" class="progress-bar bg-emerald-laser" style="width: 100%;"></div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center text-white-50" style="font-size: 0.76rem;">
+                                <div class="d-flex justify-content-between align-items-center text-muted" style="font-size: 0.76rem;">
                                     <span><i class="fa-regular fa-clock me-1"></i> Reset sau 24h:</span>
                                     <span id="wheel-countdown" class="font-monospace text-warning fw-semibold">--:--:--</span>
                                 </div>
@@ -147,7 +144,7 @@
             </div>
 
             <div class="d-flex justify-content-center gap-2 mt-4">
-                <button type="button" class="btn btn-emerald-glow rounded-pill px-4" onclick="closeWinModal()">
+                <button type="button" class="btn btn-modern-primary rounded-pill px-4" onclick="closeWinModal()">
                     Tuyệt vời!
                 </button>
                 <a href="{{ route('home') }}" class="btn btn-outline-light rounded-pill px-3">
@@ -183,9 +180,9 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: #11141c;
-    border: 3px solid #00ff87;
-    box-shadow: 0 0 25px rgba(0, 255, 135, 0.55), 0 10px 25px rgba(0, 0, 0, 0.6);
+    background: #ffffff;
+    border: 3px solid #4f46e5;
+    box-shadow: 0 4px 20px rgba(79, 70, 229, 0.4), 0 2px 8px rgba(0, 0, 0, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -214,8 +211,8 @@
     left: 50%;
     transform: translateX(-50%);
     font-size: 13px;
-    color: #fbbf24;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    color: #f59e0b;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
     pointer-events: none;
 }
 .wheel-badge {
@@ -228,8 +225,8 @@
     font-weight: 800;
     padding: 2px 7px;
     border-radius: 9999px;
-    box-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
-    border: 2px solid #11141c;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+    border: 2px solid #ffffff;
     animation: badgePulse 2s infinite;
 }
 @keyframes badgePulse {
@@ -243,7 +240,7 @@
     right: -5px;
     bottom: -5px;
     border-radius: 50%;
-    border: 2px solid rgba(0, 255, 135, 0.6);
+    border: 2px solid rgba(79, 70, 229, 0.5);
     animation: ringGlow 2.5s ease-out infinite;
     pointer-events: none;
 }
@@ -252,16 +249,16 @@
     100% { transform: scale(1.3); opacity: 0; }
 }
 
-/* 2. Modal Phóng to (Liquid Glass Theme) */
+/* 2. Modal Phóng to (Clean Modern Light Theme) */
 .wheel-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(10, 14, 18, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 10000;
     display: flex;
     align-items: center;
@@ -274,45 +271,43 @@
     to { opacity: 1; transform: scale(1); }
 }
 .wheel-modal-card {
-    background: linear-gradient(145deg, rgba(20, 28, 28, 0.95) 0%, rgba(13, 17, 22, 0.98) 100%);
-    border: 1px solid rgba(0, 255, 135, 0.4);
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 255, 135, 0.25);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.25), 0 0 35px rgba(79, 70, 229, 0.15);
     border-radius: 26px;
     width: 100%;
     max-width: 860px;
     overflow: hidden;
-    color: #f8fafc;
+    color: #0f172a;
 }
 .wheel-modal-header {
     padding: 18px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 255, 135, 0.04);
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
 }
 .wheel-header-icon {
     width: 42px;
     height: 42px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #059669 0%, #00ff87 100%);
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
-    color: #064e3b;
-    box-shadow: 0 0 15px rgba(0, 255, 135, 0.5);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 .wheel-modal-title {
     font-weight: 800;
-    letter-spacing: 0.5px;
-    background: linear-gradient(135deg, #ffffff 0%, #00ff87 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+    color: #0f172a;
     font-size: 1.25rem;
 }
 .wheel-modal-subtitle {
-    color: rgba(255, 255, 255, 0.6);
+    color: #64748b;
     font-size: 0.8rem;
 }
 .wheel-btn-close {
@@ -325,7 +320,7 @@
     transition: color 0.2s, transform 0.2s;
 }
 .wheel-btn-close:hover {
-    color: #00ff87;
+    color: #4f46e5;
     transform: rotate(90deg);
 }
 
@@ -337,15 +332,15 @@
     display: inline-block;
     padding: 12px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 255, 135, 0.15) 0%, rgba(17, 20, 28, 0.8) 70%);
-    box-shadow: 0 0 35px rgba(0, 255, 135, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.6);
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.08) 0%, rgba(241, 245, 249, 0.9) 70%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), inset 0 0 15px rgba(79, 70, 229, 0.1);
 }
 #wheelCanvas {
     display: block;
     max-width: 100%;
     height: auto;
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 .wheel-pointer-arrow {
     position: absolute;
@@ -354,8 +349,8 @@
     transform: translateX(-50%);
     z-index: 20;
     font-size: 34px;
-    color: #fbbf24;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+    color: #f59e0b;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
     pointer-events: none;
 }
 .wheel-center-btn {
@@ -366,10 +361,10 @@
     width: 76px;
     height: 76px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #059669 0%, #10b981 50%, #00ff87 100%);
-    border: 4px solid #11141c;
-    box-shadow: 0 0 25px rgba(0, 255, 135, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.5);
-    color: #064e3b;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    border: 4px solid #ffffff;
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    color: #ffffff;
     font-weight: 900;
     display: flex;
     flex-direction: column;
@@ -390,7 +385,7 @@
 }
 .wheel-center-btn:hover:not(:disabled) {
     transform: translate(-50%, -50%) scale(1.08);
-    box-shadow: 0 0 35px rgba(0, 255, 135, 0.95);
+    box-shadow: 0 8px 28px rgba(79, 70, 229, 0.7);
 }
 .wheel-center-btn:disabled {
     opacity: 0.6;
@@ -400,40 +395,43 @@
 
 /* Panel Info bên phải */
 .wheel-panel-info {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 20px;
     padding: 18px;
 }
 .wheel-info-card {
-    background: rgba(0, 255, 135, 0.05);
-    border: 1px solid rgba(0, 255, 135, 0.2);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 12px 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 }
 .text-emerald-laser {
-    color: #00ff87 !important;
+    color: #4f46e5 !important;
 }
 .bg-emerald-laser {
-    background: linear-gradient(90deg, #059669 0%, #00ff87 100%) !important;
+    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%) !important;
 }
 .wheel-progress {
     height: 6px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #e2e8f0;
     border-radius: 999px;
 }
 .wheel-nav-tabs .nav-link {
-    color: #94a3b8;
-    background: rgba(255, 255, 255, 0.05);
+    color: #64748b;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
     font-size: 0.85rem;
     font-weight: 600;
     transition: all 0.2s;
 }
 .wheel-nav-tabs .nav-link.active {
-    color: #064e3b;
-    background: linear-gradient(135deg, #10b981 0%, #00ff87 100%);
-    box-shadow: 0 0 15px rgba(0, 255, 135, 0.35);
+    color: #ffffff;
+    background: #4f46e5;
+    border-color: #4f46e5;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
 /* Danh sách giải thưởng */
@@ -444,14 +442,15 @@
 }
 .prize-pill-item {
     font-size: 0.82rem;
-    color: #cbd5e1;
+    color: #334155;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 10px;
-    background: rgba(255, 255, 255, 0.02);
+    padding: 7px 12px;
+    background: #ffffff;
     border-radius: 8px;
-    border-left: 3px solid #00ff87;
+    border: 1px solid #f1f5f9;
+    border-left: 3px solid #4f46e5;
 }
 .badge-dot {
     width: 8px;
@@ -459,19 +458,20 @@
     border-radius: 50%;
     display: inline-block;
 }
-.dot-gold { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
-.dot-emerald { background: #10b981; }
-.dot-green { background: #059669; }
-.dot-neon { background: #00ff87; box-shadow: 0 0 6px #00ff87; }
-.dot-teal { background: #0f766e; }
+.dot-gold { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+.dot-emerald { background: #4f46e5; }
+.dot-green { background: #0284c7; }
+.dot-neon { background: #10b981; }
+.dot-teal { background: #7c3aed; }
 
 .wheel-rule-note {
     font-size: 0.75rem;
-    color: #94a3b8;
+    color: #64748b;
     line-height: 1.4;
-    padding: 8px;
-    background: rgba(0, 255, 135, 0.03);
+    padding: 10px;
+    background: #eef2ff;
     border-radius: 8px;
+    border: 1px solid #e0e7ff;
 }
 
 /* Kho Voucher */
@@ -484,10 +484,10 @@
     padding-right: 4px;
 }
 .voucher-mini-card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px dashed rgba(0, 255, 135, 0.4);
+    background: #ffffff;
+    border: 1px dashed #cbd5e1;
     border-radius: 10px;
-    padding: 10px;
+    padding: 10px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -496,22 +496,23 @@
     font-family: monospace;
     font-size: 0.92rem;
     font-weight: 800;
-    color: #00ff87;
+    color: #4f46e5;
     letter-spacing: 0.5px;
 }
 .btn-copy-code {
-    background: rgba(0, 255, 135, 0.15);
-    border: 1px solid rgba(0, 255, 135, 0.4);
-    color: #00ff87;
-    font-size: 0.72rem;
-    padding: 3px 8px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4f46e5;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
 }
 .btn-copy-code:hover {
-    background: #00ff87;
-    color: #064e3b;
+    background: #4f46e5;
+    color: #ffffff;
 }
 
 /* 3. Modal Chiến Thắng (Win Modal) */
@@ -521,8 +522,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(20px);
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(16px);
     z-index: 10005;
     display: flex;
     align-items: center;
@@ -531,13 +532,14 @@
     animation: fadeInModal 0.3s ease;
 }
 .wheel-win-card {
-    background: linear-gradient(145deg, #182420 0%, #0d1315 100%);
-    border: 2px solid #00ff87;
-    box-shadow: 0 0 50px rgba(0, 255, 135, 0.45);
+    background: #ffffff;
+    border: 2px solid #4f46e5;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 35px rgba(79, 70, 229, 0.25);
     border-radius: 24px;
     width: 100%;
     max-width: 440px;
     padding: 32px 24px;
+    color: #0f172a;
 }
 .wheel-confetti-icon {
     font-size: 3.5rem;
@@ -550,14 +552,14 @@
     to { transform: translateY(-8px); }
 }
 .win-coupon-ticket {
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px dashed #fbbf24;
+    background: #f8fafc;
+    border: 2px dashed #f59e0b;
     border-radius: 14px;
     padding: 14px;
 }
 .win-coupon-label {
     font-size: 0.72rem;
-    color: #fbbf24;
+    color: #d97706;
     font-weight: 700;
     letter-spacing: 1px;
 }
@@ -565,30 +567,26 @@
     font-family: monospace;
     font-size: 1.45rem;
     font-weight: 900;
-    color: #00ff87;
+    color: #4f46e5;
     margin: 4px 0;
 }
 .win-coupon-desc {
     font-size: 0.85rem;
-    color: #cbd5e1;
+    color: #475569;
 }
 .btn-emerald-glow {
-    background: linear-gradient(135deg, rgba(0, 245, 155, 0.18) 0%, rgba(16, 185, 129, 0.12) 100%) !important;
-    color: #00f59b !important;
+    background: #4f46e5 !important;
+    color: #ffffff !important;
     font-weight: 700;
-    border: 1px solid rgba(0, 245, 155, 0.45) !important;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4) !important;
+    transition: all 0.2s ease;
 }
 .btn-emerald-glow:hover {
-    background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important;
-    border-color: rgba(255, 255, 255, 0.9) !important;
-    color: #022c16 !important;
-    box-shadow: 0 0 28px rgba(0, 245, 155, 0.95), 0 0 50px rgba(0, 214, 116, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.85) !important;
-    transform: translateY(-2px) scale(1.02);
+    background: #4338ca !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5) !important;
 }
 
 @media (max-width: 768px) {
@@ -699,7 +697,7 @@
                 <div class="voucher-mini-card">
                     <div>
                         <div class="voucher-mini-code">${c.code}</div>
-                        <div class="small text-light">${valText} • <span class="text-white-50">${minText}</span></div>
+                        <div class="small text-muted">${valText} • <span class="text-secondary">${minText}</span></div>
                     </div>
                     <button type="button" class="btn-copy-code" onclick="navigator.clipboard.writeText('${c.code}'); alert('Đã sao chép mã: ${c.code}');">
                         <i class="fa-regular fa-copy me-1"></i> Copy
@@ -746,9 +744,9 @@
         ctx.save();
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius + 8, 0, 2 * Math.PI);
-        ctx.strokeStyle = '#00ff87';
+        ctx.strokeStyle = '#4f46e5';
         ctx.lineWidth = 6;
-        ctx.shadowColor = '#00ff87';
+        ctx.shadowColor = 'rgba(79, 70, 229, 0.45)';
         ctx.shadowBlur = 18;
         ctx.stroke();
         ctx.restore();
@@ -765,11 +763,11 @@
             ctx.arc(centerX, centerY, radius, startAngle, endAngle);
             ctx.closePath();
 
-            ctx.fillStyle = slice.color || '#10b981';
+            ctx.fillStyle = slice.color || '#4f46e5';
             ctx.fill();
 
             // Viền ngăn cách giữa các lát
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
@@ -780,7 +778,7 @@
             ctx.textAlign = 'right';
             ctx.fillStyle = slice.textColor || '#ffffff';
             ctx.font = 'bold 13px Plus Jakarta Sans, sans-serif';
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
             ctx.shadowBlur = 4;
 
             // Cắt ngắn nếu chữ dài
@@ -803,7 +801,7 @@
 
             ctx.beginPath();
             ctx.arc(lx, ly, 3, 0, 2 * Math.PI);
-            ctx.fillStyle = i % 2 === 0 ? '#fbbf24' : '#00ff87';
+            ctx.fillStyle = i % 2 === 0 ? '#f59e0b' : '#4f46e5';
             ctx.fill();
         }
     }

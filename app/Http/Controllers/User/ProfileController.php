@@ -95,6 +95,16 @@ class ProfileController extends Controller
         // Tổng chi tiêu tích lũy
         $totalSpent = $allOrders->where('status', 'paid')->sum('total_price');
 
+        // 4. Thống kê Tiền Xu thưởng Vua Tablet
+        $coinRate = (int)\App\Models\Setting::get('coin_rate', 500);
+        $userCoins = (int)($user->coins ?? 0);
+        $coinsValue = $userCoins * $coinRate;
+        $totalCoinsUsed = (int)$allOrders->sum('coins_used');
+        $totalCoinsSaved = (float)$allOrders->sum('coins_discount');
+        $coinsEarnedToday = (int)($user->coins_earned_today ?? 0);
+        $coinsRemainingToday = $user->getCoinsRemainingToday();
+        $dailyCoinLimit = $user->daily_coins_limit ?? (int)\App\Models\Setting::get('daily_coins_limit', 10);
+
         return view('user.profile', compact(
             'user',
             'latestOrder',
@@ -107,7 +117,15 @@ class ProfileController extends Controller
             'deliveringCount',
             'deliveredCount',
             'cancelledCount',
-            'totalSpent'
+            'totalSpent',
+            'coinRate',
+            'userCoins',
+            'coinsValue',
+            'totalCoinsUsed',
+            'totalCoinsSaved',
+            'coinsEarnedToday',
+            'coinsRemainingToday',
+            'dailyCoinLimit'
         ));
     }
 

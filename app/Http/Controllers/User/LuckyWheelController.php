@@ -19,7 +19,7 @@ class LuckyWheelController extends Controller
             'code'        => 'VUA20K',
             'name'        => 'Voucher 20.000đ',
             'weight'      => 25,
-            'color'       => '#059669', // Emerald dark
+            'color'       => '#4f46e5', // Indigo primary
             'textColor'   => '#ffffff',
             'icon'        => 'fa-ticket',
         ],
@@ -37,8 +37,8 @@ class LuckyWheelController extends Controller
             'code'        => 'VUA50K',
             'name'        => 'Voucher 50.000đ',
             'weight'      => 12,
-            'color'       => '#10b981', // Emerald primary
-            'textColor'   => '#064e3b',
+            'color'       => '#0284c7', // Sky Blue
+            'textColor'   => '#ffffff',
             'icon'        => 'fa-gift',
         ],
         3 => [
@@ -46,8 +46,8 @@ class LuckyWheelController extends Controller
             'code'        => 'VUA10VIP',
             'name'        => 'Voucher VIP Giảm 10%',
             'weight'      => 10,
-            'color'       => '#0f766e', // Deep Teal
-            'textColor'   => '#00ff87',
+            'color'       => '#6366f1', // Indigo bright
+            'textColor'   => '#ffffff',
             'icon'        => 'fa-crown',
         ],
         4 => [
@@ -55,7 +55,7 @@ class LuckyWheelController extends Controller
             'code'        => null,
             'name'        => 'Chúc bạn may mắn lần sau',
             'weight'      => 18,
-            'color'       => '#1e293b', // Slate dark
+            'color'       => '#334155', // Slate mid
             'textColor'   => '#94a3b8',
             'icon'        => 'fa-clover',
         ],
@@ -64,8 +64,8 @@ class LuckyWheelController extends Controller
             'code'        => 'FREESHIP30K',
             'name'        => 'Freeship 30.000đ',
             'weight'      => 10,
-            'color'       => '#00ff87', // Neon laser green
-            'textColor'   => '#064e3b',
+            'color'       => '#10b981', // Emerald green
+            'textColor'   => '#ffffff',
             'icon'        => 'fa-truck-fast',
         ],
         6 => [
@@ -73,7 +73,7 @@ class LuckyWheelController extends Controller
             'code'        => 'VUA30K',
             'name'        => 'Voucher 30.000đ',
             'weight'      => 4,
-            'color'       => '#047857', // Emerald mid
+            'color'       => '#7c3aed', // Purple Violet
             'textColor'   => '#ffffff',
             'icon'        => 'fa-coins',
         ],
@@ -82,8 +82,8 @@ class LuckyWheelController extends Controller
             'code'        => 'VUASUPER100K',
             'name'        => 'Siêu Cấp 100.000đ',
             'weight'      => 1,
-            'color'       => '#fbbf24', // Gold Star
-            'textColor'   => '#78350f',
+            'color'       => '#f59e0b', // Gold Amber
+            'textColor'   => '#ffffff',
             'icon'        => 'fa-star',
         ],
     ];

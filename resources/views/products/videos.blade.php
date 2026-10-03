@@ -4,29 +4,38 @@
 
 @section('content')
 <div class="video-reels-page-wrapper">
-    <!-- Header Bar Tích Xu Trừ Tiền Mặt -->
-    <div class="container text-center pt-3 pb-2">
-        <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
-            <!-- Badge thông báo cày xu đổi tiền -->
-            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill" style="background: rgba(0, 255, 135, 0.12); border: 1px solid rgba(0, 255, 135, 0.4);">
-                <i class="fa-solid fa-coins text-warning animate-bounce"></i>
-                <span class="text-emerald-laser fw-bold small">LƯỚT VIDEO 30s • NHẬN +1 XU (TRỪ 500₫ KHI MUA HÀNG) • TỐI ĐA 5.000₫/NGÀY</span>
-            </div>
+    <!-- Header Bar Tích Xu Trừ Tiền Mặt - Phong cách tối giản hiện đại VUA TABLET -->
+    <div class="container pt-3 pb-3">
+        <div class="video-top-bar-card p-3 px-md-4 rounded-4 shadow-sm bg-white border">
+            <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+                <!-- Cột trái: Thông điệp tích xu thưởng -->
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="badge rounded-pill fw-bold px-3 py-1 text-nowrap" style="background: #eef2ff; color: #4f46e5; font-size: 0.75rem; border: 1px solid #c7d2fe;">
+                        TÍCH XU
+                    </span>
+                    <span class="text-dark fw-medium small">
+                        Xem video 30s nhận ngay <strong style="color: #4f46e5;">+1 Xu</strong> (trừ 500₫ khi mua) • Tối đa 5.000₫/ngày
+                    </span>
+                </div>
 
-            <!-- Ví Xu hiện tại của User & Hạn mức ngày -->
-            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-dark border border-warning border-opacity-50">
-                <i class="fa-solid fa-wallet text-warning"></i>
-                <span class="text-white-50 small">Ví của bạn:</span>
-                <strong class="text-warning fw-bold" id="userCoinsBalanceDisplay">{{ number_format($userCoins) }} Xu</strong>
-                <span class="badge bg-success bg-opacity-75 py-1 px-2 rounded-pill small" id="coinsCashValueBadge">
-                    = -{{ number_format($userCoins * 500) }}₫
-                </span>
-                <span class="text-white-50 small ms-1 border-start border-white border-opacity-25 ps-2">
-                    Hôm nay còn nhận: <strong class="text-info" id="coinsRemainingTodayDisplay">{{ $coinsRemainingToday }}</strong> / {{ $dailyLimit }} Xu ({{ number_format($coinsRemainingToday * 500) }}₫)
-                </span>
-                <a href="{{ route('home') }}" class="btn btn-warning btn-sm rounded-pill py-0 px-2 fw-bold text-dark ms-1" style="font-size: 0.75rem;">
-                    <i class="fa-solid fa-cart-shopping me-1"></i> Mua sắm dùng Xu
-                </a>
+                <!-- Cột phải: Ví Xu hiện tại của User & Hạn mức ngày & Nút mua sắm -->
+                <div class="d-flex align-items-center gap-2 gap-md-3 flex-wrap">
+                    <div class="d-inline-flex align-items-center gap-2 bg-light px-3 py-1 rounded-pill border small">
+                        <span class="text-muted">Ví Xu:</span>
+                        <strong class="font-monospace text-primary fw-bold" id="userCoinsBalanceDisplay">{{ number_format($userCoins) }} Xu</strong>
+                        <span class="badge bg-primary-subtle text-primary rounded-pill font-monospace" style="font-size: 0.72rem;" id="coinsCashValueBadge">
+                            -{{ number_format($userCoins * 500) }}₫
+                        </span>
+                    </div>
+
+                    <div class="small text-muted text-nowrap">
+                        Còn nhận: <strong class="text-dark font-monospace" id="coinsRemainingTodayDisplay">{{ $coinsRemainingToday }}</strong>/{{ $dailyLimit }} Xu
+                    </div>
+
+                    <a href="{{ route('home') }}" class="btn btn-primary btn-sm rounded-pill px-3 py-1 fw-bold text-white text-nowrap shadow-sm ms-auto ms-lg-0" style="font-size: 0.8rem; background: #4f46e5; border-color: #4f46e5;">
+                        Dùng Xu mua sắm
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -41,7 +50,7 @@
                     <circle cx="30" cy="30" r="26" class="ring-fill" id="ringProgressCircle" style="{{ $coinsRemainingToday <= 0 ? 'stroke-dashoffset: 0; stroke: #64748b;' : '' }}"/>
                 </svg>
                 <div class="gift-inner-icon">
-                    <i class="fa-solid {{ $coinsRemainingToday <= 0 ? 'fa-circle-check text-success' : 'fa-coins text-warning animate-pulse' }}" id="coinStatusIcon"></i>
+                    <i class="fa-solid {{ $coinsRemainingToday <= 0 ? 'fa-circle-check text-success' : 'fa-coins animate-pulse' }}" style="color: #f59e0b;" id="coinStatusIcon"></i>
                 </div>
             </div>
             <div class="ring-status-text {{ $coinsRemainingToday <= 0 ? 'text-muted' : '' }}" id="ringTimerText">{{ $coinsRemainingToday <= 0 ? 'Hết lượt' : ($watchSeconds ?? 30) . 's' }}</div>
@@ -50,9 +59,9 @@
         <!-- Toast thông báo nhận Xu trôi nhẹ mà không che màn hình hay làm dừng video -->
         <div id="coinEarnedToast" class="coin-earned-toast">
             <div class="d-flex align-items-center gap-2">
-                <i class="fa-solid fa-circle-check text-success fs-5"></i>
+                <i class="fa-solid fa-circle-check fs-5" style="color: #10b981;"></i>
                 <div>
-                    <strong class="text-warning d-block" style="font-size: 0.85rem;">+1 XU ĐÃ VÀO VÍ (+500₫)!</strong>
+                    <strong class="d-block" style="font-size: 0.85rem; color: #fbbf24;">+1 XU ĐÃ VÀO VÍ (+500₫)!</strong>
                     <span class="small text-white-50" style="font-size: 0.72rem;">Đang tiếp tục đếm xu tiếp theo...</span>
                 </div>
             </div>
@@ -97,7 +106,6 @@
                             <i class="fa-solid fa-play"></i>
                         </div>
 
-
                         <!-- Sidebar Hành động bên phải (Like, Mua hàng, Share) -->
                         <div class="reel-action-sidebar">
                             <!-- Nút Tim -->
@@ -112,9 +120,9 @@
                             @if($v->product)
                                 <div class="action-item-wrap">
                                     <a href="{{ route('products.show', $v->product->slug ?? $v->product->id) }}" class="action-btn-circle text-decoration-none" title="Xem sản phẩm đính kèm">
-                                        <i class="fa-solid fa-bag-shopping text-emerald-laser"></i>
+                                        <i class="fa-solid fa-bag-shopping" style="color: #818cf8;"></i>
                                     </a>
-                                    <span class="action-count-text text-emerald-laser">Mua</span>
+                                    <span class="action-count-text" style="color: #c7d2fe;">Mua</span>
                                 </div>
                             @endif
 
@@ -141,15 +149,15 @@
                                         <div class="overflow-hidden">
                                             <div class="product-name-clamp text-white fw-bold small">{{ $v->product->name }}</div>
                                             <div class="d-flex align-items-baseline gap-1">
-                                                <span class="text-emerald-laser fw-bold small">{{ number_format($v->product->sale_price ?? $v->product->price) }}₫</span>
+                                                <span class="fw-bold small" style="color: #60a5fa;">{{ number_format($v->product->sale_price ?? $v->product->price) }}₫</span>
                                                 @if($v->product->sale_price)
                                                     <span class="text-white-50 text-decoration-line-through" style="font-size: 0.7rem;">{{ number_format($v->product->price) }}₫</span>
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="{{ route('products.show', $v->product->slug ?? $v->product->id) }}" class="btn btn-sm btn-emerald-glow rounded-pill px-3 py-1 flex-shrink-0 text-decoration-none fw-bold" style="font-size: 0.8rem;">
-                                        Xem ngay <i class="fa-solid fa-arrow-right ms-1"></i>
+                                    <a href="{{ route('products.show', $v->product->slug ?? $v->product->id) }}" class="btn btn-sm rounded-pill px-3 py-1 flex-shrink-0 text-decoration-none fw-bold" style="background: #4f46e5; color: #ffffff; border: none; font-size: 0.8rem; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);">
+                                        Xem ngay
                                     </a>
                                 </div>
                             @endif
@@ -175,26 +183,26 @@
 <!-- Modal Thông Báo Khi Đạt Giới Hạn Xu Trong Ngày (Coin Limit Popup) -->
 <div id="coin-reward-modal" class="reward-modal-overlay" style="display: none;">
     <div class="reward-modal-card text-center">
-        <div class="reward-icon-box text-warning animate-bounce">
+        <div class="reward-icon-box animate-bounce" style="color: #f59e0b;">
             <i class="fa-solid fa-coins"></i>
         </div>
-        <h3 class="fw-bold text-white mb-2" id="rewardModalTitle">ĐẠT GIỚI HẠN XU HÔM NAY!</h3>
-        <p class="text-white-50 small mb-3" id="rewardModalSubtitle">Bạn đã tích lũy tối đa 5.000₫ (10 Xu) hôm nay. Hệ thống sẽ tự động reset sau 24h để bạn tiếp tục nhận thêm!</p>
+        <h3 class="fw-bold text-white mb-2" id="rewardModalTitle" style="font-size: 1.35rem;">ĐẠT GIỚI HẠN XU HÔM NAY!</h3>
+        <p class="text-white-50 small mb-3" id="rewardModalSubtitle">Bạn đã tích lũy tối đa hạn mức hôm nay. Hệ thống sẽ tự động reset sau 24h để bạn tiếp tục nhận thêm!</p>
 
-        <div class="reward-coupon-ticket mb-3" style="background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.4);">
-            <div class="text-white-50 small">TỔNG XU HIỆN CÓ TRONG VÍ</div>
-            <div class="fs-2 fw-bold text-warning" id="modal-current-coins-val">{{ number_format($userCoins) }} Xu</div>
-            <div class="badge bg-success bg-opacity-75 fs-6 py-1 px-3 rounded-pill mt-1" id="modal-coins-cash-val">
+        <div class="reward-coupon-ticket mb-3">
+            <div class="text-white-50 small mb-1">TỔNG XU HIỆN CÓ TRONG VÍ</div>
+            <div class="fs-2 fw-bold" style="color: #f59e0b;" id="modal-current-coins-val">{{ number_format($userCoins) }} Xu</div>
+            <div class="badge fs-6 py-1 px-3 rounded-pill mt-2 font-monospace" style="background: rgba(79, 70, 229, 0.25); color: #c7d2fe; border: 1px solid rgba(79, 70, 229, 0.4);" id="modal-coins-cash-val">
                 Tương đương giảm: {{ number_format($userCoins * 500) }}₫ tiền mặt
             </div>
-            <div class="small text-light mt-2" id="modal-remaining-today-text">
+            <div class="small text-white-50 mt-2" id="modal-remaining-today-text">
                 Hôm nay đã nhận đủ hạn mức! Quay lại sau 24h nhé.
             </div>
         </div>
 
         <div class="d-flex justify-content-center gap-2 mt-4">
-            <a href="{{ route('home') }}" class="btn btn-warning rounded-pill px-4 fw-bold text-dark">
-                <i class="fa-solid fa-cart-shopping me-1"></i> Mua hàng trừ tiền ngay
+            <a href="{{ route('home') }}" class="btn btn-primary rounded-pill px-4 fw-bold text-white" style="background: #4f46e5; border-color: #4f46e5;">
+                Dùng Xu mua sắm ngay
             </a>
             <button type="button" class="btn btn-outline-light rounded-pill px-3" onclick="closeCoinModal()">
                 Tiếp tục xem giải trí
@@ -203,7 +211,7 @@
     </div>
 </div>
 
-<!-- CSS Reel Video Shopping Theme -->
+<!-- CSS Reel Video Shopping Theme: Phong cách tối giản cao cấp Apple/PhongMobile -->
 <style>
 .video-reels-page-wrapper {
     position: relative;
@@ -212,7 +220,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: radial-gradient(circle at 50% 10%, rgba(0, 255, 135, 0.08), transparent 60%);
+    background: transparent;
+}
+
+.video-top-bar-card {
+    border-color: #e2e8f0 !important;
 }
 
 /* Khung Stage bao ngoài: Đảm bảo Ring Badge luôn cố định tuyệt đối ở góc trên khung trên MỌI video */
@@ -220,7 +232,7 @@
     width: 100%;
     max-width: 440px;
     height: 76vh;
-    min-height: 560px;
+    min-height: 580px;
     margin-bottom: 30px;
     position: relative;
 }
@@ -234,7 +246,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     position: relative;
-    border-radius: 26px;
+    border-radius: 32px;
 }
 .reels-feed-container::-webkit-scrollbar {
     display: none;
@@ -255,11 +267,11 @@
     width: 100%;
     height: 100%;
     position: relative;
-    border-radius: 26px;
+    border-radius: 32px;
     overflow: hidden;
-    background: #0d1117;
-    border: 2px solid rgba(0, 255, 135, 0.35);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 255, 135, 0.2);
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.4), 0 0 0 1px rgba(15, 23, 42, 0.08);
 }
 
 .reel-video-element {
@@ -291,7 +303,7 @@
     height: 140%;
     transform: translate(-50%, -50%);
     border: none;
-    pointer-events: none; /* Khóa hover vào YouTube => YouTube không bao giờ hiện thanh tiêu đề, kênh, nút bấm */
+    pointer-events: none;
 }
 
 /* Lớp phủ Click Play/Pause mượt mà cho toàn bộ video */
@@ -312,7 +324,7 @@
     left: 0;
     width: 100%;
     height: 50%;
-    background: linear-gradient(180deg, transparent 0%, rgba(13, 17, 23, 0.85) 60%, rgba(13, 17, 23, 0.98) 100%);
+    background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.85) 60%, rgba(15, 23, 42, 0.98) 100%);
     pointer-events: none;
     z-index: 2;
 }
@@ -320,26 +332,27 @@
 /* Nút Mute / Unmute */
 .reel-sound-toggle-btn {
     position: absolute;
-    top: 16px;
-    left: 16px;
+    top: 18px;
+    left: 18px;
     z-index: 10;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #ffffff;
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
 }
 .reel-sound-toggle-btn:hover {
-    background: #00ff87;
-    color: #064e3b;
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #ffffff;
 }
 
 /* Play indicator */
@@ -351,15 +364,16 @@
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-    color: #00ff87;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.8rem;
     z-index: 10;
     pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Sidebar hành động bên phải */
@@ -383,9 +397,9 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: rgba(17, 20, 28, 0.75);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -395,13 +409,13 @@
     transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .action-btn-circle:hover {
-    transform: scale(1.15);
-    background: rgba(0, 255, 135, 0.2);
-    border-color: #00ff87;
+    transform: scale(1.12);
+    background: rgba(79, 70, 229, 0.4);
+    border-color: #818cf8;
 }
 .action-btn-circle.active-liked {
     color: #ef4444 !important;
-    background: rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.25);
     border-color: #ef4444;
 }
 .action-count-text {
@@ -435,16 +449,16 @@
 
 /* Product Card Overlay */
 .reel-product-card-overlay {
-    background: rgba(17, 20, 28, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 255, 135, 0.4);
-    border-radius: 14px;
-    padding: 6px 10px;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 16px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 .product-thumb-img {
     width: 38px;
@@ -472,47 +486,50 @@
     z-index: 20;
 }
 .btn-reel-nav {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-    background: rgba(17, 20, 28, 0.85);
-    border: 1px solid rgba(0, 255, 135, 0.3);
-    color: #00ff87;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    color: #0f172a;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.1rem;
-    transition: all 0.2s;
+    font-size: 1rem;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-reel-nav:hover {
-    background: #00ff87;
-    color: #0d1117;
-    transform: scale(1.1);
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #ffffff;
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 10px 22px rgba(79, 70, 229, 0.3);
 }
 
 /* Floating Watch-to-Earn Ring Badge: Cố định tuyệt đối góc trên bên phải khung */
 .watch-earn-floating-badge {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 18px;
+    right: 18px;
     z-index: 40;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    background: rgba(17, 20, 28, 0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(251, 191, 36, 0.5);
+    background: rgba(15, 23, 42, 0.78);
+    backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(245, 158, 11, 0.45);
     border-radius: 20px;
     padding: 6px 8px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     pointer-events: auto;
     transition: all 0.3s ease;
 }
 .watch-earn-floating-badge.limit-reached {
     border-color: rgba(100, 116, 139, 0.4);
-    background: rgba(17, 20, 28, 0.92);
+    background: rgba(15, 23, 42, 0.92);
 }
 .watch-earn-floating-badge.limit-reached .ring-status-text {
     color: #94a3b8 !important;
@@ -534,7 +551,7 @@
 }
 .ring-fill {
     fill: none;
-    stroke: #fbbf24;
+    stroke: #f59e0b;
     stroke-width: 4;
     stroke-linecap: round;
     stroke-dasharray: 163.36;
@@ -551,26 +568,27 @@
 .ring-status-text {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #fbbf24;
+    color: #f59e0b;
     margin-top: 2px;
 }
 
 /* Toast thông báo cộng Xu trôi mượt mà */
 .coin-earned-toast {
     position: absolute;
-    top: 75px;
-    right: 16px;
+    top: 80px;
+    right: 18px;
     z-index: 45;
-    background: rgba(17, 20, 28, 0.95);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 255, 135, 0.4);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
-    border-radius: 16px;
-    padding: 8px 14px;
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 4px solid #4f46e5;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    border-radius: 14px;
+    padding: 10px 14px;
     pointer-events: none;
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .coin-earned-toast.show {
     opacity: 1;
@@ -584,52 +602,31 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
 }
 .reward-modal-card {
-    background: #11141c;
-    border: 1px solid rgba(0, 255, 135, 0.4);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 255, 135, 0.2);
-    border-radius: 24px;
-    padding: 30px;
-    max-width: 420px;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+    border-radius: 28px;
+    padding: 32px 28px;
+    max-width: 430px;
     width: 90%;
 }
 .reward-icon-box {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     margin-bottom: 12px;
 }
 .reward-coupon-ticket {
-    background: rgba(0, 255, 135, 0.08);
-    border: 1px dashed rgba(0, 255, 135, 0.4);
+    background: rgba(79, 70, 229, 0.1);
+    border: 1px dashed rgba(79, 70, 229, 0.35);
     border-radius: 16px;
     padding: 16px;
-}
-.text-emerald-laser {
-    color: #00ff87 !important;
-}
-.btn-emerald-glow {
-    background: linear-gradient(135deg, rgba(0, 245, 155, 0.18) 0%, rgba(16, 185, 129, 0.12) 100%) !important;
-    color: #00f59b !important;
-    font-weight: 700;
-    border: 1px solid rgba(0, 245, 155, 0.45) !important;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn-emerald-glow:hover {
-    background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important;
-    border-color: rgba(255, 255, 255, 0.9) !important;
-    color: #022c16 !important;
-    box-shadow: 0 0 28px rgba(0, 245, 155, 0.95), 0 0 50px rgba(0, 214, 116, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.85) !important;
-    transform: translateY(-2px) scale(1.02);
 }
 </style>
 
@@ -980,7 +977,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // 3. Cập nhật icon trên nút âm thanh
                 document.querySelectorAll('.reel-sound-toggle-btn i').forEach(icon => {
-                    icon.className = isGlobalMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high text-emerald-laser';
+                    icon.className = isGlobalMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high text-white';
                 });
             });
         }

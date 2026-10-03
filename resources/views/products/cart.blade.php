@@ -74,12 +74,11 @@
                                                                 {{ $details['name'] }}
                                                             </a>
                                                             
-                                                            <!-- Tùy chọn đổi màu sắc trực tiếp trong giỏ hàng -->
+                                                            <!-- Tùy chọn đổi màu sắc trực tiếp trong giỏ hàng (Đồng bộ CSS Apple / PhongMobile) -->
                                                             @if(!empty($variants) && count($variants) > 1)
-                                                                <div class="mt-1 d-flex align-items-center gap-1">
-                                                                    <small class="text-muted"><i class="fa-solid fa-palette text-primary me-1"></i>Màu:</small>
-                                                                    <select class="form-select form-select-sm py-1 ps-2 pe-4 rounded-pill bg-light border color-change-select" 
-                                                                            style="width: auto; min-width: 155px; font-size: 0.8rem; font-weight: 500; cursor: pointer;" 
+                                                                <div class="cart-color-wrap">
+                                                                    <span class="cart-color-label">Màu:</span>
+                                                                    <select class="cart-color-select color-change-select" 
                                                                             data-id="{{ $id }}"
                                                                             title="Bấm để đổi màu sắc trực tiếp">
                                                                         @foreach($variants as $v)
@@ -92,7 +91,10 @@
                                                                     </select>
                                                                 </div>
                                                             @elseif(!empty($details['color']))
-                                                                <small class="text-muted">Màu: <span class="badge bg-light text-dark border">{{ $details['color'] }}</span></small>
+                                                                <div class="cart-color-wrap">
+                                                                    <span class="cart-color-label">Màu:</span>
+                                                                    <span class="cart-color-badge">{{ $details['color'] }}</span>
+                                                                </div>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -104,18 +106,18 @@
                                                     @php
                                                         $itemStock = $product ? $product->getStockForColor($details['color'] ?? null) : 999;
                                                     @endphp
-                                                    <div class="d-flex align-items-center gap-1">
-                                                        <button class="stepper-btn btn-qty-minus" type="button" data-id="{{ $id }}"><i class="fa-solid fa-minus fs-6"></i></button>
+                                                    <div class="quantity-stepper">
+                                                        <button class="stepper-btn btn-qty-minus" type="button" data-id="{{ $id }}" aria-label="Giảm số lượng"><i class="fa-solid fa-minus"></i></button>
                                                         <input type="number" 
                                                                name="quantity" 
                                                                value="{{ $details['quantity'] }}" 
                                                                min="1" 
                                                                max="{{ $itemStock }}"
-                                                               class="stepper-input quantity-input" 
+                                                               class="stepper-input quantity-input fw-bold" 
                                                                data-id="{{ $id }}"
                                                                data-max="{{ $itemStock }}"
                                                                data-price="{{ $details['price'] }}">
-                                                        <button class="stepper-btn btn-qty-plus" type="button" data-id="{{ $id }}"><i class="fa-solid fa-plus fs-6"></i></button>
+                                                        <button class="stepper-btn btn-qty-plus" type="button" data-id="{{ $id }}" aria-label="Tăng số lượng"><i class="fa-solid fa-plus"></i></button>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -139,7 +141,7 @@
 
                 <!-- Tóm tắt đơn hàng (Sticky Summary) -->
                 <div class="col-lg-4">
-                    <div class="summary-card">
+                    <div class="card card-modern summary-card p-4 sticky-lg-top" style="top: 90px;">
                         <h5 class="fw-bold mb-3 d-flex align-items-center">
                             <i class="fa-solid fa-receipt me-2 text-primary"></i>Tóm tắt đơn hàng
                         </h5>
@@ -149,22 +151,26 @@
                             <span class="fw-bold text-dark" id="total-price">{{ number_format($total, 0, ',', '.') }}đ</span>
                         </div>
                         
-                        <div class="d-flex justify-content-between mb-3">
-                            <span class="text-muted">Vận chuyển:</span>
-                            <span class="badge-soft badge-soft-success">
-                                <i class="fa-solid fa-truck-fast"></i> Miễn phí
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">Phí vận chuyển:</span>
+                            <span class="badge-soft badge-soft-secondary">
+                                <i class="fa-solid fa-truck-fast me-1"></i> Tính khi thanh toán
                             </span>
                         </div>
 
                         <div class="p-3 bg-light rounded-3 mb-3 small text-muted">
-                            <i class="fa-solid fa-shield-check text-success me-1"></i> Bảo hành chính hãng 12 tháng. Đổi mới trong 30 ngày nếu lỗi NSX.
+                            <div class="mb-1"><i class="fa-solid fa-truck-fast text-primary me-1"></i> Phí vận chuyển sẽ được tính theo địa chỉ nhận hàng của bạn qua GHN ở bước kế tiếp.</div>
+                            <div><i class="fa-solid fa-shield-check text-success me-1"></i> Bảo hành chính hãng 12 tháng. Đổi mới trong 30 ngày nếu lỗi NSX.</div>
                         </div>
 
-                        <hr class="my-3 border-secondary border-opacity-25">
+                        <hr class="my-3 border-light">
 
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <span class="fw-bold fs-6">Tổng thanh toán:</span>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-bold fs-6">Tạm tính:</span>
                             <span class="fw-bold fs-4 text-primary" id="final-price">{{ number_format($total, 0, ',', '.') }}đ</span>
+                        </div>
+                        <div class="text-end mb-4 text-muted small" style="font-size: 0.75rem;">
+                            (Chưa bao gồm cước vận chuyển GHN)
                         </div>
 
                         <button type="submit" id="btn-checkout" class="btn btn-modern-primary w-100 rounded-pill py-3 fw-bold fs-6 shadow">

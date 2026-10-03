@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Review;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -120,9 +122,20 @@ class ProductController extends Controller
             $product = $productModel;
         }
 
-        $product->load(['category', 'brand', 'reviews.user']);
+        $product->load(['category', 'brand']);
 
-        $reviews = $product->reviews;
+        // 1. Lấy danh sách ID của sản phẩm hiện tại và các bản ghi cùng tên (hỗ trợ hiển thị đầy đủ đánh giá)
+        $sameProductIds = Product::where('name', $product->name)->pluck('id')->toArray();
+        if (empty($sameProductIds)) {
+            $sameProductIds = [$product->id];
+        }
+
+        // 2. Hiển thị TẤT CẢ các đánh giá từ TẤT CẢ các tài khoản đã đánh giá sản phẩm này
+        $reviews = Review::whereIn('product_id', $sameProductIds)
+            ->with(['user', 'order'])
+            ->latest()
+            ->get();
+
         $totalReviews = $reviews->count();
         $avgRating = $totalReviews > 0 ? round($reviews->avg('rating'), 1) : 5.0;
 
@@ -135,16 +148,49 @@ class ProductController extends Controller
         ];
         $withCommentCount = $reviews->filter(fn($r) => !empty(trim($r->comment ?? '')))->count();
 
+        // 3. Điều kiện viết đánh giá: BẮT BUỘC ĐÃ MUA HÀNG VÀ NHẬN HÀNG THÀNH CÔNG (shipping_status === 'delivered')
         $userEligibleOrder = null;
+        $canReview = false;
+        $reviewBlockedMessage = '';
+
         if (\Illuminate\Support\Facades\Auth::check()) {
-            $userEligibleOrder = \App\Models\Order::where('user_id', \Illuminate\Support\Facades\Auth::id())
+            $userId = \Illuminate\Support\Facades\Auth::id();
+            
+            // Tìm đơn hàng của user đã giao thành công và có chứa sản phẩm này
+            $userEligibleOrder = \App\Models\Order::where('user_id', $userId)
                 ->where('shipping_status', 'delivered')
-                ->whereHas('items', fn($q) => $q->where('product_id', $product->id))
+                ->whereHas('items', fn($q) => $q->whereIn('product_id', $sameProductIds))
                 ->latest()
                 ->first();
+
+            if ($userEligibleOrder) {
+                $canReview = true;
+            } else {
+                $hasBought = \App\Models\Order::where('user_id', $userId)
+                    ->whereHas('items', fn($q) => $q->whereIn('product_id', $sameProductIds))
+                    ->exists();
+
+                if ($hasBought) {
+                    $reviewBlockedMessage = 'Đơn hàng của bạn đang được giao. Bạn chỉ có thể viết đánh giá sau khi đã nhận hàng thành công!';
+                } else {
+                    $reviewBlockedMessage = 'Bạn cần mua và nhận hàng thành công sản phẩm này mới có thể viết đánh giá.';
+                }
+            }
+        } else {
+            $reviewBlockedMessage = 'Vui lòng đăng nhập tài khoản đã mua sản phẩm để viết đánh giá.';
         }
 
-        return view('products.show', compact('product', 'reviews', 'totalReviews', 'avgRating', 'starCounts', 'withCommentCount', 'userEligibleOrder'));
+        return view('products.show', compact(
+            'product', 
+            'reviews', 
+            'totalReviews', 
+            'avgRating', 
+            'starCounts', 
+            'withCommentCount', 
+            'userEligibleOrder',
+            'canReview',
+            'reviewBlockedMessage'
+        ));
     }
 
     public function show_normal(Product $product)

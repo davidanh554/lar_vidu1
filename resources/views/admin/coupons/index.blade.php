@@ -4,11 +4,11 @@
 <div class="container-fluid px-0">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
-            <h3 class="fw-bold mb-1"><i class="fa-solid fa-ticket-simple text-success me-2"></i>Quản lý Mã Giảm Giá (Coupons)</h3>
+            <h3 class="fw-bold mb-1">Quản lý Mã Giảm Giá (Coupons)</h3>
             <p class="text-muted small mb-0">Quản lý mã khuyến mãi, voucher trúng thưởng từ Vòng Quay May Mắn</p>
         </div>
         <a href="{{ route('admin.coupons.create') }}" class="btn btn-success rounded-pill px-3 shadow-sm">
-            <i class="fa-solid fa-plus me-1"></i> Tạo mã giảm giá mới
+            Tạo mã giảm giá mới
         </a>
     </div>
 

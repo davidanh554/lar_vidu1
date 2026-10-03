@@ -39,6 +39,8 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 
 // Chatbot AI Gemini (Tự động 24/7)
 Route::post('/ai-chat/send', [GeminiChatController::class, 'chat'])->name('ai.chat.send');
+Route::get('/ai-chat/history', [GeminiChatController::class, 'history'])->name('ai.chat.history');
+Route::post('/ai-chat/clear', [GeminiChatController::class, 'clear'])->name('ai.chat.clear');
 
 // AI Tư vấn chọn iPad hộ tôi
 Route::get('/ai-advisor', [AIAdvisorController::class, 'index'])->name('ai.advisor');
@@ -90,8 +92,22 @@ Route::prefix('locations')->name('locations.')->group(function () {
     Route::post('/calculate-fee', [GHNController::class, 'getShippingFee'])->name('fee');
 });
 
-// 6. Routes Quản trị (Admin) - Cần đăng nhập & có vai trò admin
+// 6. Route điều hướng /admin (Chưa đăng nhập -> về trang login)
+Route::get('/admin', function () {
+    if (!auth()->check()) {
+        return redirect()->route('login')->with('warning', 'Vui lòng đăng nhập để truy cập trang quản trị!');
+    }
+    if (auth()->user()->role !== 'admin') {
+        return redirect()->route('login')->with('error', 'Bạn không có quyền truy cập trang Admin.');
+    }
+    return redirect()->route('admin.dashboard');
+});
+
+// Routes Quản trị (Admin) - Cần đăng nhập & có vai trò admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', AdminProductController::class);
 

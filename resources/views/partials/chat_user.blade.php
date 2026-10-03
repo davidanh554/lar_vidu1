@@ -8,86 +8,89 @@
      WIDGET HỖ TRỢ KHÁCH HÀNG (LIÊN HỆ ADMIN) - DARK TECH EDITION
      ============================================================ -->
 <div id="support-chat-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 9998;">
-    <!-- Nút tròn Hỗ Trợ Khách Hàng Liquid Glass iOS 27 -->
-    <button id="support-chat-toggle" class="btn rounded-circle d-flex align-items-center justify-content-center position-relative support-toggle-btn" 
-            style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(15, 23, 42, 0.75) 100%) !important; backdrop-filter: blur(28px) saturate(210%) !important; -webkit-backdrop-filter: blur(28px) saturate(210%) !important; border: 1.5px solid rgba(255, 255, 255, 0.25) !important; border-top: 1.5px solid rgba(255, 255, 255, 0.75) !important; color: #fff; box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.45), 0 14px 35px rgba(0, 0, 0, 0.6) !important;" 
+    <!-- Nút tròn Hỗ Trợ Khách Hàng Clean White Style -->
+    <button id="support-chat-toggle" class="btn rounded-circle d-flex align-items-center justify-content-center position-relative support-toggle-btn shadow-sm" 
+            style="width: 56px; height: 56px; background: #ffffff !important; border: 2px solid #cbd5e1 !important; color: #0f172a !important; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;" 
             title="Hỗ trợ khách hàng (Gặp Admin)">
         <span class="fw-bold" style="font-size: 0.82rem; letter-spacing: 0.5px;">CSKH</span>
         
         <!-- Chấm đỏ số tin nhắn mới -->
         <span id="support-unread-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $unreadChatCount > 0 ? '' : 'd-none' }}" 
-              style="font-size: 0.65rem; padding: 2px 6px; border: 2px solid #0b0f19; font-weight: 700;">
+              style="font-size: 0.65rem; padding: 2px 6px; border: 2px solid #ffffff; font-weight: 700;">
             {{ $unreadChatCount }}
         </span>
     </button>
 
-    <!-- Khung chat popup Hỗ trợ khách hàng Liquid Glass iOS 27 -->
+    <!-- Khung chat popup Hỗ trợ khách hàng Clean Minimalist White -->
     <div id="support-chat-popup" class="card border-0" 
-         style="display: none; width: 380px; max-width: calc(100vw - 32px); height: 540px; max-height: calc(100vh - 48px); border-radius: 20px; overflow: hidden; background: rgba(15, 23, 42, 0.78) !important; backdrop-filter: blur(35px) saturate(210%) contrast(106%) !important; -webkit-backdrop-filter: blur(35px) saturate(210%) contrast(106%) !important; border: 1px solid rgba(255, 255, 255, 0.18) !important; border-top: 1.5px solid rgba(255, 255, 255, 0.55) !important; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), inset 0 -1px 2px rgba(0, 0, 0, 0.35), 0 25px 60px rgba(0, 0, 0, 0.8) !important;">
+         style="display: none; width: 380px; max-width: calc(100vw - 32px); height: 540px; max-height: calc(100vh - 48px); border-radius: 20px; overflow: hidden; background: #ffffff !important; border: 1px solid #e2e8f0 !important; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15) !important;">
         
         <!-- Header -->
-        <div class="card-header d-flex justify-content-between align-items-center p-3" 
-             style="background: rgba(30, 41, 59, 0.55) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;">
+        <div class="card-header d-flex justify-content-between align-items-center p-3 text-white" 
+             style="background: #0f172a !important; border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;">
             <div class="d-flex align-items-center gap-2">
-                <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                     style="width: 36px; height: 36px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4);">
-                    <span class="fw-bold text-white" style="font-size: 0.72rem;">CSKH</span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" 
+                     style="width: 38px; height: 38px; background: #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);">
+                    <i class="fa-solid fa-headset" style="font-size: 1.1rem; color: #0f172a;"></i>
                 </div>
                 <div>
-                    <div class="fw-bold text-white small" style="font-size: 0.92rem;">Hỗ trợ khách hàng</div>
+                    <div class="fw-bold text-white small" style="font-size: 0.95rem;">Hỗ trợ khách hàng</div>
                     <small class="d-flex align-items-center text-white-50" style="font-size: 0.72rem;">
-                        <span class="d-inline-block rounded-circle me-1" style="width: 7px; height: 7px; background: #00f59b; box-shadow: 0 0 8px #00f59b;"></span> Tư vấn viên trực tuyến
+                        <span class="d-inline-block rounded-circle me-1" style="width: 7px; height: 7px; background: #10b981; box-shadow: 0 0 8px #10b981;"></span> Tư vấn viên trực tuyến
                     </small>
                 </div>
             </div>
             <button id="support-chat-close" class="btn btn-sm text-white-50 hover-text-white p-1" title="Đóng" style="font-size: 1.25rem; line-height: 1;">
-                &times;
+                <i class="fa-solid fa-xmark text-white"></i>
             </button>
         </div>
 
         @auth
-            <!-- Body: Lịch sử tin nhắn giữa User và Admin (Liquid Glass Background) -->
-            <div id="support-chat-messages" class="card-body p-3" style="height: 395px; overflow-y: auto; background: rgba(11, 15, 25, 0.6) !important;">
-                <div class="text-center text-white-50 mt-5 small"><i class="fa-solid fa-spinner fa-spin me-1 text-emerald"></i> Đang tải lịch sử hỗ trợ...</div>
+            <!-- Body: Lịch sử tin nhắn giữa User và Admin -->
+            <div id="support-chat-messages" class="card-body p-3" style="height: 410px; overflow-y: auto; background: #f8fafc !important;">
+                <div class="text-center text-muted mt-5 small"><i class="fa-solid fa-spinner fa-spin me-1 text-primary"></i> Đang tải lịch sử hỗ trợ...</div>
             </div>
 
-            <!-- Footer: Ô nhập tin nhắn (Liquid Glass) -->
-            <div class="card-footer p-2 border-top" id="support-chat-footer" style="background: rgba(30, 41, 59, 0.6) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; border-color: rgba(255, 255, 255, 0.1) !important;">
+            <!-- Footer: Ô nhập tin nhắn -->
+            <div class="card-footer p-2 border-top bg-white" id="support-chat-footer">
                 <div class="input-group">
                     <input type="text" id="support-chat-input" class="form-control rounded-pill-start border-end-0 shadow-none" 
-                           style="background: rgba(11, 15, 25, 0.7); color: #ffffff; border-color: rgba(255, 255, 255, 0.18); font-size: 0.85rem;" 
+                           style="background: #f8fafc; color: #0f172a; border-color: #e2e8f0; font-size: 0.88rem;" 
                            placeholder="Nhắn tin cho nhân viên hỗ trợ..." autocomplete="off">
                     <button id="support-send-btn" class="btn rounded-pill-end px-3 fw-bold" 
-                            style="background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important; color: #022c16 !important; border: 1px solid rgba(255, 255, 255, 0.4) !important; border-top: 1.5px solid rgba(255, 255, 255, 0.7) !important; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;">
+                            style="background: #0f172a !important; color: #ffffff !important; border: 1px solid #0f172a !important; font-size: 0.88rem;">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
+                </div>
+                <div class="text-center mt-1">
+                    <small class="text-muted" style="font-size: 0.72rem;">
+                        Nhân viên CSKH VUA TABLET • <a href="javascript:void(0)" onclick="window.switchFromSupportToGemini()" class="fw-bold text-decoration-none" style="color: #4f46e5 !important;">Chat với AI 24/7</a>
+                    </small>
                 </div>
             </div>
         @else
             <!-- Guest: Lời mời đăng nhập để liên hệ Admin -->
-            <div class="card-body p-4 text-center d-flex flex-column justify-content-center align-items-center" style="height: 440px; background: rgba(11, 15, 25, 0.6) !important;">
+            <div class="card-body p-4 text-center d-flex flex-column justify-content-center align-items-center" style="height: 460px; background: #ffffff !important;">
                 <div class="rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" 
-                     style="width: 64px; height: 64px; background: rgba(0, 245, 155, 0.15); border: 1.5px solid rgba(0, 245, 155, 0.4); box-shadow: 0 0 25px rgba(0, 245, 155, 0.25);">
-                    <span class="fw-bold" style="color: #00f59b; font-size: 1.2rem; letter-spacing: 0.5px;">CSKH</span>
+                     style="width: 64px; height: 64px; background: #eef2ff; border: 1.5px solid #c7d2fe; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.15);">
+                    <i class="fa-solid fa-headset" style="color: #4f46e5; font-size: 1.8rem;"></i>
                 </div>
-                <h6 class="fw-bold text-white mb-2" style="font-size: 1.05rem;">Đăng nhập để gặp Tư vấn viên</h6>
-                <p class="text-white-50 small mb-4 px-2" style="line-height: 1.6; font-size: 0.84rem;">
+                <h6 class="fw-bold text-dark mb-2" style="font-size: 1.05rem;">Đăng nhập để gặp Tư vấn viên</h6>
+                <p class="text-muted small mb-4 px-2" style="line-height: 1.6; font-size: 0.84rem;">
                     Vui lòng đăng nhập tài khoản để bộ phận Hỗ trợ khách hàng có thể kiểm tra đơn hàng và giải đáp chi tiết cho bạn!
                 </p>
                 <div class="d-flex gap-2 w-100 justify-content-center mb-3">
-                    <a href="{{ route('login') }}" class="btn btn-sm rounded-pill px-4 fw-bold" 
-                       style="background: linear-gradient(135deg, #00f59b 0%, #00d674 100%); color: #022c16; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 245, 155, 0.35);">
+                    <a href="{{ route('login') }}" class="btn btn-dark btn-sm rounded-pill px-4 fw-bold">
                         Đăng nhập
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-outline-light btn-sm rounded-pill px-4" 
-                       style="border-color: rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.05);">
+                    <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
                         Đăng ký
                     </a>
                 </div>
-                <div class="pt-3 border-top w-100" style="border-color: rgba(255, 255, 255, 0.1) !important;">
-                    <small class="text-white-50 d-block mb-2" style="font-size: 0.75rem;">Muốn trải nghiệm tư vấn thông minh?</small>
-                    <button type="button" class="btn btn-sm rounded-pill px-3 py-1 text-white fw-semibold" 
-                            style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(0, 245, 155, 0.4); font-size: 0.82rem;" 
+                <div class="pt-3 border-top w-100">
+                    <small class="text-muted d-block mb-2" style="font-size: 0.75rem;">Muốn trải nghiệm tư vấn thông minh?</small>
+                    <button type="button" class="btn btn-sm rounded-pill px-3 py-1 text-primary fw-semibold" 
+                            style="background: #eef2ff; border: 1px solid #c7d2fe; font-size: 0.82rem;" 
                             onclick="window.switchFromSupportToGemini()">
                         Khám phá Trợ lý AI (24/7)
                     </button>
@@ -103,9 +106,9 @@
 }
 .support-toggle-btn:hover {
     transform: translateY(-2px) scale(1.05);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
-    border-color: rgba(255, 255, 255, 0.6) !important;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.6) !important;
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
 }
 .support-msg-bubble {
     max-width: 82%;
@@ -116,25 +119,20 @@
     word-break: break-word;
 }
 .support-user-bubble {
-    background: linear-gradient(135deg, #00f59b 0%, #00d674 100%) !important;
-    color: #022c16 !important;
-    font-weight: 700 !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.7) !important;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.35) !important;
+    background: #4f46e5 !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
     margin-left: auto;
     border-bottom-right-radius: 4px;
 }
 .support-admin-bubble {
-    background: rgba(30, 41, 59, 0.65) !important;
-    backdrop-filter: blur(18px) !important;
-    -webkit-backdrop-filter: blur(18px) !important;
-    color: #f1f5f9;
+    background: #ffffff !important;
+    color: #0f172a !important;
     margin-right: auto;
     border-bottom-left-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
-    border-top: 1.5px solid rgba(255, 255, 255, 0.35) !important;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
 }
 </style>
 
@@ -215,8 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     let html = "";
                     if (messages.length === 0) {
                         html = `
-                            <div class="text-center text-white-50 mt-5 small">
-                                <i class="fa-solid fa-headset fs-2 mb-2 d-block text-success opacity-50"></i>
+                            <div class="text-center text-muted mt-5 small">
+                                <i class="fa-solid fa-headset fs-2 mb-2 d-block text-primary opacity-75"></i>
                                 Chào bạn! Đây là kênh <strong>Hỗ trợ khách hàng</strong>.<br>
                                 Hãy để lại tin nhắn, nhân viên CSKH VUA TABLET sẽ phản hồi sớm nhất!
                             </div>
@@ -234,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div class="d-flex mb-2 ${isMe ? 'justify-content-end' : 'justify-content-start'}">
                                     <div class="support-msg-bubble ${isMe ? 'support-user-bubble' : 'support-admin-bubble'}">
                                         <small class="d-block fw-semibold mb-1 opacity-75" style="font-size: 0.7rem;">
-                                            ${isMe ? 'Bạn' : '<i class="fa-solid fa-shield-halved text-success me-1"></i>Chuyên viên hỗ trợ'}
+                                            ${isMe ? 'Bạn' : '<i class="fa-solid fa-shield-halved text-primary me-1"></i>Chuyên viên hỗ trợ'}
                                         </small>
                                         <div>${escapeHtml(msg.content)}</div>
                                         ${timeStr ? `<div class="text-end opacity-75 mt-1" style="font-size: 0.65rem;">${timeStr}</div>` : ''}

@@ -4,22 +4,22 @@
 <div class="container-fluid px-0">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
-            <h3 class="fw-bold mb-1"><i class="fa-solid fa-clapperboard text-danger me-2"></i>Quản lý Video Reels Giải Trí</h3>
+            <h3 class="fw-bold mb-1">Quản lý Video Reels Giải Trí</h3>
             <p class="text-muted small mb-0">Quản lý các video ngắn thu hút khách hàng, tích Xu đổi tiền mặt và liên kết sản phẩm iPad</p>
         </div>
         <div class="d-flex gap-2">
             <a href="{{ route('videos.index') }}" target="_blank" class="btn btn-outline-dark rounded-pill px-3 shadow-sm">
-                <i class="fa-solid fa-eye me-1"></i> Xem trang Lướt Video
+                Xem trang Lướt Video
             </a>
             <a href="{{ route('admin.videos.create') }}" class="btn btn-danger rounded-pill px-3 shadow-sm">
-                <i class="fa-solid fa-plus me-1"></i> Thêm Video Mới
+                Thêm Video Mới
             </a>
         </div>
     </div>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show rounded-3 shadow-sm mb-4" role="alert">
-            <i class="fa-solid fa-circle-check me-2"></i>{{ session('success') }}
+            {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif

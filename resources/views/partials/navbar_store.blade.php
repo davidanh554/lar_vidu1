@@ -1,7 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top navbar-custom py-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top navbar-custom py-2 py-lg-3">
     <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ route('home') }}">
-            <span class="brand-name">VUA TABLET</span>
+        <!-- Logo VUA TABLET bên trái -->
+        <a class="navbar-brand brand-logo-wrap p-0 me-2 me-lg-4" href="{{ route('home') }}" title="VuaTablet - Siêu thị Máy tính bảng & Phụ kiện chính hãng">
+            <span class="brand-logo-text">
+                Vua<span class="brand-gradient">Tablet</span>
+            </span>
         </a>
         
         <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStoreNav" aria-controls="navbarStoreNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,17 +12,9 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarStoreNav">
-            <!-- Left nav links -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-1">
-                <li class="nav-item">
-                    <a class="nav-link px-3 py-2 rounded-pill text-nowrap {{ request()->routeIs('home') || request()->routeIs('products.*') ? 'active text-white fw-semibold bg-white bg-opacity-10' : 'text-white-50' }}" href="{{ route('home') }}">
-                        Cửa hàng
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Right nav links / Auth -->
-            <div class="d-flex flex-wrap align-items-center gap-2 mt-3 mt-lg-0">
+            <!-- Cụm nút bên phải (Giữ nguyên vị trí các nút như ảnh chụp) -->
+            <!-- Cụm nút bên phải (Giữ nguyên vị trí các nút, đổi phong cách tối giản thanh lịch như ảnh mẫu) -->
+            <div class="d-flex flex-wrap align-items-center gap-2 gap-lg-3 mt-3 mt-lg-0 ms-auto">
                 @php
                     $cart = auth()->check() ? (auth()->user()->cart ?? []) : [];
                     $cartCount = array_sum(array_column($cart, 'quantity'));
@@ -28,51 +23,72 @@
                         : 0;
                 @endphp
 
-                <a href="{{ route('cart.index') }}" class="btn btn-outline-light btn-sm rounded-pill px-3 position-relative d-inline-flex align-items-center text-nowrap {{ request()->routeIs('cart.*') ? 'active border-primary text-white bg-primary bg-opacity-25' : '' }}" id="nav-cart-btn">
-                    <span>Giỏ hàng</span>
-                    <span id="nav-cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $cartCount > 0 ? '' : 'd-none' }}" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;">
-                        {{ $cartCount }}
+                <!-- 1. Nút Giỏ hàng (Phong cách tối giản như ảnh mẫu kèm icon túi xách) -->
+                <a href="{{ route('cart.index') }}" class="nav-item-link position-relative text-nowrap" id="nav-cart-btn" title="Giỏ hàng của bạn">
+                    <span class="position-relative d-inline-flex align-items-center me-1">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-cart-icon">
+                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        <span id="nav-cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $cartCount > 0 ? '' : 'd-none' }}" 
+                              style="font-size: 0.65rem; min-width: 17px; height: 17px; display: inline-flex; align-items: center; justify-content: center; padding: 0 4px; font-weight: 700;">
+                            {{ $cartCount }}
+                        </span>
                     </span>
+                    <span>Giỏ hàng</span>
                 </a>
 
                 @auth
-                    <a href="{{ route('orders.index') }}" class="btn btn-outline-info btn-sm rounded-pill px-3 position-relative d-inline-flex align-items-center text-nowrap {{ request()->routeIs('orders.*') ? 'active bg-info bg-opacity-25 text-white' : '' }}" id="nav-orders-btn" title="Lịch sử đơn hàng & tiến độ GHN">
+                    <!-- 2. Nút Đơn hàng của tôi (Text link thanh lịch không viền thô) -->
+                    <a href="{{ route('orders.index') }}" class="nav-item-link position-relative text-nowrap" id="nav-orders-btn" title="Lịch sử đơn hàng">
                         <span>Đơn hàng của tôi</span>
-                        <span id="nav-order-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $orderUpdatesCount > 0 ? '' : 'd-none' }}" style="font-size: 0.72rem; padding: 0.25rem 0.5rem;" title="Có cập nhật trạng thái đơn hàng mới!">
+                        <span id="nav-order-badge" class="badge rounded-pill bg-danger ms-1 {{ $orderUpdatesCount > 0 ? '' : 'd-none' }}" 
+                              style="font-size: 0.65rem; padding: 0.18rem 0.45rem; font-weight: 700;" title="Có cập nhật đơn hàng mới!">
                             {{ $orderUpdatesCount }}
                         </span>
                     </a>
 
-                    <a href="{{ route('profile') }}" class="d-flex align-items-center text-decoration-none bg-white bg-opacity-10 px-3 py-1 rounded-pill border border-white border-opacity-10 text-white small gap-2 user-pill-btn text-nowrap {{ request()->routeIs('profile*') ? 'border-emerald active' : '' }}" title="Xem trang thông tin cá nhân & lộ trình đơn mua">
-                        <span>Xin chào, <strong class="text-white">{{ Auth::user()->name }}</strong></span>
+                    <!-- Đường gạch đứng phân cách tinh tế như ảnh mẫu PhongMobile -->
+                    <div class="nav-divider d-none d-lg-block"></div>
+
+                    <!-- 3. Thông tin User: Xin chào, [Tên] + Badge Đã kích hoạt -->
+                    <a href="{{ route('profile') }}" class="nav-user-link text-nowrap gap-2" title="Xem trang thông tin cá nhân">
+                        <span class="nav-user-greeting">Xin chào, <strong class="nav-user-name">{{ Auth::user()->name }}</strong></span>
                         @if(Auth::user()->hasVerifiedEmail())
-                            <span class="badge badge-verified-pill" title="Tài khoản đã xác thực email thành công">
+                            <span class="badge rounded-pill badge-verified" title="Tài khoản đã xác thực email thành công">
                                 Đã kích hoạt
                             </span>
                         @else
-                            <span class="badge badge-unverified-pill" title="Tài khoản chưa kích hoạt email">
+                            <span class="badge rounded-pill badge-unverified" title="Tài khoản chưa kích hoạt email">
                                 Chưa kích hoạt
                             </span>
                         @endif
                     </a>
 
+                    <!-- 4. Nút Admin (nếu là admin) -->
                     @if(Auth::user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-warning btn-sm fw-bold rounded-pill px-3 d-inline-flex align-items-center text-nowrap">
+                        <a href="{{ route('admin.dashboard') }}" class="btn-nav-admin text-nowrap" title="Trang quản trị">
                             Admin
                         </a>
                     @endif
 
+                    <!-- 5. Nút Đăng xuất dạng Solid Dark Pill đúng chuẩn nút action chính ở ảnh mẫu -->
                     <form action="{{ route('logout') }}" method="POST" class="d-inline mb-0">
                         @csrf
-                        <button type="submit" class="btn btn-outline-light btn-sm rounded-pill px-3 d-inline-flex align-items-center text-nowrap">
+                        <button type="submit" class="btn-nav-dark text-nowrap">
                             Đăng xuất
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                    <!-- Đường gạch đứng phân cách -->
+                    <div class="nav-divider d-none d-lg-block"></div>
+
+                    <!-- Nếu là khách: Đăng nhập (Text link) & Đăng ký (Solid Dark Pill) chuẩn ảnh mẫu -->
+                    <a href="{{ route('login') }}" class="nav-item-link text-nowrap">
                         Đăng nhập
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-primary btn-sm rounded-pill px-3 fw-bold">
+                    <a href="{{ route('register') }}" class="btn-nav-dark text-nowrap text-decoration-none">
                         Đăng ký
                     </a>
                 @endauth

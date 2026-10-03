@@ -21,70 +21,42 @@
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted small fw-medium">Tổng lượt đánh giá</span>
-                        <h3 class="fw-bold mb-0 mt-1 text-dark">{{ number_format($totalReviews) }}</h3>
-                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill mt-2">Toàn bộ sản phẩm</span>
-                    </div>
-                    <div class="rounded-4 bg-primary bg-opacity-10 text-primary p-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                        <i class="fa-solid fa-comments fs-4"></i>
-                    </div>
+                <span class="text-muted small fw-medium">Tổng lượt đánh giá</span>
+                <h3 class="fw-bold mb-0 mt-1 text-dark">{{ number_format($totalReviews) }}</h3>
+                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill mt-2 align-self-start">Toàn bộ sản phẩm</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
+                <span class="text-muted small fw-medium">Điểm đánh giá trung bình</span>
+                <div class="d-flex align-items-baseline gap-2 mt-1">
+                    <h3 class="fw-bold mb-0 text-warning">{{ number_format($avgRating, 1) }}</h3>
+                    <span class="text-muted fw-bold">/ 5.0</span>
+                </div>
+                <div class="text-warning small mt-2">
+                    @for($i = 1; $i <= 5; $i++)
+                        <i class="fa-solid fa-star {{ $i <= round($avgRating) ? 'text-warning' : 'text-secondary opacity-25' }}"></i>
+                    @endfor
                 </div>
             </div>
         </div>
 
         <div class="col-sm-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted small fw-medium">Điểm đánh giá trung bình</span>
-                        <div class="d-flex align-items-baseline gap-2 mt-1">
-                            <h3 class="fw-bold mb-0 text-warning">{{ number_format($avgRating, 1) }}</h3>
-                            <span class="text-muted fw-bold">/ 5.0</span>
-                        </div>
-                        <div class="text-warning small mt-2">
-                            @for($i = 1; $i <= 5; $i++)
-                                <i class="fa-solid fa-star {{ $i <= round($avgRating) ? 'text-warning' : 'text-secondary opacity-25' }}"></i>
-                            @endfor
-                        </div>
-                    </div>
-                    <div class="rounded-4 bg-warning bg-opacity-10 text-warning p-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                        <i class="fa-solid fa-star-half-stroke fs-4"></i>
-                    </div>
-                </div>
+                <span class="text-muted small fw-medium">Tỷ lệ hài lòng (4-5★)</span>
+                <h3 class="fw-bold mb-0 mt-1 text-success">{{ $satisfactionRate }}%</h3>
+                <span class="text-muted small mt-2 d-block">Dựa trên {{ ($starCounts[5] + $starCounts[4]) }} lượt tích cực</span>
             </div>
         </div>
 
         <div class="col-sm-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted small fw-medium">Tỷ lệ hài lòng (4-5★)</span>
-                        <h3 class="fw-bold mb-0 mt-1 text-success">{{ $satisfactionRate }}%</h3>
-                        <span class="text-muted small mt-2 d-block">Dựa trên {{ ($starCounts[5] + $starCounts[4]) }} lượt tích cực</span>
-                    </div>
-                    <div class="rounded-4 bg-success bg-opacity-10 text-success p-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                        <i class="fa-solid fa-face-smile fs-4"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted small fw-medium">Phản hồi cần chú ý (1-2★)</span>
-                        <h3 class="fw-bold mb-0 mt-1 {{ ($starCounts[1] + $starCounts[2]) > 0 ? 'text-danger' : 'text-secondary' }}">
-                            {{ $starCounts[1] + $starCounts[2] }}
-                        </h3>
-                        <span class="text-muted small mt-2 d-block">{{ ($starCounts[1] + $starCounts[2]) > 0 ? 'Cần hỗ trợ khách' : 'Chưa có khiếu nại' }}</span>
-                    </div>
-                    <div class="rounded-4 bg-danger bg-opacity-10 text-danger p-3 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                        <i class="fa-solid fa-triangle-exclamation fs-4"></i>
-                    </div>
-                </div>
+                <span class="text-muted small fw-medium">Phản hồi cần chú ý (1-2★)</span>
+                <h3 class="fw-bold mb-0 mt-1 {{ ($starCounts[1] + $starCounts[2]) > 0 ? 'text-danger' : 'text-secondary' }}">
+                    {{ $starCounts[1] + $starCounts[2] }}
+                </h3>
+                <span class="text-muted small mt-2 d-block">{{ ($starCounts[1] + $starCounts[2]) > 0 ? 'Cần hỗ trợ khách' : 'Chưa có khiếu nại' }}</span>
             </div>
         </div>
     </div>
@@ -94,8 +66,8 @@
         <!-- Phân bổ số sao -->
         <div class="col-lg-6">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-                <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-chart-simple text-primary"></i> Phân bổ xếp hạng sao
+                <h5 class="fw-bold mb-3">
+                    Phân bổ xếp hạng sao
                 </h5>
                 <div class="d-flex flex-column gap-2 mt-2">
                     @for($s = 5; $s >= 1; $s--)
@@ -126,8 +98,8 @@
         <!-- Top sản phẩm nhiều đánh giá -->
         <div class="col-lg-6">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-                <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-trophy text-warning"></i> Sản phẩm được đánh giá nhiều nhất
+                <h5 class="fw-bold mb-3">
+                    Sản phẩm được đánh giá nhiều nhất
                 </h5>
                 <div class="table-responsive">
                     <table class="table table-hover table-sm align-middle mb-0">

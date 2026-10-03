@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="fw-bold">Quản lý Sản phẩm (Admin)</h2>
     <a href="{{ route('admin.products.create') }}" class="btn btn-success rounded-pill px-3">
-        <i class="fa-solid fa-plus me-1"></i> Thêm sản phẩm mới
+        Thêm sản phẩm mới
     </a>
 </div>
 

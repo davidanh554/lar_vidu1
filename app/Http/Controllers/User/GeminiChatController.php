@@ -9,9 +9,53 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use App\Models\AiChatMessage;
 
 class GeminiChatController extends Controller
 {
+    /**
+     * Lấy lịch sử chat của tài khoản hiện tại
+     */
+    public function history(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'messages' => [],
+            ], 401);
+        }
+
+        $messages = AiChatMessage::where('user_id', Auth::id())
+            ->orderBy('created_at', 'asc')
+            ->take(50)
+            ->get(['id', 'role', 'content', 'created_at']);
+
+        return response()->json([
+            'success' => true,
+            'messages' => $messages,
+        ]);
+    }
+
+    /**
+     * Xóa toàn bộ lịch sử chat của tài khoản hiện tại
+     */
+    public function clear(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Chưa đăng nhập',
+            ], 401);
+        }
+
+        AiChatMessage::where('user_id', Auth::id())->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã xóa toàn bộ lịch sử trò chuyện AI.',
+        ]);
+    }
+
     /**
      * Xử lý tin nhắn hỏi đáp tự động với Google Gemini AI
      */
@@ -29,44 +73,59 @@ class GeminiChatController extends Controller
 
         $request->validate([
             'message' => 'required|string|max:1500',
-            'history' => 'nullable|array',
         ]);
 
         $userMessage = trim($request->input('message'));
-        $history = $request->input('history', []);
+        $userId = Auth::id();
 
-        // 1. Kiểm tra API Key
+        // 1. Lưu câu hỏi của người dùng vào Database
+        $userMsgRecord = AiChatMessage::create([
+            'user_id' => $userId,
+            'role'    => 'user',
+            'content' => $userMessage,
+        ]);
+
+        // 2. Kiểm tra API Key
         $apiKey = config('services.gemini.api_key');
         $model = config('services.gemini.model', 'gemini-1.5-flash');
         $verifySsl = (bool) config('services.gemini.verify_ssl', false);
 
         if (empty($apiKey)) {
+            $botReply = "**Chào bạn! Tôi là Trợ lý AI VUA TABLET.**\n\nHiện tại hệ thống đang được Quản trị viên cập nhật cấu hình kết nối.\n\n**Bạn cần hỗ trợ ngay?** Vui lòng bấm vào nút **Hỗ trợ khách hàng** ở góc dưới màn hình để chat trực tiếp với nhân viên tư vấn của shop nhé!";
+            
+            // Lưu câu trả lời mặc định vào DB
+            AiChatMessage::create([
+                'user_id' => $userId,
+                'role'    => 'model',
+                'content' => $botReply,
+            ]);
+
             return response()->json([
-                'success' => true,
+                'success'  => true,
                 'need_key' => true,
-                'reply' => "**Chào bạn! Tôi là Trợ lý AI VUA TABLET.**\n\nHiện tại hệ thống đang được Quản trị viên cập nhật cấu hình kết nối.\n\n**Bạn cần hỗ trợ ngay?** Vui lòng bấm vào nút **Hỗ trợ khách hàng** ở góc dưới màn hình để chat trực tiếp với nhân viên tư vấn của shop nhé!",
+                'reply'    => $botReply,
             ]);
         }
 
-        // 2. Chuẩn bị Context dữ liệu sản phẩm & thông tin cửa hàng
+        // 3. Chuẩn bị Context dữ liệu sản phẩm & thông tin cửa hàng
         $systemInstruction = $this->buildSystemInstruction();
 
-        // 3. Chuẩn bị Payload cho Gemini API
+        // 4. Chuẩn bị Payload cho Gemini API dựa trên lịch sử trong CSDL
         $contents = [];
 
-        // Lấy tối đa 8 tin nhắn gần nhất để giữ ngữ cảnh hội thoại
-        if (is_array($history)) {
-            $recentHistory = array_slice($history, -8);
-            foreach ($recentHistory as $msg) {
-                $role = ($msg['role'] ?? '') === 'model' ? 'model' : 'user';
-                $text = trim($msg['text'] ?? '');
-                if (!empty($text)) {
-                    $contents[] = [
-                        'role'  => $role,
-                        'parts' => [['text' => $text]],
-                    ];
-                }
-            }
+        // Lấy tối đa 8 tin nhắn gần nhất trước tin nhắn này từ CSDL để giữ ngữ cảnh hội thoại
+        $dbHistory = AiChatMessage::where('user_id', $userId)
+            ->where('id', '<', $userMsgRecord->id)
+            ->orderBy('id', 'desc')
+            ->take(8)
+            ->get()
+            ->reverse();
+
+        foreach ($dbHistory as $item) {
+            $contents[] = [
+                'role'  => $item->role === 'model' ? 'model' : 'user',
+                'parts' => [['text' => $item->content]],
+            ];
         }
 
         // Thêm câu hỏi hiện tại của người dùng
@@ -88,7 +147,7 @@ class GeminiChatController extends Controller
             ],
         ];
 
-        // 4. Gọi API Google Gemini với cơ chế tự động chuyển model dự phòng nếu bị lỗi 404/503
+        // 5. Gọi API Google Gemini với cơ chế tự động chuyển model dự phòng nếu bị lỗi 404/503
         $candidateModels = array_unique(array_filter([
             $model,
             'gemini-flash-latest',
@@ -114,6 +173,13 @@ class GeminiChatController extends Controller
                     $replyText = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
 
                     if (!empty($replyText)) {
+                        // Lưu câu trả lời của AI vào Database
+                        AiChatMessage::create([
+                            'user_id' => $userId,
+                            'role'    => 'model',
+                            'content' => $replyText,
+                        ]);
+
                         return response()->json([
                             'success' => true,
                             'reply'   => $replyText,
@@ -144,6 +210,9 @@ class GeminiChatController extends Controller
         if ($lastError) {
             Log::error('Gemini All Models Failed', $lastError);
         }
+
+        // Nếu thất bại hoàn toàn, xóa câu hỏi vừa tạo để không làm rác CSDL
+        $userMsgRecord->delete();
 
         $errMsg = "Dạ, hiện tại em chưa kết nối được tới máy chủ AI hoặc API Key không hợp lệ. Quý khách vui lòng thử lại hoặc bấm vào nút **🎧 Hỗ trợ khách hàng** bên dưới để được nhân viên tư vấn hỗ trợ tức thì nhé!";
         return response()->json([
