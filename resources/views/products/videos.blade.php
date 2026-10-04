@@ -76,7 +76,8 @@
                             <!-- Trình phát YouTube Shorts / Video nhúng ẩn sạch UI -->
                             <div class="reel-youtube-wrapper">
                                 <iframe class="reel-youtube-iframe"
-                                        src="{{ $v->embed_url }}"
+                                        src="{{ $index === 0 ? $v->embed_url : '' }}"
+                                        data-src="{{ $v->embed_url }}"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen>
                                 </iframe>
@@ -86,7 +87,8 @@
                             <video class="reel-video-element" 
                                    loop 
                                    playsinline 
-                                   preload="auto" 
+                                   muted
+                                   preload="{{ $index === 0 ? 'auto' : 'none' }}" 
                                    src="{{ asset($v->video_url) }}" 
                                    poster="{{ asset($v->thumbnail ?? '') }}">
                             </video>
@@ -846,90 +848,162 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 4. Quản lý phát video khi Scroll (Intersection Observer)
-    const observerOptions = {
-        root: container,
-        threshold: 0.65
-    };
+    // =========================================================================
+    // 4. QUẢN LÝ PHÁT VIDEO CHUẨN XÁC: CHỈ DUY NHẤT 1 VIDEO ĐƯỢC PHÁT TẠI MỘT THỜI ĐIỂM
+    // =========================================================================
+    let currentActiveIndex = 0;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target.querySelector('video');
-            const iframe = entry.target.querySelector('iframe');
-            const playIcon = entry.target.querySelector('.reel-play-indicator');
-            if (!video && !iframe) return;
+    // Helper: Dừng phát và tắt tiếng tuyệt đối tất cả các slide không phải slide đang xem
+    function stopInactiveVideos(exceptIndex) {
+        slides.forEach((slide, idx) => {
+            if (idx !== exceptIndex) {
+                slide.classList.remove('active');
+                const v = slide.querySelector('video');
+                const iframe = slide.querySelector('iframe');
+                const playIcon = slide.querySelector('.reel-play-indicator');
 
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                if (video) {
-                    video.muted = isGlobalMuted;
-                    video.play().then(() => {
-                        if (playIcon) playIcon.style.display = 'none';
-                        if (coinsRemainingToday > 0) startWatchTimer();
-                        else setLimitReachedState();
-                    }).catch(() => {
-                        video.muted = true;
-                        video.play();
-                        if (coinsRemainingToday > 0) startWatchTimer();
-                        else setLimitReachedState();
-                    });
-                } else if (iframe) {
-                    if (coinsRemainingToday > 0) startWatchTimer();
-                    else setLimitReachedState();
-                    if (!isGlobalMuted) {
-                        try {
-                            iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute' }), '*');
-                            iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-                        } catch (e) {}
-                    }
+                if (v) {
+                    try {
+                        v.pause();
+                        v.muted = true; // Luôn mute video không hiển thị để không bao giờ lọt tiếng
+                        v.currentTime = 0; // Tua lại đầu video
+                    } catch (e) {}
                 }
-            } else {
-                entry.target.classList.remove('active');
-                if (video) {
-                    video.pause();
-                    video.currentTime = 0;
-                }
+
                 if (iframe) {
                     try {
+                        // Gửi lệnh pause và mute tới iframe YouTube
                         iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo' }), '*');
+                        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute' }), '*');
                     } catch (e) {}
+                }
+
+                if (playIcon) playIcon.style.display = 'none';
+            }
+        });
+    }
+
+    // Helper: Chuyển sang và CHỈ PHÁT DUY NHẤT video tại slideIndex
+    function playActiveSlide(slideIndex) {
+        if (slideIndex < 0 || slideIndex >= slides.length) return;
+        currentActiveIndex = slideIndex;
+
+        // 1. Dừng ngay lập tức toàn bộ các video khác (không bao giờ cho phát đè tiếng)
+        stopInactiveVideos(slideIndex);
+
+        const targetSlide = slides[slideIndex];
+        if (!targetSlide) return;
+        targetSlide.classList.add('active');
+
+        const v = targetSlide.querySelector('video');
+        const iframe = targetSlide.querySelector('iframe');
+        const playIcon = targetSlide.querySelector('.reel-play-indicator');
+
+        // Bắt đầu tính giờ nhận Xu khi xem video
+        if (coinsRemainingToday > 0) startWatchTimer();
+        else setLimitReachedState();
+
+        if (v) {
+            v.muted = isGlobalMuted;
+            const playPromise = v.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    if (playIcon) playIcon.style.display = 'none';
+                }).catch(() => {
+                    // Nếu chính sách bảo mật trình duyệt chặn phát có tiếng, tự động phát tắt tiếng
+                    v.muted = true;
+                    v.play().catch(() => {});
+                    if (playIcon) playIcon.style.display = 'none';
+                });
+            }
+        } else if (iframe) {
+            // Lazy load YouTube iframe: chỉ gán src khi người dùng lướt tới video này
+            if (!iframe.src && iframe.dataset.src) {
+                iframe.src = iframe.dataset.src;
+            }
+            try {
+                iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
+                if (!isGlobalMuted) {
+                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute' }), '*');
+                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+                } else {
+                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute' }), '*');
+                }
+            } catch (e) {}
+            if (playIcon) playIcon.style.display = 'none';
+        }
+    }
+
+    // 5. Bắt chính xác video khi lướt (Scroll Snap Detection)
+    let scrollDebounce = null;
+    function detectActiveSlideOnScroll() {
+        if (!container) return;
+        const slideHeight = container.clientHeight || 1;
+        const newIndex = Math.round(container.scrollTop / slideHeight);
+        if (newIndex >= 0 && newIndex < slides.length && newIndex !== currentActiveIndex) {
+            playActiveSlide(newIndex);
+        }
+    }
+
+    if (container) {
+        container.addEventListener('scroll', function() {
+            clearTimeout(scrollDebounce);
+            scrollDebounce = setTimeout(detectActiveSlideOnScroll, 50);
+        }, { passive: true });
+
+        container.addEventListener('scrollend', detectActiveSlideOnScroll, { passive: true });
+    }
+
+    // Kết hợp IntersectionObserver để chắc chắn nhận diện khi cuộn nhanh
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+                const idx = parseInt(entry.target.getAttribute('data-index'), 10);
+                if (!isNaN(idx) && idx !== currentActiveIndex) {
+                    playActiveSlide(idx);
                 }
             }
         });
-    }, observerOptions);
+    }, {
+        root: container,
+        threshold: [0.55]
+    });
 
     slides.forEach(slide => observer.observe(slide));
 
-    // 5. Click vào video để Play / Pause
-    slides.forEach(slide => {
-        const video = slide.querySelector('video');
-        const iframe = slide.querySelector('iframe');
-        const playIcon = slide.querySelector('.reel-play-indicator');
+    // 6. Click vào màn hình video để Play / Pause
+    slides.forEach((slide, idx) => {
         const clickOverlay = slide.querySelector('.reel-click-overlay');
         const soundBtn = slide.querySelector('.reel-sound-toggle-btn');
 
         if (clickOverlay) {
             clickOverlay.addEventListener('click', function() {
-                if (video) {
-                    if (video.paused) {
-                        video.play();
+                const activeSlide = slides[currentActiveIndex];
+                if (!activeSlide) return;
+                const v = activeSlide.querySelector('video');
+                const iframe = activeSlide.querySelector('iframe');
+                const playIcon = activeSlide.querySelector('.reel-play-indicator');
+
+                if (v) {
+                    if (v.paused) {
+                        v.play();
                         if (playIcon) playIcon.style.display = 'none';
                         if (coinsRemainingToday > 0) startWatchTimer();
                         else setLimitReachedState();
                     } else {
-                        video.pause();
+                        v.pause();
                         if (playIcon) playIcon.style.display = 'flex';
                         pauseWatchTimer();
                     }
                 } else if (iframe) {
                     const isPaused = playIcon && playIcon.style.display === 'flex';
                     if (isPaused) {
-                        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
                         if (playIcon) playIcon.style.display = 'none';
                         if (coinsRemainingToday > 0) startWatchTimer();
                         else setLimitReachedState();
                     } else {
-                        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo' }), '*');
                         if (playIcon) playIcon.style.display = 'flex';
                         pauseWatchTimer();
                     }
@@ -937,53 +1011,43 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
+        // Bật / Tắt âm thanh: CHỈ ÁP DỤNG DUY NHẤT LÊN VIDEO ĐANG XEM
         if (soundBtn) {
             soundBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 isGlobalMuted = !isGlobalMuted;
 
-                // 1. Cho thẻ video HTML5 nội bộ
-                document.querySelectorAll('.reel-video-element').forEach(v => {
-                    v.muted = isGlobalMuted;
-                });
-
-                // 2. Cho iframe YouTube (postMessage API)
-                document.querySelectorAll('.reel-youtube-iframe').forEach(iframe => {
-                    try {
-                        if (isGlobalMuted) {
-                            iframe.contentWindow.postMessage(JSON.stringify({
-                                event: 'command',
-                                func: 'mute'
-                            }), '*');
-                        } else {
-                            iframe.contentWindow.postMessage(JSON.stringify({
-                                event: 'command',
-                                func: 'unMute'
-                            }), '*');
-                            iframe.contentWindow.postMessage(JSON.stringify({
-                                event: 'command',
-                                func: 'setVolume',
-                                args: [100]
-                            }), '*');
-                            iframe.contentWindow.postMessage(JSON.stringify({
-                                event: 'command',
-                                func: 'playVideo'
-                            }), '*');
-                        }
-                    } catch (err) {
-                        console.warn('YouTube postMessage error:', err);
-                    }
-                });
-
-                // 3. Cập nhật icon trên nút âm thanh
+                // Đồng bộ icon trên tất cả nút âm thanh
                 document.querySelectorAll('.reel-sound-toggle-btn i').forEach(icon => {
                     icon.className = isGlobalMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high text-white';
                 });
+
+                // CHỈ mở tiếng trên video HIỆN TẠI ĐANG XEM
+                const activeSlide = slides[currentActiveIndex];
+                if (activeSlide) {
+                    const activeVid = activeSlide.querySelector('video');
+                    const activeIframe = activeSlide.querySelector('iframe');
+
+                    if (activeVid) {
+                        activeVid.muted = isGlobalMuted;
+                    }
+
+                    if (activeIframe) {
+                        try {
+                            if (isGlobalMuted) {
+                                activeIframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute' }), '*');
+                            } else {
+                                activeIframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute' }), '*');
+                                activeIframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+                            }
+                        } catch (err) {}
+                    }
+                }
             });
         }
     });
 
-    // 5. Thả tim video (Like)
+    // 7. Thả tim video (Like)
     document.querySelectorAll('.btn-like-video').forEach(btn => {
         btn.addEventListener('click', function() {
             const videoId = this.getAttribute('data-id');
@@ -1008,25 +1072,45 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 6. Nút Mũi tên Next / Prev trên Desktop
+    // 8. Nút Mũi tên Next / Prev và Phím mũi tên Lên / Xuống trên Desktop
     const btnNext = document.getElementById('btnNextReel');
     const btnPrev = document.getElementById('btnPrevReel');
 
     if (btnNext && btnPrev) {
         btnNext.addEventListener('click', function() {
-            container.scrollBy({ top: container.clientHeight, behavior: 'smooth' });
+            if (currentActiveIndex < slides.length - 1) {
+                const target = slides[currentActiveIndex + 1];
+                target.scrollIntoView({ behavior: 'smooth' });
+                playActiveSlide(currentActiveIndex + 1);
+            }
         });
         btnPrev.addEventListener('click', function() {
-            container.scrollBy({ top: -container.clientHeight, behavior: 'smooth' });
+            if (currentActiveIndex > 0) {
+                const target = slides[currentActiveIndex - 1];
+                target.scrollIntoView({ behavior: 'smooth' });
+                playActiveSlide(currentActiveIndex - 1);
+            }
         });
     }
 
-    // Bắt đầu đếm khi vào trang (nếu còn lượt nhận)
-    if (coinsRemainingToday <= 0) {
-        setLimitReachedState();
-    } else {
-        startWatchTimer();
-    }
+    window.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowDown') {
+            if (currentActiveIndex < slides.length - 1) {
+                e.preventDefault();
+                slides[currentActiveIndex + 1].scrollIntoView({ behavior: 'smooth' });
+                playActiveSlide(currentActiveIndex + 1);
+            }
+        } else if (e.key === 'ArrowUp') {
+            if (currentActiveIndex > 0) {
+                e.preventDefault();
+                slides[currentActiveIndex - 1].scrollIntoView({ behavior: 'smooth' });
+                playActiveSlide(currentActiveIndex - 1);
+            }
+        }
+    });
+
+    // Khởi động phát video đầu tiên (slide 0)
+    playActiveSlide(0);
 });
 </script>
 @endpush
