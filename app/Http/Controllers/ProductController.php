@@ -92,47 +92,77 @@ class ProductController extends Controller
                 // 1. Tên sản phẩm khớp trọn vẹn cụm từ
                 $q->where('name', 'LIKE', "%{$search}%");
 
-                // 2. Tên sản phẩm chứa tất cả các từ khóa rời rạc (ví dụ: 'bút apple', 'ipad 128gb')
-                if (count($words) > 1) {
-                    $q->orWhere(function($subQ) use ($words) {
-                        foreach ($words as $w) {
-                            $subQ->where('name', 'LIKE', "%{$w}%");
-                        }
-                    });
-                }
+                // 2. Khớp trọn vẹn cụm từ trong bất kỳ thuộc tính nào (ram, chip, storage, màn hình, màu sắc...)
+                $q->orWhere('ram', 'LIKE', "%{$search}%")
+                  ->orWhere('storage', 'LIKE', "%{$search}%")
+                  ->orWhere('chip', 'LIKE', "%{$search}%")
+                  ->orWhere('screen_size', 'LIKE', "%{$search}%")
+                  ->orWhere('connectivity', 'LIKE', "%{$search}%")
+                  ->orWhere('color', 'LIKE', "%{$search}%");
 
-                // 3. Khớp theo Hãng sản xuất (Brand: Apple, Samsung, Xiaomi, Lenovo, Huawei)
+                // 3. Khớp theo Hãng sản xuất (Apple, Samsung, Xiaomi, Lenovo, Huawei)
                 $q->orWhereHas('brand', function($bQ) use ($search) {
                     $bQ->where('name', 'LIKE', "%{$search}%");
                 });
 
-                // 4. Khớp theo Danh mục (Category: iPad, Phụ Kiện, Galaxy Tab...)
+                // 4. Khớp theo Danh mục (iPad, Phụ Kiện, Galaxy Tab...)
                 $q->orWhereHas('category', function($cQ) use ($search) {
                     $cQ->where('name', 'LIKE', "%{$search}%");
                 });
 
-                // 5. Khớp thông số cấu hình (Chỉ khi từ khóa tìm kiếm là thông số như 128gb, 256gb, M2, Snapdragon...)
-                if (preg_match('/(gb|tb|snapdragon|m[1-4]|dimensity|helio|bionic|[0-9]+)/i', $search)) {
-                    $q->orWhere('chip', 'LIKE', "%{$search}%")
-                      ->orWhere('storage', 'LIKE', "%{$search}%")
-                      ->orWhere('ram', 'LIKE', "%{$search}%");
+                // 5. Tìm kiếm đa từ khóa chéo (ví dụ: 'sạc không dây', 'Galaxy Snapdragon', 'iPad 256GB')
+                // Đảm bảo tất cả các từ trong cụm từ tìm kiếm đều xuất hiện trong sản phẩm (tên hoặc các thuộc tính)
+                if (count($words) > 1) {
+                    $q->orWhere(function($subQ) use ($words) {
+                        foreach ($words as $w) {
+                            $subQ->where(function($fieldQ) use ($w) {
+                                $fieldQ->where('name', 'LIKE', "%{$w}%")
+                                       ->orWhere('ram', 'LIKE', "%{$w}%")
+                                       ->orWhere('storage', 'LIKE', "%{$w}%")
+                                       ->orWhere('chip', 'LIKE', "%{$w}%")
+                                       ->orWhere('screen_size', 'LIKE', "%{$w}%")
+                                       ->orWhere('color', 'LIKE', "%{$w}%")
+                                       ->orWhereHas('brand', function($bQ) use ($w) {
+                                           $bQ->where('name', 'LIKE', "%{$w}%");
+                                       });
+                            });
+                        }
+                    });
                 }
             });
 
             // Ưu tiên kết quả chính xác nhất lên đầu danh sách:
-            // 1. Tên bắt đầu bằng từ khóa tìm kiếm
-            // 2. Tên chứa từ khóa tìm kiếm
-            // 3. Khớp thông số/hãng/danh mục
+            // 1. Tên bắt đầu bằng từ khóa
+            // 2. Tên chứa từ khóa
+            // 3. Thuộc tính chứa trọn vẹn từ khóa (ví dụ: 'sạc không dây', '256GB', 'Snapdragon')
+            // 4. Các kết quả khớp chéo còn lại
             $query->orderByRaw("
                 CASE 
                     WHEN name LIKE ? THEN 1
                     WHEN name LIKE ? THEN 2
-                    ELSE 3
+                    WHEN ram LIKE ? OR storage LIKE ? OR chip LIKE ? OR screen_size LIKE ? OR color LIKE ? THEN 3
+                    ELSE 4
                 END ASC
-            ", ["{$search}%", "%{$search}%"]);
+            ", [
+                "{$search}%", 
+                "%{$search}%", 
+                "%{$search}%", 
+                "%{$search}%", 
+                "%{$search}%", 
+                "%{$search}%",
+                "%{$search}%"
+            ]);
         }
 
-        if (!$request->filled('search')) {
+        // Xử lý sắp xếp theo bán chạy nhất hoặc tìm kiếm / mới nhất
+        if ($request->get('sort') === 'best_sellers' || $request->get('tab') === 'best_sellers') {
+            $query->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+                ->select('products.*')
+                ->selectRaw('COALESCE(SUM(order_items.quantity), 0) as total_sold')
+                ->groupBy('products.id')
+                ->orderByDesc('total_sold')
+                ->orderByDesc('products.created_at');
+        } elseif (!$request->filled('search')) {
             $query->latest();
         } else {
             $query->orderBy('created_at', 'desc');
@@ -140,6 +170,18 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
         $categories = Category::all();
+
+        // Lấy Top 4 sản phẩm bán chạy nhất thực tế từ lịch sử đặt hàng
+        $bestSellers = Product::with(['category', 'brand'])
+            ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+            ->select('products.*')
+            ->selectRaw('COALESCE(SUM(order_items.quantity), 0) as total_sold')
+            ->where('products.is_active', true)
+            ->groupBy('products.id')
+            ->orderByDesc('total_sold')
+            ->orderByDesc('products.created_at')
+            ->take(4)
+            ->get();
 
         // Lấy sản phẩm thực tế gán cho các Banner quảng cáo lớn
         $bannerIpad = Product::where('name', 'like', '%iPad Pro%')->orWhere('name', 'like', '%iPad%')->first() ?? $products->first();
@@ -154,7 +196,7 @@ class ProductController extends Controller
         }
 
         return response()
-            ->view('products.index', compact('products', 'categories', 'brands', 'bannerIpad', 'bannerGalaxy', 'bannerXiaomi'))
+            ->view('products.index', compact('products', 'categories', 'brands', 'bannerIpad', 'bannerGalaxy', 'bannerXiaomi', 'bestSellers'))
             ->header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
             ->header('Pragma', 'no-cache')
             ->header('Expires', '0');
@@ -234,6 +276,29 @@ class ProductController extends Controller
             $reviewBlockedMessage = 'Vui lòng đăng nhập tài khoản đã mua sản phẩm để viết đánh giá.';
         }
 
+        // Lấy 4 sản phẩm tương tự (cùng danh mục hoặc cùng thương hiệu, trừ sản phẩm hiện tại)
+        $relatedProducts = Product::where('id', '!=', $product->id)
+            ->where('is_active', true)
+            ->where(function($q) use ($product) {
+                if ($product->category_id) {
+                    $q->where('category_id', $product->category_id);
+                }
+                if ($product->brand_id) {
+                    $q->orWhere('brand_id', $product->brand_id);
+                }
+            })
+            ->latest()
+            ->take(4)
+            ->get();
+
+        if ($relatedProducts->isEmpty()) {
+            $relatedProducts = Product::where('id', '!=', $product->id)
+                ->where('is_active', true)
+                ->latest()
+                ->take(4)
+                ->get();
+        }
+
         return view('products.show', compact(
             'product', 
             'reviews', 
@@ -243,7 +308,8 @@ class ProductController extends Controller
             'withCommentCount', 
             'userEligibleOrder',
             'canReview',
-            'reviewBlockedMessage'
+            'reviewBlockedMessage',
+            'relatedProducts'
         ));
     }
 

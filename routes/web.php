@@ -22,7 +22,6 @@ use App\Http\Controllers\Admin\VideoController as AdminVideoController;
 use App\Http\Controllers\Admin\CoinController as AdminCoinController;
 use App\Http\Controllers\Admin\FinanceController;
 use App\Http\Controllers\User\LuckyWheelController;
-use App\Http\Controllers\User\AIAdvisorController;
 use App\Http\Controllers\User\VideoShoppingController;
 use App\Http\Controllers\User\GeminiChatController;
 
@@ -65,9 +64,8 @@ Route::post('/ai-chat/send', [GeminiChatController::class, 'chat'])->name('ai.ch
 Route::get('/ai-chat/history', [GeminiChatController::class, 'history'])->name('ai.chat.history');
 Route::post('/ai-chat/clear', [GeminiChatController::class, 'clear'])->name('ai.chat.clear');
 
-// AI Tư vấn chọn iPad hộ tôi
-Route::get('/ai-advisor', [AIAdvisorController::class, 'index'])->name('ai.advisor');
-Route::post('/ai-advisor/recommend', [AIAdvisorController::class, 'recommend'])->name('ai.recommend');
+// Chuyển hướng /ai-advisor về trang chủ (Đã thay thế hoàn toàn bằng Chatbot AI Gemini 24/7)
+Route::redirect('/ai-advisor', '/');
 
 // Video Shopping (Lướt video nhận quà / Freeship & Tích luỹ Xu)
 Route::get('/videos', [VideoShoppingController::class, 'index'])->name('videos.index');
@@ -226,3 +224,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reviews', [\App\Http\Controllers\User\ReviewController::class, 'store'])->name('reviews.store');
     Route::post('/reviews/{review}/helpful', [\App\Http\Controllers\User\ReviewController::class, 'helpful'])->name('reviews.helpful');
 });
+
+// 7. Yêu cầu phụ: Danh sách yêu thích (Wishlist) & Trang FAQ hỏi đáp
+Route::get('/faq', [\App\Http\Controllers\FaqController::class, 'index'])->name('faq');
+Route::get('/wishlist', [\App\Http\Controllers\User\WishlistController::class, 'index'])->name('wishlist.index');
+Route::post('/wishlist/toggle/{product}', [\App\Http\Controllers\User\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+Route::delete('/wishlist/{product}', [\App\Http\Controllers\User\WishlistController::class, 'destroy'])->name('wishlist.destroy');
+

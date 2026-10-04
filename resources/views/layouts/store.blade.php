@@ -69,9 +69,130 @@
         @include('partials.lucky_wheel')
     @endif
 
+    <!-- Global Toast Notification Container for Wishlist & Actions -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        <div id="globalToast" class="toast align-items-center text-white border-0 shadow-lg rounded-3" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2 py-3 px-3 fs-6" id="globalToastBody">
+                    <i class="fa-solid fa-circle-check fs-5"></i>
+                    <span id="globalToastMessage">Thông báo</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Wishlist & Global Toast Handler -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        window.showGlobalToast = function (message, isSuccess = true) {
+            const toastEl = document.getElementById('globalToast');
+            const toastBody = document.getElementById('globalToastBody');
+            const toastMsg = document.getElementById('globalToastMessage');
+            if (!toastEl || !toastMsg) return;
+
+            toastEl.className = 'toast align-items-center text-white border-0 shadow-lg rounded-3 ' + (isSuccess ? 'bg-success' : 'bg-danger');
+            toastMsg.textContent = message;
+            const icon = toastBody.querySelector('i');
+            if (icon) {
+                icon.className = 'fs-5 fa-solid ' + (isSuccess ? 'fa-circle-check' : 'fa-circle-exclamation');
+            }
+
+            const toast = new bootstrap.Toast(toastEl, { delay: 2800 });
+            toast.show();
+        };
+
+        // Event delegation for wishlist toggle buttons (supports dynamic & AJAX cards)
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('.btn-wishlist-toggle');
+            if (!btn) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            const url = btn.dataset.url;
+            if (!url) return;
+
+            btn.disabled = true;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.disabled = false;
+                if (data.success) {
+                    // Update current button
+                    const icon = btn.querySelector('i');
+                    if (data.in_wishlist) {
+                        btn.classList.add('active');
+                        btn.setAttribute('title', 'Bỏ thích');
+                        if (icon) {
+                            icon.className = 'fa-solid fa-heart text-danger';
+                        }
+                    } else {
+                        btn.classList.remove('active');
+                        btn.setAttribute('title', 'Thêm vào yêu thích');
+                        if (icon) {
+                            icon.className = 'fa-regular fa-heart';
+                        }
+                    }
+
+                    // Synchronize any matching buttons on same page
+                    const prodId = btn.dataset.productId;
+                    if (prodId) {
+                        document.querySelectorAll(`.btn-wishlist-toggle[data-product-id="${prodId}"]`).forEach(otherBtn => {
+                            if (otherBtn !== btn) {
+                                const oIcon = otherBtn.querySelector('i');
+                                if (data.in_wishlist) {
+                                    otherBtn.classList.add('active');
+                                    otherBtn.setAttribute('title', 'Bỏ thích');
+                                    if (oIcon) oIcon.className = 'fa-solid fa-heart text-danger';
+                                } else {
+                                    otherBtn.classList.remove('active');
+                                    otherBtn.setAttribute('title', 'Thêm vào yêu thích');
+                                    if (oIcon) oIcon.className = 'fa-regular fa-heart';
+                                }
+                            }
+                        });
+                    }
+
+                    // Update Navbar badge
+                    const navBadge = document.getElementById('nav-wishlist-count');
+                    if (navBadge) {
+                        navBadge.textContent = data.count;
+                        if (data.count > 0) {
+                            navBadge.classList.remove('d-none');
+                        } else {
+                            navBadge.classList.add('d-none');
+                        }
+                    }
+
+                    // Toast message
+                    window.showGlobalToast(data.message, true);
+                }
+            })
+            .catch(err => {
+                btn.disabled = false;
+                console.error('Wishlist error:', err);
+                window.showGlobalToast('Không thể cập nhật danh sách yêu thích. Vui lòng thử lại!', false);
+            });
+        });
+    });
+    </script>
     @stack('scripts')
 </body>
 </html>

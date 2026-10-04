@@ -73,6 +73,16 @@ class CartController extends Controller
         }
 
         $product = Product::findOrFail($id);
+
+        // Kiểm tra tồn kho sản phẩm: Nếu hết hàng (stock_quantity <= 0) thì không cho thêm vào giỏ
+        if ((int)$product->stock_quantity <= 0) {
+            $msg = "Sản phẩm \"{$product->name}\" hiện đã hết hàng!";
+            if ($isAjax) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return redirect()->back()->with('error', $msg);
+        }
+
         $cart = $this->getCart();
 
         // Lấy thông tin màu, số lượng từ Form

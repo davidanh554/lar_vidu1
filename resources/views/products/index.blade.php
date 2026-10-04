@@ -72,6 +72,7 @@
     <div class="card card-modern p-3 mb-4 filter-card-container position-relative overflow-visible" id="products-section">
         <form id="filter-form" action="{{ route('home') }}" method="GET" class="row g-2 align-items-center">
             <input type="hidden" id="filter-category" name="category_id" value="{{ request('category_id') }}">
+            <input type="hidden" id="filter-sort" name="sort" value="{{ request('sort') }}">
 
             <!-- 1. Input tìm kiếm & Nút Tìm kiếm -->
             <div class="col-12 col-md-7 col-lg-8">
@@ -133,14 +134,20 @@
         <!-- Category Chips & Live Counter Header -->
         <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top align-items-center justify-content-between" id="category-pills-bar">
             <div class="d-flex flex-wrap gap-2 align-items-center" id="category-pills">
-                <a href="{{ route('home', array_merge(request()->except('category_id', 'page'))) }}" 
-                   class="chip-pill js-category-pill {{ !request('category_id') ? 'active' : '' }}"
+                <a href="{{ route('home', array_merge(request()->except('category_id', 'page', 'sort'))) }}" 
+                   class="chip-pill js-category-pill {{ (!request('category_id') && !request('sort')) ? 'active' : '' }}"
                    data-cat-id="">
                     Tất cả
                 </a>
+                <a href="{{ route('home', array_merge(request()->except('category_id', 'page'), ['sort' => request('sort') === 'best_sellers' ? null : 'best_sellers'])) }}" 
+                   class="chip-pill js-category-pill {{ request('sort') === 'best_sellers' ? 'active' : '' }}"
+                   data-sort="best_sellers"
+                   style="{{ request('sort') === 'best_sellers' ? 'background: #ea580c !important; border-color: #ea580c !important; color: #fff !important;' : '' }}">
+                    <i class=" text-danger me-1"></i>Bán chạy
+                </a>
                 @foreach($categories as $cat)
-                    <a href="{{ route('home', array_merge(request()->except('page'), ['category_id' => $cat->id])) }}" 
-                       class="chip-pill js-category-pill {{ request('category_id') == $cat->id ? 'active' : '' }}"
+                    <a href="{{ route('home', array_merge(request()->except('page', 'sort'), ['category_id' => $cat->id])) }}" 
+                       class="chip-pill js-category-pill {{ (request('category_id') == $cat->id && request('sort') !== 'best_sellers') ? 'active' : '' }}"
                        data-cat-id="{{ $cat->id }}">
                         {{ $cat->name }}
                     </a>
@@ -205,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterClearBtn = document.getElementById('filter-clear-btn');
     const brandSelect = document.getElementById('filter-brand');
     const categoryInput = document.getElementById('filter-category');
+    const sortInput = document.getElementById('filter-sort');
     const btnSubmit = document.getElementById('btn-submit-filter');
     const btnSearchSubmit = document.getElementById('btn-search-submit');
     const btnReset = document.getElementById('btn-reset-filter');
@@ -221,10 +229,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const searchVal = searchInput ? searchInput.value.trim() : '';
         const brandVal = brandSelect ? brandSelect.value : '';
         const catVal = categoryInput ? categoryInput.value : '';
+        const sortVal = sortInput ? sortInput.value : '';
 
         if (searchVal) params.set('search', searchVal);
         if (brandVal) params.set('brand_id', brandVal);
         if (catVal) params.set('category_id', catVal);
+        if (sortVal) params.set('sort', sortVal);
         if (page) params.set('page', page);
 
         const queryString = params.toString();
@@ -234,18 +244,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper: Update active UI state for category pills & reset button
     function updateFilterUI() {
         const catVal = categoryInput ? categoryInput.value : '';
+        const sortVal = sortInput ? sortInput.value : '';
+
         categoryPills.forEach(pill => {
-            const pillCatId = pill.getAttribute('data-cat-id') || '';
-            if (pillCatId === catVal) {
-                pill.classList.add('active');
-            } else {
-                pill.classList.remove('active');
+            const pillCatId = pill.getAttribute('data-cat-id');
+            const pillSort = pill.getAttribute('data-sort');
+
+            if (pillSort) {
+                if (sortVal === pillSort) {
+                    pill.classList.add('active');
+                    pill.style.cssText = 'background: #ea580c !important; border-color: #ea580c !important; color: #fff !important;';
+                } else {
+                    pill.classList.remove('active');
+                    pill.style.cssText = '';
+                }
+            } else if (pillCatId !== null) {
+                if (pillCatId === catVal && !sortVal) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
             }
         });
 
         const hasFilter = (searchInput && searchInput.value.trim() !== '') || 
                           (brandSelect && brandSelect.value !== '') || 
-                          (categoryInput && categoryInput.value !== '');
+                          (categoryInput && categoryInput.value !== '') ||
+                          (sortInput && sortInput.value !== '');
         if (btnReset) {
             if (hasFilter) {
                 btnReset.classList.remove('d-none');
@@ -434,14 +459,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event: Click Category Chip Pills
+    // Event: Click Category Chip Pills & Best Seller Pill
     categoryPills.forEach(pill => {
         pill.addEventListener('click', function(e) {
             e.preventDefault();
             clearTimeout(debounceTimer);
-            const catId = this.getAttribute('data-cat-id') || '';
-            if (categoryInput) {
-                categoryInput.value = catId;
+            const pillSort = this.getAttribute('data-sort');
+            if (pillSort) {
+                if (sortInput) {
+                    sortInput.value = (sortInput.value === pillSort) ? '' : pillSort;
+                }
+                if (categoryInput) {
+                    categoryInput.value = '';
+                }
+            } else {
+                const catId = this.getAttribute('data-cat-id') || '';
+                if (categoryInput) {
+                    categoryInput.value = catId;
+                }
+                if (sortInput) {
+                    sortInput.value = '';
+                }
             }
             const url = buildFilterUrl();
             fetchProducts(url, true, false);
@@ -455,6 +493,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (filterClearBtn) filterClearBtn.classList.add('d-none');
         if (brandSelect) brandSelect.value = '';
         if (categoryInput) categoryInput.value = '';
+        if (sortInput) sortInput.value = '';
         if (selectedBrandLabel) selectedBrandLabel.textContent = '-- Tất cả thương hiệu --';
 
         brandItems.forEach((i, idx) => {

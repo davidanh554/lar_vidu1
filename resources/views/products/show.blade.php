@@ -140,12 +140,25 @@
                     </div>
 
                     <!-- Bộ nút hành động -->
-                    <div class="d-flex gap-3 mb-4">
-                        <button type="submit" name="action" value="add" id="btn-add-cart" class="btn btn-modern-outline btn-lg flex-fill rounded-pill fs-6 py-3">
-                            Thêm vào giỏ
+                    <div class="d-flex gap-2 gap-sm-3 mb-4 align-items-center">
+                        <button type="submit" name="action" value="add" id="btn-add-cart" class="btn btn-modern-outline btn-lg flex-fill rounded-pill fs-6 py-3" {{ $isOutOfStock ? 'disabled style=cursor:not-allowed;' : '' }}>
+                            {{ $isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ' }}
                         </button>
-                        <button type="submit" name="action" value="buy_now" id="btn-buy-now" class="btn btn-modern-primary btn-lg flex-fill rounded-pill fs-6 fw-bold py-3">
-                            Mua ngay
+                        <button type="submit" name="action" value="buy_now" id="btn-buy-now" class="btn btn-modern-primary btn-lg flex-fill rounded-pill fs-6 fw-bold py-3" {{ $isOutOfStock ? 'disabled style=cursor:not-allowed;' : '' }}>
+                            {{ $isOutOfStock ? 'Hết hàng' : 'Mua ngay' }}
+                        </button>
+                        @php
+                            $isWishlisted = auth()->check()
+                                ? auth()->user()->wishlists()->where('product_id', $product->id)->exists()
+                                : in_array($product->id, session('wishlist', []));
+                        @endphp
+                        <button type="button" 
+                                class="btn-wishlist-toggle btn-wishlist-toggle-detail {{ $isWishlisted ? 'active' : '' }}" 
+                                data-product-id="{{ $product->id }}" 
+                                data-url="{{ route('wishlist.toggle', $product->id) }}"
+                                style="width: 52px; height: 52px; flex-shrink: 0; font-size: 1.35rem;"
+                                title="{{ $isWishlisted ? 'Bỏ thích' : 'Thêm vào yêu thích' }}">
+                            <i class="{{ $isWishlisted ? 'fa-solid text-danger' : 'fa-regular' }} fa-heart"></i>
                         </button>
                     </div>
                 </form>
@@ -286,6 +299,71 @@
             </div>
         </div>
     </div>
+
+    <!-- PHẦN SẢN PHẨM TƯƠNG TỰ (RELATED PRODUCTS) -->
+    @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
+        <div class="related-products-section mt-5">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h3 class="h4 fw-bold text-dark mb-1">
+                        <i class="fa-solid fa-layer-group text-primary me-2"></i>Sản phẩm tương tự
+                    </h3>
+                    <p class="text-muted small mb-0">Các mẫu máy tính bảng & phụ kiện cùng phân khúc bạn có thể quan tâm</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                @foreach($relatedProducts as $rel)
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="product-card h-100 p-3 bg-white rounded-4 border shadow-sm d-flex flex-column" style="transition: all 0.25s ease;">
+                            <!-- Ảnh -->
+                            <a href="{{ route('products.show', $rel->id) }}" class="text-decoration-none mb-3">
+                                <div class="d-flex align-items-center justify-content-center p-2 rounded-3 bg-light" style="height: 160px;">
+                                    @if($rel->image)
+                                        <img src="{{ asset($rel->image) }}" alt="{{ $rel->name }}" style="max-height: 140px; max-width: 100%; object-fit: contain;">
+                                    @else
+                                        <span class="text-muted small">{{ $rel->name }}</span>
+                                    @endif
+                                </div>
+                            </a>
+
+                            <!-- Cấu hình capsule -->
+                            <div class="d-flex gap-1 flex-wrap mb-2">
+                                @if($rel->storage)
+                                    <span class="badge bg-light text-secondary border rounded-pill px-2 py-1" style="font-size: 0.7rem;">{{ $rel->storage }}</span>
+                                @endif
+                                @if($rel->ram)
+                                    <span class="badge bg-light text-secondary border rounded-pill px-2 py-1" style="font-size: 0.7rem;">{{ $rel->ram }}</span>
+                                @endif
+                            </div>
+
+                            <!-- Tên -->
+                            <h6 class="product-title mb-2 text-truncate" title="{{ $rel->name }}">
+                                <a href="{{ route('products.show', $rel->id) }}" class="text-dark text-decoration-none fw-bold" style="font-size: 0.92rem;">
+                                    {{ $rel->name }}
+                                </a>
+                            </h6>
+
+                            <!-- Giá -->
+                            <div class="mt-auto pt-2 border-top d-flex align-items-center justify-content-between">
+                                <div>
+                                    @if($rel->sale_price && $rel->sale_price < $rel->price)
+                                        <span class="fw-bold" style="color: #4f46e5; font-size: 1rem;">{{ number_format($rel->sale_price, 0, ',', '.') }}₫</span>
+                                        <span class="small text-muted text-decoration-line-through d-block" style="font-size: 0.75rem;">{{ number_format($rel->price, 0, ',', '.') }}₫</span>
+                                    @else
+                                        <span class="fw-bold" style="color: #4f46e5; font-size: 1rem;">{{ number_format($rel->price, 0, ',', '.') }}₫</span>
+                                    @endif
+                                </div>
+                                <a href="{{ route('products.show', $rel->id) }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1">
+                                    Xem
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
 </div>
 
 @if($userEligibleOrder)

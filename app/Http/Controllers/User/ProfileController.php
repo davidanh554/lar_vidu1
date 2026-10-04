@@ -92,8 +92,9 @@ class ProfileController extends Controller
             ? $orders->first()
             : $latestOrder;
 
-        // Tổng chi tiêu tích lũy
-        $totalSpent = $allOrders->where('status', 'paid')->sum('total_price');
+        // Tổng chi tiêu tích lũy & Hạng thành viên thân thiết
+        $totalSpent = $user->total_spent;
+        $tier = $user->membership_tier;
 
         // 4. Thống kê Tiền Xu thưởng Vua Tablet
         $coinRate = (int)\App\Models\Setting::get('coin_rate', 500);
@@ -118,6 +119,7 @@ class ProfileController extends Controller
             'deliveredCount',
             'cancelledCount',
             'totalSpent',
+            'tier',
             'coinRate',
             'userCoins',
             'coinsValue',

@@ -8,6 +8,21 @@
     </a>
 </div>
 
+<!-- Bộ lọc sản phẩm -->
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+    <div class="btn-group btn-group-sm shadow-sm" role="group">
+        <a href="{{ route('admin.products.index') }}" class="btn {{ (!request('sort') || request('sort') === 'newest') ? 'btn-primary' : 'btn-outline-secondary' }}">
+            Tất cả sản phẩm
+        </a>
+        <a href="{{ route('admin.products.index', ['sort' => 'best_sellers']) }}" class="btn {{ request('sort') === 'best_sellers' ? 'btn-primary' : 'btn-outline-secondary' }}">
+            Bán chạy nhất
+        </a>
+    </div>
+    <div class="text-muted small">
+        Đang hiển thị <strong>{{ $products->total() }}</strong> sản phẩm
+    </div>
+</div>
+
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -19,6 +34,7 @@
                     <th>Tên sản phẩm & Màu sắc / Tồn kho</th>
                     <th>Danh mục</th>
                     <th>Giá bán</th>
+                    <th width="90px" class="text-center">Đã bán</th>
                     <th width="120px" class="text-center">Tổng kho</th>
                     <th width="180px" class="text-center">Hành động</th>
                 </tr>
@@ -60,6 +76,15 @@
                                 <div class="text-muted text-decoration-line-through small">{{ number_format($product->price, 0, ',', '.') }}đ</div>
                             @else
                                 <span class="fw-bold text-primary">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            @if((int)($product->total_sold ?? 0) > 0)
+                                <span class="badge bg-danger-subtle text-danger fw-bold rounded-pill px-2 py-1" style="font-size: 0.8rem;">
+                                    {{ (int)$product->total_sold }}
+                                </span>
+                            @else
+                                <span class="text-muted small">0</span>
                             @endif
                         </td>
                         <td class="text-center">

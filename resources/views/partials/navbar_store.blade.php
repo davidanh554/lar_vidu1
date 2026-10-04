@@ -21,9 +21,24 @@
                     $orderUpdatesCount = auth()->check() 
                         ? \App\Models\Order::where('user_id', auth()->id())->where('has_unread_update', true)->count() 
                         : 0;
+                    $wishlistCount = auth()->check() 
+                        ? auth()->user()->wishlists()->count() 
+                        : count(session('wishlist', []));
                 @endphp
 
-                <!-- 1. Nút Giỏ hàng (Phong cách tối giản như ảnh mẫu kèm icon túi xách) -->
+                <!-- 1. Nút Yêu thích (Wishlist) -->
+                <a href="{{ route('wishlist.index') }}" class="nav-item-link position-relative text-nowrap" id="nav-wishlist-btn" title="Danh sách sản phẩm yêu thích">
+                    <span class="position-relative d-inline-flex align-items-center me-1">
+                        <i class="fa-solid fa-heart fs-6 text-danger"></i>
+                        <span id="nav-wishlist-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $wishlistCount > 0 ? '' : 'd-none' }}" 
+                              style="font-size: 0.65rem; min-width: 17px; height: 17px; display: inline-flex; align-items: center; justify-content: center; padding: 0 4px; font-weight: 700;">
+                            {{ $wishlistCount }}
+                        </span>
+                    </span>
+                    <span class="d-none d-sm-inline">Yêu thích</span>
+                </a>
+
+                <!-- 2. Nút Giỏ hàng (Phong cách tối giản như ảnh mẫu kèm icon túi xách) -->
                 <a href="{{ route('cart.index') }}" class="nav-item-link position-relative text-nowrap" id="nav-cart-btn" title="Giỏ hàng của bạn">
                     <span class="position-relative d-inline-flex align-items-center me-1">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-cart-icon">
@@ -39,10 +54,16 @@
                     <span>Giỏ hàng</span>
                 </a>
 
+                <!-- 3. Nút Hỏi đáp (FAQ) -->
+                <a href="{{ route('faq') }}" class="nav-item-link text-nowrap d-none d-md-inline-flex align-items-center gap-1" title="Câu hỏi thường gặp">
+                    <i class="fa-regular fa-circle-question small"></i>
+                    <span>Hỏi đáp</span>
+                </a>
+
                 @auth
-                    <!-- 2. Nút Đơn hàng của tôi (Text link thanh lịch không viền thô) -->
+                    <!-- 4. Nút Đơn hàng của tôi (Text link thanh lịch không viền thô) -->
                     <a href="{{ route('orders.index') }}" class="nav-item-link position-relative text-nowrap" id="nav-orders-btn" title="Lịch sử đơn hàng">
-                        <span>Đơn hàng của tôi</span>
+                        <span>Đơn mua</span>
                         <span id="nav-order-badge" class="badge rounded-pill bg-danger ms-1 {{ $orderUpdatesCount > 0 ? '' : 'd-none' }}" 
                               style="font-size: 0.65rem; padding: 0.18rem 0.45rem; font-weight: 700;" title="Có cập nhật đơn hàng mới!">
                             {{ $orderUpdatesCount }}
@@ -52,18 +73,15 @@
                     <!-- Đường gạch đứng phân cách tinh tế như ảnh mẫu PhongMobile -->
                     <div class="nav-divider d-none d-lg-block"></div>
 
-                    <!-- 3. Thông tin User: Xin chào, [Tên] + Badge Đã kích hoạt -->
-                    <a href="{{ route('profile') }}" class="nav-user-link text-nowrap gap-2" title="Xem trang thông tin cá nhân">
+                    <!-- 5. Thông tin User: Xin chào, [Tên] + Badge Loyalty Tier -->
+                    @php
+                        $userTier = Auth::user()->membership_tier;
+                    @endphp
+                    <a href="{{ route('profile') }}" class="nav-user-link text-nowrap gap-2" title="Hồ sơ & Hạng thành viên">
                         <span class="nav-user-greeting">Xin chào, <strong class="nav-user-name">{{ Auth::user()->name }}</strong></span>
-                        @if(Auth::user()->hasVerifiedEmail())
-                            <span class="badge rounded-pill badge-verified" title="Tài khoản đã xác thực email thành công">
-                                Đã kích hoạt
-                            </span>
-                        @else
-                            <span class="badge rounded-pill badge-unverified" title="Tài khoản chưa kích hoạt email">
-                                Chưa kích hoạt
-                            </span>
-                        @endif
+                        <span class="badge rounded-pill fw-bold" style="background-color: {{ $userTier['bg'] }}; color: {{ $userTier['color'] }}; border: 1px solid {{ $userTier['border'] }}; font-size: 0.72rem; padding: 3px 8px;" title="Cấp bậc: {{ $userTier['badge'] }}">
+                            {{ $userTier['badge'] }}
+                        </span>
                     </a>
 
                     <!-- 4. Nút Admin (nếu là admin) -->

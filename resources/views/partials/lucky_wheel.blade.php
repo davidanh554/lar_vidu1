@@ -131,8 +131,8 @@
     <!-- 3. Popup Thông báo trúng thưởng -->
     <div id="wheel-win-overlay" class="wheel-win-modal" style="display: none;">
         <div class="wheel-win-card text-center">
-            <h3 id="win-title" class="fw-bold text-white mb-2">CHÚC MỪNG BẠN!</h3>
-            <p id="win-message" class="text-light mb-3">Bạn đã quay trúng phần thưởng tuyệt vời!</p>
+            <h3 id="win-title" class="fw-bold mb-2" style="color: #0f172a !important; font-size: 1.45rem;">CHÚC MỪNG BẠN!</h3>
+            <p id="win-message" class="mb-3" style="color: #475569 !important; font-size: 0.95rem; line-height: 1.5;">Bạn đã quay trúng phần thưởng tuyệt vời!</p>
 
             <div id="win-coupon-box" class="win-coupon-ticket mb-3" style="display: none;">
                 <div class="win-coupon-label">MÃ GIẢM GIÁ CỦA BẠN</div>
@@ -147,7 +147,7 @@
                 <button type="button" class="btn btn-modern-primary rounded-pill px-4" onclick="closeWinModal()">
                     Tuyệt vời!
                 </button>
-                <a href="{{ route('home') }}" class="btn btn-outline-light rounded-pill px-3">
+                <a href="{{ route('home') }}" class="btn btn-outline-secondary rounded-pill px-3">
                     Mua sắm ngay
                 </a>
             </div>
@@ -540,6 +540,12 @@
     max-width: 440px;
     padding: 32px 24px;
     color: #0f172a;
+}
+.wheel-win-card h3 {
+    color: #0f172a !important;
+}
+.wheel-win-card p {
+    color: #475569 !important;
 }
 .wheel-confetti-icon {
     font-size: 3.5rem;

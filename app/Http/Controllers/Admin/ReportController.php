@@ -93,9 +93,32 @@ class ReportController extends Controller
         $revenueByYear = $this->periodRevenue($revenueByDate, 'year');
         $totalRevenue = $revenueByDate->sum('total_revenue');
 
+        // Top 10 Sản phẩm bán chạy nhất
+        $topProducts = DB::table('order_items')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->whereIn('order_items.order_id', $this->paidOrders($dateFrom, $dateTo)->select('orders.id'))
+            ->select('products.id', 'products.name', 'products.image')
+            ->selectRaw('SUM(order_items.quantity) as total_sold, SUM(order_items.price * order_items.quantity) as total_revenue')
+            ->groupBy('products.id', 'products.name', 'products.image')
+            ->orderByDesc('total_sold')
+            ->take(10)
+            ->get();
+
+        // Top 10 Khách hàng mua nhiều nhất
+        $topCustomers = DB::table('orders')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->whereIn('orders.id', $this->paidOrders($dateFrom, $dateTo)->select('orders.id'))
+            ->select('users.id', 'users.name', 'users.email')
+            ->selectRaw('COUNT(orders.id) as total_orders, SUM(orders.total_price) as total_spent')
+            ->groupBy('users.id', 'users.name', 'users.email')
+            ->orderByDesc('total_spent')
+            ->take(10)
+            ->get();
+
         return view('admin.reports.index', compact(
             'categoryRevenue', 'totalOrders', 'totalCustomers', 'totalRevenue',
-            'revenueByDate', 'revenueByMonth', 'revenueByYear', 'dateFrom', 'dateTo'
+            'revenueByDate', 'revenueByMonth', 'revenueByYear', 'dateFrom', 'dateTo',
+            'topProducts', 'topCustomers'
         ));
     }
 

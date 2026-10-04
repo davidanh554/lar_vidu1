@@ -53,6 +53,47 @@
                     </div>
                 </div>
 
+                <!-- Khối Hạng Thành Viên Thân Thiết (Loyalty Tier) -->
+                @php
+                    $userTier = $tier ?? $user->membership_tier;
+                @endphp
+                <div class="p-3 my-3 rounded-4" style="background: linear-gradient(135deg, {{ $userTier['bg'] }} 0%, #ffffff 100%); border: 1px solid {{ $userTier['border'] }}; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted small fw-semibold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.72rem;">Cấp bậc hội viên</span>
+                        <span class="badge rounded-pill fw-bold" style="background: {{ $userTier['color'] }}; color: #ffffff; font-size: 0.75rem; padding: 4px 10px;">
+                            {{ $userTier['badge'] }}
+                        </span>
+                    </div>
+
+                    <div class="d-flex align-items-baseline justify-content-between mb-1">
+                        <span class="fs-6 fw-bold" style="color: {{ $userTier['color'] }};">
+                            Hạng {{ $userTier['name'] }}
+                        </span>
+                        <span class="small text-muted fw-semibold">
+                            Tích lũy: {{ number_format($userTier['spent'], 0, ',', '.') }}₫
+                        </span>
+                    </div>
+
+                    <!-- Thanh tiến trình thăng hạng -->
+                    <div class="progress my-2" style="height: 7px; background-color: rgba(0,0,0,0.06); border-radius: 99px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" 
+                             style="width: {{ $userTier['progress'] }}%; background-color: {{ $userTier['color'] }};" 
+                             aria-valuenow="{{ $userTier['progress'] }}" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+
+                    @if($userTier['next_tier'])
+                        <div class="d-flex justify-content-between align-items-center small text-muted" style="font-size: 0.74rem;">
+                            <span>Tiến độ: <strong>{{ $userTier['progress'] }}%</strong></span>
+                            <span>Cần thêm <strong>{{ number_format($userTier['remaining'], 0, ',', '.') }}₫</strong> lên <strong>{{ $userTier['next_tier'] }}</strong></span>
+                        </div>
+                    @else
+                        <div class="small text-success fw-bold text-center" style="font-size: 0.75rem;">
+                            Bạn đã đạt thứ hạng cao nhất!
+                        </div>
+                    @endif
+                </div>
+
                 <!-- Khối Tiền Xu Thưởng Nhận Được -->
                 <div class="p-3 my-3 rounded-4" style="background: linear-gradient(145deg, #fffdfa 0%, #fef8ee 100%); border: 1px solid rgba(245, 158, 11, 0.22); box-shadow: 0 2px 8px rgba(245, 158, 11, 0.05);">
                     <div class="d-flex align-items-center justify-content-between mb-2">

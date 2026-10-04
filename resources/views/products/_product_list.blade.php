@@ -1,15 +1,43 @@
+@php
+    $favIds = auth()->check()
+        ? auth()->user()->wishlists()->pluck('product_id')->toArray()
+        : session('wishlist', []);
+@endphp
+
 <!-- Products Grid (PhongMobile Clean Minimalist Style) -->
 <div class="row g-4">
     @forelse($products as $index => $product)
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 product-grid-item" style="--item-idx: {{ $index }};">
             <div class="product-card">
                 
-                <!-- Huy hiệu góc trên bên trái (HOT / MỚI) như trong ảnh mẫu -->
+                <!-- Huy hiệu góc trên bên trái (HẾT HÀNG / TOP BÁN CHẠY / HOT / MỚI) -->
                 <div class="product-badges-corner">
-                    @if($product->sale_price && $product->sale_price < $product->price)
-                        <span class="badge-flag-hot">HOT</span>
+                    @if($product->stock_quantity <= 0)
+                        <span class="badge bg-secondary text-white fw-bold px-2 py-1 rounded-2 shadow-sm" style="font-size: 0.72rem;">HẾT HÀNG</span>
+                    @elseif(request('sort') === 'best_sellers' && (int)($product->total_sold ?? 0) > 0)
+                        <span class="badge {{ $index === 0 ? 'bg-danger' : ($index === 1 ? 'bg-warning text-dark' : 'bg-primary') }} rounded-pill px-2 py-1 shadow-sm fw-bold" style="font-size: 0.72rem;">
+                            <i class="fa-solid fa-trophy me-1"></i>Top #{{ $index + 1 }}
+                        </span>
+                    @else
+                        @if($product->sale_price && $product->sale_price < $product->price)
+                            <span class="badge-flag-hot">HOT</span>
+                        @endif
+                        <span class="badge-flag-new">MỚI</span>
                     @endif
-                    <span class="badge-flag-new">MỚI</span>
+                </div>
+
+                <!-- Nút Yêu thích góc trên bên phải (Wishlist Heart Button) -->
+                @php
+                    $isFav = in_array($product->id, $favIds);
+                @endphp
+                <div class="product-wishlist-corner">
+                    <button type="button" 
+                            class="btn-wishlist-toggle {{ $isFav ? 'active' : '' }}" 
+                            data-product-id="{{ $product->id }}" 
+                            data-url="{{ route('wishlist.toggle', $product->id) }}"
+                            title="{{ $isFav ? 'Bỏ thích' : 'Thêm vào yêu thích' }}">
+                        <i class="{{ $isFav ? 'fa-solid text-danger' : 'fa-regular' }} fa-heart"></i>
+                    </button>
                 </div>
 
                 <!-- Ảnh sản phẩm căn giữa sạch sẽ -->
@@ -42,11 +70,20 @@
                 </div>
 
                 <!-- Tên sản phẩm in đậm -->
-                <h5 class="product-title">
+                <h5 class="product-title mb-1">
                     <a href="{{ route('products.show', $product->id) }}">
                         {{ $product->name }}
                     </a>
                 </h5>
+
+                <!-- Hiển thị số lượng đã bán -->
+                @if(request('sort') === 'best_sellers' || (int)($product->total_sold ?? 0) > 0)
+                    <div class="product-sold-label mb-2">
+                        <span class="badge bg-danger-subtle text-danger fw-semibold border border-danger-subtle px-2 py-1 rounded-pill" style="font-size: 0.74rem;">
+                            <i class="fa-solid fa-fire me-1"></i>Đã bán {{ (int)($product->total_sold ?? 0) }} chiếc
+                        </span>
+                    </div>
+                @endif
 
                 <!-- Giá bán màu tím Indigo rực rỡ đặc trưng -->
                 <div class="product-pricing-wrap">

@@ -12,10 +12,26 @@ class UserController extends Controller
     /**
      * Hiển thị danh sách người dùng.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
+        $sort = $request->query('sort', 'newest');
+
+        $usersQuery = User::withCount(['orders' => function($q) {
+            $q->where(function($sub) {
+                $sub->whereIn('status', ['paid', 'paid_momo', 'cod_paid'])
+                    ->orWhere('shipping_status', 'delivered');
+            })->whereNotIn('status', ['cancelled'])->where('shipping_status', '!=', 'cancelled');
+        }]);
+
+        $users = $usersQuery->latest('id')->get();
+
+        if ($sort === 'spent_desc') {
+            $users = $users->sortByDesc(fn($u) => $u->total_spent)->values();
+        } elseif ($sort === 'orders_desc') {
+            $users = $users->sortByDesc('orders_count')->values();
+        }
+
+        return view('admin.users.index', compact('users', 'sort'));
     }
 
     /**

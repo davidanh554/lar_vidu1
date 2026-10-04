@@ -138,4 +138,110 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(\App\Models\AiChatMessage::class);
     }
+
+    /**
+     * Danh sách sản phẩm yêu thích (Wishlist)
+     */
+    public function wishlists()
+    {
+        return $this->hasMany(\App\Models\Wishlist::class);
+    }
+
+    public function wishlistProducts()
+    {
+        return $this->belongsToMany(\App\Models\Product::class, 'wishlists')->withTimestamps();
+    }
+
+
+    /**
+     * Tổng số tiền đã chi tiêu tích lũy từ các đơn hàng thành công
+     */
+    public function getTotalSpentAttribute(): float
+    {
+        return (float) $this->orders()
+            ->where(function($q) {
+                $q->whereIn('status', ['paid', 'paid_momo', 'cod_paid'])
+                  ->orWhere('shipping_status', 'delivered');
+            })
+            ->whereNotIn('status', ['cancelled'])
+            ->where('shipping_status', '!=', 'cancelled')
+            ->sum('total_price');
+    }
+
+    /**
+     * Xếp hạng thành viên thân thiết (Loyalty Tiers: Đồng, Bạc, Vàng, Kim Cương)
+     */
+    public function getMembershipTierAttribute(): array
+    {
+        $spent = $this->total_spent;
+
+        if ($spent >= 50000000) {
+            return [
+                'name' => 'Kim Cương',
+                'badge' => 'Kim Cương VIP',
+                'color' => '#0891b2',
+                'bg' => '#ecfeff',
+                'border' => '#a5f3fc',
+                'icon' => 'fa-gem',
+                'spent' => $spent,
+                'next_tier' => null,
+                'target' => 50000000,
+                'progress' => 100,
+                'remaining' => 0,
+                'perk' => 'Nhân đôi x2.0 Xu thưởng, Miễn phí vận chuyển trọn đời, Quà sinh nhật VIP',
+            ];
+        }
+
+        if ($spent >= 25000000) {
+            $target = 50000000;
+            return [
+                'name' => 'Vàng',
+                'badge' => 'Vàng VIP',
+                'color' => '#ca8a04',
+                'bg' => '#fefce8',
+                'border' => '#fef08a',
+                'icon' => 'fa-crown',
+                'spent' => $spent,
+                'next_tier' => 'Kim Cương',
+                'target' => $target,
+                'progress' => min(99, round(($spent / $target) * 100)),
+                'remaining' => max(0, $target - $spent),
+                'perk' => 'Nhân x1.5 Xu thưởng khi lướt video, Ưu tiên xử lý đơn hàng hỏa tốc',
+            ];
+        }
+
+        if ($spent >= 10000000) {
+            $target = 25000000;
+            return [
+                'name' => 'Bạc',
+                'badge' => 'Bạc',
+                'color' => '#475569',
+                'bg' => '#f8fafc',
+                'border' => '#e2e8f0',
+                'icon' => 'fa-medal',
+                'spent' => $spent,
+                'next_tier' => 'Vàng',
+                'target' => $target,
+                'progress' => min(99, round(($spent / $target) * 100)),
+                'remaining' => max(0, $target - $spent),
+                'perk' => 'Nhân x1.2 Xu thưởng, Voucher giảm 5% vào ngày hội viên',
+            ];
+        }
+
+        $target = 10000000;
+        return [
+            'name' => 'Đồng',
+            'badge' => 'Đồng',
+            'color' => '#b45309',
+            'bg' => '#fffbeb',
+            'border' => '#fde68a',
+            'icon' => 'fa-award',
+            'spent' => $spent,
+            'next_tier' => 'Bạc',
+            'target' => $target,
+            'progress' => min(99, round(($spent / $target) * 100)),
+            'remaining' => max(0, $target - $spent),
+            'perk' => 'Tích Xu mua hàng, Tham gia quay thưởng hàng ngày',
+        ];
+    }
 }

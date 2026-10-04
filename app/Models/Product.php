@@ -170,9 +170,23 @@ class Product extends Model
             $totalStock += $qty;
         }
 
+        // Nếu không khớp chính xác tên màu sắc, trừ vào biến thể đầu tiên còn hàng
+        if (!$found) {
+            $rem = $quantity;
+            foreach ($newVariants as &$v) {
+                if ($v['quantity'] > 0 && $rem > 0) {
+                    $deduct = min($v['quantity'], $rem);
+                    $v['quantity'] = max(0, $v['quantity'] - $deduct);
+                    $rem -= $deduct;
+                }
+            }
+            unset($v);
+            $totalStock = array_sum(array_column($newVariants, 'quantity'));
+        }
+
         // Cập nhật mảng colors và tổng stock_quantity
         $this->colors = $newVariants;
-        $this->stock_quantity = max(0, $found ? $totalStock : ($this->stock_quantity - $quantity));
+        $this->stock_quantity = max(0, min((int)$this->stock_quantity - $quantity, $totalStock));
         
         // Đồng bộ chuỗi color tương thích ngược
         $this->color = implode(', ', array_column($newVariants, 'name'));

@@ -12,6 +12,24 @@
         </a>
     </div>
 
+    <!-- Bộ lọc & Xếp hạng khách hàng theo chi tiêu / đơn mua -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+        <div class="btn-group btn-group-sm shadow-sm" role="group">
+            <a href="{{ route('admin.users.index') }}" class="btn {{ (!request('sort') || request('sort') === 'newest') ? 'btn-primary' : 'btn-outline-secondary' }}">
+                Tất cả người dùng
+            </a>
+            <a href="{{ route('admin.users.index', ['sort' => 'spent_desc']) }}" class="btn {{ request('sort') === 'spent_desc' ? 'btn-primary' : 'btn-outline-secondary' }}">
+                Mua nhiều nhất (Top VIP)
+            </a>
+            <a href="{{ route('admin.users.index', ['sort' => 'orders_desc']) }}" class="btn {{ request('sort') === 'orders_desc' ? 'btn-primary' : 'btn-outline-secondary' }}">
+                Nhiều đơn mua nhất
+            </a>
+        </div>
+        <div class="text-muted small">
+            Đang hiển thị <strong>{{ $users->count() }}</strong> tài khoản
+        </div>
+    </div>
+
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
@@ -24,6 +42,7 @@
                         <th>TÊN NGƯỜI DÙNG</th>
                         <th>EMAIL</th>
                         <th>VAI TRÒ</th>
+                        <th>CHI TIÊU & CẤP BẬC</th>
                         <th class="text-center">LƯỢT QUAY / 24H</th>
                         <th class="text-center">XU & HẠN MỨC NGÀY</th>
                         <th class="text-center" width="220px">HÀNH ĐỘNG</th>
@@ -81,6 +100,20 @@
                                         <i class="fa-solid fa-user me-1"></i> {{ $user->role ?? 'customer' }}
                                     </span>
                                 @endif
+                            </td>
+                            <td>
+                                @php
+                                    $spent = $user->total_spent;
+                                    $tier = $user->membership_tier;
+                                    $orderCount = $user->orders_count ?? 0;
+                                @endphp
+                                <div>
+                                    <strong class="text-dark">{{ number_format($spent, 0, ',', '.') }}₫</strong>
+                                    <small class="text-muted ms-1">({{ $orderCount }} đơn)</small>
+                                </div>
+                                <span class="badge rounded-pill fw-bold" style="background-color: {{ $tier['bg'] }}; color: {{ $tier['color'] }}; border: 1px solid {{ $tier['border'] }}; font-size: 0.68rem; padding: 2px 7px;">
+                                    {{ $tier['badge'] }}
+                                </span>
                             </td>
                             <td class="text-center">
                                 <div class="d-inline-flex align-items-center gap-1">

@@ -11,10 +11,28 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'brand'])->latest()->paginate(10);
-        return view('admin.products.index', compact('products'));
+        $sort = $request->query('sort');
+        $query = Product::with(['category', 'brand']);
+
+        $paidOrderIds = \App\Models\Order::where(function($q) {
+            $q->whereIn('status', ['paid', 'paid_momo', 'cod_paid'])
+              ->orWhere('shipping_status', 'delivered');
+        })->whereNotIn('status', ['cancelled'])->where('shipping_status', '!=', 'cancelled')->pluck('id');
+
+        $query->withSum(['orderItems as total_sold' => function($q) use ($paidOrderIds) {
+            $q->whereIn('order_id', $paidOrderIds);
+        }], 'quantity');
+
+        if ($sort === 'best_sellers') {
+            $query->orderByDesc('total_sold')->orderByDesc('id');
+        } else {
+            $query->latest('id');
+        }
+
+        $products = $query->paginate(12)->withQueryString();
+        return view('admin.products.index', compact('products', 'sort'));
     }
 
     public function create()
