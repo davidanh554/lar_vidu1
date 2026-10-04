@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "POST",
                 headers: {
                     "X-CSRF-TOKEN": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest",
                     "Accept": "application/json"
                 }
             }).catch(() => {});
@@ -207,7 +208,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // --- LOAD TIN NHẮN GIỮA USER VÀ ADMIN ---
         function loadMessages() {
             if (!chatBox) return;
-            fetch("{{ route('user.chat.messages') }}")
+            fetch("{{ route('user.chat.messages') }}", {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json"
+                }
+            })
                 .then(res => res.json())
                 .then(messages => {
                     let html = "";
@@ -232,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div class="d-flex mb-2 ${isMe ? 'justify-content-end' : 'justify-content-start'}">
                                     <div class="support-msg-bubble ${isMe ? 'support-user-bubble' : 'support-admin-bubble'}">
                                         <small class="d-block fw-semibold mb-1 opacity-75" style="font-size: 0.7rem;">
-                                            ${isMe ? 'Bạn' : '<i class="fa-solid fa-shield-halved text-primary me-1"></i>Chuyên viên hỗ trợ'}
+                                             ${isMe ? 'Bạn' : '<i class="fa-solid fa-shield-halved text-primary me-1"></i>Chuyên viên hỗ trợ'}
                                         </small>
                                         <div>${escapeHtml(msg.content)}</div>
                                         ${timeStr ? `<div class="text-end opacity-75 mt-1" style="font-size: 0.65rem;">${timeStr}</div>` : ''}
@@ -262,6 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: "POST",
                 headers: {
                     "X-CSRF-TOKEN": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest",
                     "Content-Type": "application/json",
                     "Accept": "application/json"
                 },
@@ -299,7 +306,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 3500);
 
         function pollNotifications() {
-            fetch("{{ route('user.notifications.unread') }}")
+            fetch("{{ route('user.notifications.unread') }}", {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json"
+                }
+            })
                 .then(res => res.json())
                 .then(data => {
                     if (chatBadge && chatPopup.style.display !== "block") {

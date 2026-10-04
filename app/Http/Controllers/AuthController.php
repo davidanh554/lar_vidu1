@@ -23,9 +23,25 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
+                return redirect()->route('admin.dashboard');
             }
-            return redirect()->intended(route('home'));
+
+            // Chỉ redirect đến intended nếu là một trang web hợp lệ của khách hàng
+            $intended = session()->pull('url.intended');
+            $allowedIntendedPages = ['cart', 'wishlist', 'videos', 'checkout', 'orders', 'profile', 'products'];
+            $targetUrl = route('home');
+
+            if ($intended) {
+                $path = trim(parse_url($intended, PHP_URL_PATH) ?? '', '/');
+                foreach ($allowedIntendedPages as $allowed) {
+                    if ($path === $allowed || str_starts_with($path, $allowed . '/')) {
+                        $targetUrl = $intended;
+                        break;
+                    }
+                }
+            }
+
+            return redirect($targetUrl);
         }
 
         return back()->withErrors(['email' => 'Email hoặc mật khẩu không đúng.']);

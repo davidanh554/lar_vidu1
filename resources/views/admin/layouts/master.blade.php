@@ -263,7 +263,12 @@
 
     // 1. Tải danh sách User & Tin nhắn mới
     function loadUsers(silent = false) {
-        fetch("{{ route('admin.chat.users') }}")
+        fetch("{{ route('admin.chat.users') }}", {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Accept": "application/json"
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 const users = Array.isArray(data) ? data : (data.users || []);
@@ -448,7 +453,12 @@
     function loadMessages(silent = false) {
         if (!currentUserId) return;
 
-        fetch(`/admin/chat/messages/${currentUserId}`)
+        fetch(`/admin/chat/messages/${currentUserId}`, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Accept": "application/json"
+            }
+        })
             .then(res => res.json())
             .then(messages => {
                 let html = "";
@@ -503,7 +513,9 @@
         fetch("{{ route('admin.chat.send') }}", {
             method: "POST",
             headers: {
+                "X-Requested-With": "XMLHttpRequest",
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify({
