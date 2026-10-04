@@ -13,6 +13,10 @@ class VideoShoppingController extends Controller
      */
     public function index()
     {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('warning', 'Vui lòng đăng nhập để xem video và tích luỹ Xu thưởng!');
+        }
+
         $videos = Video::with('product')->where('is_active', true)->latest()->get();
         $user = auth()->user();
         

@@ -23,7 +23,7 @@
                         : 0;
                     $wishlistCount = auth()->check() 
                         ? auth()->user()->wishlists()->count() 
-                        : count(session('wishlist', []));
+                        : 0;
                 @endphp
 
                 <!-- 1. Nút Yêu thích (Wishlist) -->

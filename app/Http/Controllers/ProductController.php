@@ -192,7 +192,11 @@ class ProductController extends Controller
             return response()->json([
                 'html' => view('products._product_list', compact('products'))->render(),
                 'total' => $products->total(),
-            ]);
+            ])
+            ->header('Vary', 'X-Requested-With, Accept')
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
         }
 
         return response()

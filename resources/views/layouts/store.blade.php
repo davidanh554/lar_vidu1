@@ -88,6 +88,56 @@
     
     <!-- Wishlist & Global Toast Handler -->
     <script>
+    @guest
+    // Bắt sự kiện click ngay từ capture phase khi khách chưa đăng nhập: chuyển hướng ngay sang trang đăng nhập
+    document.addEventListener('click', function (e) {
+        // 1. Nút Yêu thích
+        const wishlistBtn = e.target.closest('.btn-wishlist-toggle, #nav-wishlist-btn');
+        if (wishlistBtn) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            window.location.href = "{{ route('login') }}";
+            return false;
+        }
+
+        // 2. Nút Thêm vào giỏ hàng
+        const addCartBtn = e.target.closest('.btn-ajax-add, .btn-card-detail, #btn-add-cart, button[value="add"], button[value="add_to_cart"]');
+        if (addCartBtn) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            window.location.href = "{{ route('login') }}";
+            return false;
+        }
+
+        // 3. Nút Mua ngay
+        const buyNowBtn = e.target.closest('.btn-card-buy, #btn-buy-now, button[value="buy_now"]');
+        if (buyNowBtn) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            window.location.href = "{{ route('login') }}";
+            return false;
+        }
+
+        // 4. Form thêm giỏ hàng / mua ngay nếu submit trực tiếp
+        const cartForm = e.target.closest('form.ajax-add-cart-form, form#purchase-form');
+        if (cartForm && (e.target.type === 'submit' || e.target.tagName === 'BUTTON')) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            window.location.href = "{{ route('login') }}";
+            return false;
+        }
+
+        // 5. Nút / Link xem video nhận xu
+        const videoBtn = e.target.closest('a[href*="/videos"], .btn-hero-video');
+        if (videoBtn) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            window.location.href = "{{ route('login') }}";
+            return false;
+        }
+    }, true);
+    @endguest
+
     document.addEventListener('DOMContentLoaded', function () {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
@@ -131,9 +181,20 @@
                 },
                 body: JSON.stringify({})
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = "{{ route('login') }}";
+                    return null;
+                }
+                return response.json();
+            })
             .then(data => {
+                if (!data) return;
                 btn.disabled = false;
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
                 if (data.success) {
                     // Update current button
                     const icon = btn.querySelector('i');

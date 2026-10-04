@@ -1,7 +1,7 @@
 @php
     $favIds = auth()->check()
         ? auth()->user()->wishlists()->pluck('product_id')->toArray()
-        : session('wishlist', []);
+        : [];
 @endphp
 
 <!-- Products Grid (PhongMobile Clean Minimalist Style) -->

@@ -150,7 +150,7 @@
                         @php
                             $isWishlisted = auth()->check()
                                 ? auth()->user()->wishlists()->where('product_id', $product->id)->exists()
-                                : in_array($product->id, session('wishlist', []));
+                                : false;
                         @endphp
                         <button type="button" 
                                 class="btn-wishlist-toggle btn-wishlist-toggle-detail {{ $isWishlisted ? 'active' : '' }}" 
@@ -580,12 +580,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData
             })
             .then(response => {
+                if (response.status === 401) {
+                    window.location.href = "{{ route('login') }}";
+                    return null;
+                }
                 return response.json().then(data => ({
                     status: response.status,
                     data: data
                 }));
             })
-            .then(({ status, data }) => {
+            .then(res => {
+                if (!res) return;
+                const { status, data } = res;
                 if (data.redirect) {
                     window.location.href = data.redirect;
                     return;

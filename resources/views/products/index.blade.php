@@ -569,12 +569,18 @@ document.addEventListener('DOMContentLoaded', function() {
             body: formData
         })
         .then(response => {
+            if (response.status === 401) {
+                window.location.href = "{{ route('login') }}";
+                return null;
+            }
             return response.json().then(data => ({
                 status: response.status,
                 data: data
             }));
         })
-        .then(({ status, data }) => {
+        .then(result => {
+            if (!result) return;
+            const { status, data } = result;
             if (data.redirect) {
                 window.location.href = data.redirect;
                 return;
@@ -611,6 +617,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.innerHTML = originalHtml;
             }
         });
+    });
+
+    // Xử lý khi người dùng ấn nút Quay lại (Back) hoặc Tiếp tục (Forward) trên trình duyệt
+    window.addEventListener('popstate', function (e) {
+        window.location.reload();
     });
 });
 </script>

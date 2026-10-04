@@ -67,12 +67,14 @@ Route::post('/ai-chat/clear', [GeminiChatController::class, 'clear'])->name('ai.
 // Chuyển hướng /ai-advisor về trang chủ (Đã thay thế hoàn toàn bằng Chatbot AI Gemini 24/7)
 Route::redirect('/ai-advisor', '/');
 
-// Video Shopping (Lướt video nhận quà / Freeship & Tích luỹ Xu)
-Route::get('/videos', [VideoShoppingController::class, 'index'])->name('videos.index');
-Route::post('/videos/claim-reward', [VideoShoppingController::class, 'claimReward'])->name('videos.claimReward');
-Route::post('/videos/exchange-voucher', [VideoShoppingController::class, 'exchangeVoucher'])->name('videos.exchangeVoucher');
-Route::get('/videos/coins-status', [VideoShoppingController::class, 'getCoinsStatus'])->name('videos.coinsStatus');
-Route::post('/videos/{video}/like', [VideoShoppingController::class, 'toggleLike'])->name('videos.like');
+// Video Shopping (Lướt video nhận quà / Freeship & Tích luỹ Xu - Bắt buộc đăng nhập mới được xem)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/videos', [VideoShoppingController::class, 'index'])->name('videos.index');
+    Route::post('/videos/claim-reward', [VideoShoppingController::class, 'claimReward'])->name('videos.claimReward');
+    Route::post('/videos/exchange-voucher', [VideoShoppingController::class, 'exchangeVoucher'])->name('videos.exchangeVoucher');
+    Route::get('/videos/coins-status', [VideoShoppingController::class, 'getCoinsStatus'])->name('videos.coinsStatus');
+    Route::post('/videos/{video}/like', [VideoShoppingController::class, 'toggleLike'])->name('videos.like');
+});
 
 // 3. Routes Giỏ hàng (Bắt buộc đăng nhập để xem và quản lý giỏ hàng)
 Route::middleware(['auth'])->group(function () {
