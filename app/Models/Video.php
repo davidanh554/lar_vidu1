@@ -59,8 +59,7 @@ class Video extends Model
     {
         $id = $this->youtube_id;
         if (!$id) return null;
-        $origin = urlencode(request()->getSchemeAndHttpHost());
-        return "https://www.youtube.com/embed/{$id}?autoplay=1&mute=1&loop=1&playlist={$id}&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&fs=0&iv_load_policy=3&disablekb=1&origin={$origin}";
+        return "https://www.youtube.com/embed/{$id}?autoplay=1&mute=1&loop=1&playlist={$id}&controls=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1&fs=0&iv_load_policy=3&disablekb=1";
     }
 
     /**

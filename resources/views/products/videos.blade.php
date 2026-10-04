@@ -76,7 +76,7 @@
                             <!-- Trình phát YouTube Shorts / Video nhúng ẩn sạch UI -->
                             <div class="reel-youtube-wrapper">
                                 <iframe class="reel-youtube-iframe"
-                                        src="{{ $index === 0 ? $v->embed_url : '' }}"
+                                        @if($index === 0) src="{{ $v->embed_url }}" @endif
                                         data-src="{{ $v->embed_url }}"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen>
@@ -917,9 +917,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
         } else if (iframe) {
-            // Lazy load YouTube iframe: chỉ gán src khi người dùng lướt tới video này
-            if (!iframe.src && iframe.dataset.src) {
-                iframe.src = iframe.dataset.src;
+            // Lazy load YouTube iframe: kiểm tra nạp src nếu chưa có hoặc chưa trỏ đúng YouTube
+            const dataSrc = iframe.getAttribute('data-src');
+            if (dataSrc && (!iframe.src || !iframe.src.includes('youtube.com/embed'))) {
+                iframe.src = dataSrc;
             }
             try {
                 iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
