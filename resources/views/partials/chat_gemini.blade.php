@@ -289,9 +289,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const defaultGreetingHtml = `
         <div class="d-flex mb-3 align-items-start">
             <div class="gemini-msg-bubble gemini-bot-bubble">
-                <p class="mb-2 fw-semibold" style="font-size: 0.88rem; color: #00f59b;">Xin chào, {{ Auth::check() ? Auth::user()->name : 'Bạn' }}! Tôi là Trợ lý AI VUA TABLET.</p>
-                <p class="mb-2">Tôi nắm rõ toàn bộ thông tin kho máy tính bảng & chính sách của cửa hàng.</p>
-                <p class="mb-0 small text-white-50">Hãy chọn câu hỏi gợi ý bên trên hoặc nhập nội dung bất kỳ để được tư vấn ngay lập tức nhé!</p>
+                <p class="mb-2 fw-semibold" style="font-size: 0.88rem; color: #4f46e5;">Xin chào, {{ Auth::check() ? Auth::user()->name : 'Bạn' }}! Tôi là Trợ lý AI VUA TABLET.</p>
+                <p class="mb-2">Tôi chuyên hỗ trợ tư vấn các dòng máy tính bảng chính hãng, cấu hình, báo giá & chính sách của shop.</p>
+                <p class="mb-0 small text-muted">Hãy chọn câu hỏi gợi ý bên trên hoặc nhập nội dung để được tư vấn ngay nhé!</p>
             </div>
         </div>
     `;
@@ -349,8 +349,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     chatBox.innerHTML = `
                         <div class="d-flex mb-3 align-items-start">
                             <div class="gemini-msg-bubble gemini-bot-bubble">
-                                <p class="mb-2 fw-semibold" style="font-size: 0.88rem; color: #00f59b;">Đã làm mới cuộc hội thoại!</p>
-                                <p class="mb-0 small text-white-50">Lịch sử chat của bạn đã được xóa. Bạn cần em tư vấn thêm dòng máy tính bảng nào không ạ?</p>
+                                <p class="mb-2 fw-semibold" style="font-size: 0.88rem; color: #4f46e5;">Đã làm mới cuộc hội thoại!</p>
+                                <p class="mb-0 small text-muted">Lịch sử chat của bạn đã được xóa. Bạn cần em tư vấn thêm dòng máy tính bảng nào không ạ?</p>
                             </div>
                         </div>
                     `;
