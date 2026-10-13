@@ -31,6 +31,14 @@ class CheckoutController extends Controller
                 ->latest()
                 ->first();
             if ($recentOrder) {
+                if ($recentOrder->status === 'pending') {
+                    $isSepay = $recentOrder->paymentTransactions && $recentOrder->paymentTransactions->where('gateway', 'sepay')->isNotEmpty();
+                    if ($isSepay) {
+                        return redirect()->route('orders.sepay.pay', $recentOrder)
+                            ->with('info', 'Đơn hàng #' . $recentOrder->id . ' của bạn đang chờ thanh toán chuyển khoản VietQR.');
+                    }
+                }
+
                 return redirect()->route('orders.index')
                     ->with('success', 'Đơn hàng #' . $recentOrder->id . ' của bạn đã được đặt thành công!');
             }

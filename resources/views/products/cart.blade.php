@@ -179,7 +179,7 @@
                         </button>
                         
                         <div class="text-center mt-3 small text-muted">
-                            <i class="fa-solid fa-lock me-1"></i> Giao dịch bảo mật 100% với MoMo & GHN
+                            <i class="fa-solid fa-lock me-1"></i> Giao dịch bảo mật 100% với VietQR & GHN
                         </div>
                     </div>
                 </div>

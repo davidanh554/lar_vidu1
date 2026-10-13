@@ -159,6 +159,10 @@
                                     <span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">
                                         <i class="fa-solid fa-truck-ramp-box me-1"></i> COD
                                     </span>
+                                @elseif ($order->gateway === 'sepay')
+                                    <span class="badge bg-success-subtle text-success border border-success px-2 py-1">
+                                        <i class="fa-solid fa-qrcode me-1"></i> VietQR (SePay)
+                                    </span>
                                 @elseif ($order->gateway === 'momo')
                                     <span class="badge bg-danger-subtle text-danger border border-danger px-2 py-1">
                                         <i class="fa-solid fa-wallet me-1"></i> MoMo

@@ -12,6 +12,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\GHNController;
 use App\Http\Controllers\User\MomoController;
+use App\Http\Controllers\User\SepayController;
 use App\Http\Controllers\User\ChatController as UserChatController;
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -191,8 +192,11 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
 });
 
 // ==========================================
-// 5. Khu vực Thanh toán & MoMo
+// 5. Khu vực Thanh toán (SePay VietQR & MoMo)
 // ==========================================
+// Webhook SePay (IPN tự động khi tiền vào tài khoản ngân hàng)
+Route::post('/payment/sepay/webhook', [SepayController::class, 'webhook'])->name('payment.sepay.webhook');
+
 // Webhook & Callback từ MoMo (Không dùng middleware auth vì bên MoMo gọi sang)
 Route::post('/payment/momo/ipn', [MomoController::class, 'ipn'])->name('payment.momo.ipn');
 Route::get('/payment/momo/callback', [MomoController::class, 'callback'])->name('user.payment.momo.callback');
@@ -215,7 +219,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
-    // Các route khởi tạo & thanh toán lại MoMo
+    // Các route thanh toán VietQR SePay
+    Route::get('/orders/{order}/pay/sepay', [SepayController::class, 'pay'])->name('orders.sepay.pay');
+    Route::get('/orders/{order}/sepay/check-status', [SepayController::class, 'checkStatus'])->name('orders.sepay.check-status');
+    Route::post('/orders/{order}/sepay/cancel', [SepayController::class, 'cancelPayment'])->name('orders.sepay.cancel');
+    Route::post('/orders/{order}/sepay/mock', [SepayController::class, 'mockSuccess'])->name('orders.sepay.mock');
+
+    // Các route khởi tạo & thanh toán lại MoMo (giữ lại tương thích)
     Route::get('/orders/{order}/start-momo', [MomoController::class, 'start'])->name('orders.momo.start');
     Route::get('/orders/{order}/pay/momo', [MomoController::class, 'payAgain'])->name('orders.momo.pay');
 

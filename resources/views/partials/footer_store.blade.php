@@ -37,7 +37,7 @@
                     <li><a href="{{ route('orders.index') }}" class="text-decoration-none text-secondary">Tra cứu đơn hàng GHN</a></li>
                     <li><span class="text-secondary">Bảo hành chính hãng 12T</span></li>
                     <li><span class="text-secondary">Đổi mới trong 30 ngày</span></li>
-                    <li><span class="text-secondary">MoMo & COD toàn quốc</span></li>
+                    <li><span class="text-secondary">VietQR & COD toàn quốc</span></li>
                 </ul>
             </div>
 
@@ -58,7 +58,7 @@
             <div class="mt-2 mt-md-0 d-flex gap-3">
                 <span>Giao vận: <strong>GHN Express</strong></span>
                 <span>•</span>
-                <span>Cổng thanh toán: <strong>MoMo & COD</strong></span>
+                <span>Cổng thanh toán: <strong>VietQR & COD</strong></span>
             </div>
         </div>
     </div>

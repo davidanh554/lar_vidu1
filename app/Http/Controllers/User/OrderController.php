@@ -33,6 +33,14 @@ class OrderController extends Controller
                 ->first() : null;
 
             if ($recentOrder) {
+                if ($recentOrder->status === 'pending') {
+                    $isSepay = $recentOrder->paymentTransactions && $recentOrder->paymentTransactions->where('gateway', 'sepay')->isNotEmpty();
+                    if ($isSepay) {
+                        return redirect()->route('orders.sepay.pay', $recentOrder)
+                            ->with('info', 'Đơn hàng #' . $recentOrder->id . ' của bạn đang chờ thanh toán chuyển khoản VietQR.');
+                    }
+                }
+
                 return redirect()->route('orders.index')
                     ->with('success', 'Đơn hàng #' . $recentOrder->id . ' của bạn đã được tiếp nhận thành công!');
             }
@@ -60,7 +68,7 @@ class OrderController extends Controller
             'address'        => 'required|string|max:100',
             'to_district_id' => 'required|integer',
             'to_ward_code'   => 'required|string',
-            'payment_method' => 'required|in:cod,momo',
+            'payment_method' => 'required|in:cod,sepay,momo',
         ], [
             'name.required'           => 'Vui lòng nhập họ và tên người nhận',
             'phone.required'          => 'Vui lòng nhập số điện thoại người nhận',
@@ -252,6 +260,19 @@ class OrderController extends Controller
         session(['last_order_id' => $order->id]);
 
         // 4. Phân luồng thanh toán
+        if ($request->payment_method === 'sepay') {
+            PaymentTransaction::create([
+                'order_id'         => $order->id,
+                'gateway'          => 'sepay',
+                'gateway_order_id' => 'DH' . $order->id,
+                'amount'           => $order->total_price,
+                'status'           => 'pending',
+                'message'          => 'Chờ chuyển khoản VietQR (SePay)',
+            ]);
+
+            return redirect()->route('orders.sepay.pay', $order);
+        }
+
         if ($request->payment_method === 'momo') {
             PaymentTransaction::create([
                 'order_id' => $order->id,

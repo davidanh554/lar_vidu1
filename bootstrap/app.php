@@ -15,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'logout',
             'payment/momo/ipn',
             'payment/momo/*',
+            'payment/sepay/webhook',
+            'payment/sepay/*',
         ]);
 
         $middleware->trustProxies(at: '*');

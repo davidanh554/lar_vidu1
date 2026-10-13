@@ -52,10 +52,11 @@
                             @php
                                 $isCancelled = in_array($order->status, ['cancelled']) || $order->shipping_status === 'cancelled';
                                 $isPaid = $order->status === 'paid';
+                                $hasSepay = $order->paymentTransactions && $order->paymentTransactions->where('gateway', 'sepay')->isNotEmpty();
                                 $hasMomo = $order->paymentTransactions && $order->paymentTransactions->where('gateway', 'momo')->isNotEmpty();
                                 $isCod = $order->status === 'cod_ordered' 
                                          || ($order->paymentTransactions && $order->paymentTransactions->where('gateway', 'cod')->isNotEmpty())
-                                         || (!$hasMomo && !$isPaid);
+                                         || (!$hasSepay && !$hasMomo && !$isPaid);
                             @endphp
                             <tr>
                                 <td class="ps-4">
@@ -105,8 +106,10 @@
                                         <span class="badge-soft badge-soft-success"><i class="fa-solid fa-circle-check"></i> Đã thanh toán</span>
                                     @elseif($isCod)
                                         <span class="badge-soft badge-soft-info"><i class="fa-solid fa-truck"></i> Tiền mặt (COD)</span>
+                                    @elseif($hasSepay)
+                                        <span class="badge-soft badge-soft-warning"><i class="fa-solid fa-qrcode"></i> Chờ VietQR</span>
                                     @else
-                                        <span class="badge-soft badge-soft-warning"><i class="fa-solid fa-hourglass-half"></i> Chờ MoMo</span>
+                                        <span class="badge-soft badge-soft-warning"><i class="fa-solid fa-hourglass-half"></i> Chờ thanh toán</span>
                                     @endif
                                 </td>
                                 <td>
@@ -163,10 +166,16 @@
                                             </button>
                                         @endif
 
-                                        @if(!$isCancelled && !$isPaid && $hasMomo)
-                                            <a href="{{ route('orders.momo.pay', $order->id) }}" class="btn btn-sm btn-danger rounded-pill px-3 fw-bold">
-                                                <i class="fa-solid fa-credit-card me-1"></i> Trả lại
-                                            </a>
+                                        @if(!$isCancelled && !$isPaid)
+                                            @if($hasSepay)
+                                                <a href="{{ route('orders.sepay.pay', $order->id) }}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                                    <i class="fa-solid fa-qrcode me-1"></i> Quét mã QR
+                                                </a>
+                                            @elseif($hasMomo)
+                                                <a href="{{ route('orders.momo.pay', $order->id) }}" class="btn btn-sm btn-danger rounded-pill px-3 fw-bold">
+                                                    <i class="fa-solid fa-credit-card me-1"></i> Trả lại
+                                                </a>
+                                            @endif
                                         @endif
 
                                         @php

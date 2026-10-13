@@ -53,6 +53,14 @@ return [
         'ipn_url'      => env('MOMO_IPN_URL'),
     ],
 
+    'sepay' => [
+        'account_no'    => env('SEPAY_ACCOUNT_NO', '0987654321'),
+        'bank'          => env('SEPAY_BANK', 'MBBank'),
+        'account_name'  => env('SEPAY_ACCOUNT_NAME', 'VUA TABLET'),
+        'api_key'       => env('SEPAY_API_KEY', ''),
+        'webhook_token' => env('SEPAY_WEBHOOK_TOKEN', ''),
+    ],
+
     'gemini' => [
         'api_key'    => env('GEMINI_API_KEY'),
         'model'      => env('GEMINI_MODEL', 'gemini-1.5-flash'),

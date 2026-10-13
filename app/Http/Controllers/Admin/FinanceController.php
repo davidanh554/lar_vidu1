@@ -129,7 +129,7 @@ class FinanceController extends Controller
             'statusTotals' => $statusTotals,
             'methodTotals' => $methodTotals,
             'statuses' => self::STATUSES,
-            'methods' => ['cod' => 'COD', 'momo' => 'MoMo', 'unknown' => 'Chưa xác định'],
+            'methods' => ['cod' => 'COD', 'sepay' => 'SePay (VietQR)', 'momo' => 'MoMo', 'unknown' => 'Chưa xác định'],
         ]);
     }
 
@@ -151,7 +151,7 @@ class FinanceController extends Controller
             'filters' => $filters,
             'statuses' => self::STATUSES,
             'codTransitions' => self::COD_TRANSITIONS,
-            'methods' => ['cod' => 'COD', 'momo' => 'MoMo', 'unknown' => 'Chưa xác định'],
+            'methods' => ['cod' => 'COD', 'sepay' => 'SePay (VietQR)', 'momo' => 'MoMo', 'unknown' => 'Chưa xác định'],
         ]);
     }
 

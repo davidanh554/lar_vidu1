@@ -99,14 +99,17 @@
                                 </div>
                             </label>
 
-                            <label for="payment_momo" class="p-3 border rounded-3 d-flex align-items-center bg-white shadow-sm" style="cursor: pointer;">
-                                <input class="form-check-input mt-0 me-3 fs-5" type="radio" name="payment_method" value="momo" id="payment_momo" style="cursor: pointer;">
-                                <div>
-                                    <div class="fw-bold text-dark d-flex align-items-center">
-                                        <span class="badge me-2" style="background-color: #a50064; font-size: 0.78rem; font-weight: 700; padding: 4px 8px; border-radius: 6px;">MoMo</span>
-                                        Thanh toán qua Cổng MoMo (Ví MoMo / Thẻ ATM Napas / QR)
+                            <label for="payment_sepay" class="p-3 border rounded-3 d-flex align-items-center bg-white shadow-sm" style="cursor: pointer;">
+                                <input class="form-check-input mt-0 me-3 fs-5" type="radio" name="payment_method" value="sepay" id="payment_sepay" style="cursor: pointer;">
+                                <div class="w-100">
+                                    <div class="fw-bold text-dark d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                        <span class="d-flex align-items-center gap-2">
+                                            <span class="badge bg-primary text-white" style="font-size: 0.78rem; font-weight: 700; padding: 4px 8px; border-radius: 6px;">VietQR</span>
+                                            <i class="fa-solid fa-qrcode text-primary"></i> Chuyển khoản ngân hàng 24/7 (VietQR / SePay)
+                                        </span>
+                                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 small">Tự động duyệt 24/7</span>
                                     </div>
-                                    <small class="text-muted">Chuyển hướng an toàn tới Cổng MoMo để thanh toán trực tuyến tức thì.</small>
+                                    <small class="text-muted d-block mt-1">Quét mã VietQR bằng app bất kỳ ngân hàng nào (MB, VCB, Techcombank, ACB, VPBank...) hoặc ví điện tử. Xác nhận tức thì.</small>
                                 </div>
                             </label>
                         </div>
@@ -560,6 +563,14 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 50);
             submitBtn.style.pointerEvents = 'none';
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Đang xử lý tạo đơn & kết nối GHN...';
+        });
+
+        // Khôi phục nút submit nếu người dùng quay lại bằng nút Back của trình duyệt (Fix lỗi kẹt load do bfcache)
+        window.addEventListener('pageshow', function (event) {
+            orderForm.dataset.submitting = 'false';
+            submitBtn.disabled = false;
+            submitBtn.style.pointerEvents = 'auto';
+            submitBtn.innerHTML = '<i class="fa-solid fa-circle-check me-2"></i> Xác nhận đặt hàng';
         });
     }
 });

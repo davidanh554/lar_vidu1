@@ -146,6 +146,7 @@
                 @php
                     $isPaid = $order->status === 'paid';
                     $isCancelled = $order->status === 'cancelled' || $order->shipping_status === 'cancelled';
+                    $hasSepay = $order->paymentTransactions && $order->paymentTransactions->where('gateway', 'sepay')->isNotEmpty();
                     $hasMomo = $order->paymentTransactions && $order->paymentTransactions->where('gateway', 'momo')->isNotEmpty();
                     $orderItemsData = $order->items->map(function($it) use ($order) {
                         $rev = $order->reviews ? $order->reviews->where('product_id', $it->product_id)->first() : null;
@@ -172,12 +173,20 @@
                     </div>
                 @endif
 
-                @if(!$isCancelled && !$isPaid && $hasMomo)
-                    <div class="mt-3">
-                        <a href="{{ route('orders.momo.pay', $order->id) }}" class="btn btn-modern-primary w-100 rounded-pill py-3 fw-bold">
-                            <i class="fa-solid fa-credit-card me-2"></i> Thanh toán lại qua MoMo
-                        </a>
-                    </div>
+                @if(!$isCancelled && !$isPaid)
+                    @if($hasSepay)
+                        <div class="mt-3">
+                            <a href="{{ route('orders.sepay.pay', $order->id) }}" class="btn btn-modern-primary w-100 rounded-pill py-3 fw-bold shadow">
+                                <i class="fa-solid fa-qrcode me-2"></i> Tiếp tục quét mã VietQR thanh toán
+                            </a>
+                        </div>
+                    @elseif($hasMomo)
+                        <div class="mt-3">
+                            <a href="{{ route('orders.momo.pay', $order->id) }}" class="btn btn-modern-primary w-100 rounded-pill py-3 fw-bold">
+                                <i class="fa-solid fa-credit-card me-2"></i> Thanh toán lại qua MoMo
+                            </a>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>
