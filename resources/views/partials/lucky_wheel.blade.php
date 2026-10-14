@@ -99,12 +99,10 @@
                             <div class="tab-content" id="wheelTabsContent">
                                 <!-- Tab 1: Danh sách giải thưởng -->
                                 <div class="tab-pane fade show active" id="pills-prizes" role="tabpanel">
-                                    <div class="wheel-prizes-list">
-                                        <div class="prize-pill-item"><span class="badge-dot dot-gold"></span> Voucher Siêu Cấp 100.000₫</div>
-                                        <div class="prize-pill-item"><span class="badge-dot dot-emerald"></span> Voucher Giảm 10% (Tối đa 100k)</div>
-                                        <div class="prize-pill-item"><span class="badge-dot dot-green"></span> Voucher Giảm 50.000₫</div>
-                                        <div class="prize-pill-item"><span class="badge-dot dot-neon"></span> Miễn phí vận chuyển 30.000₫</div>
-                                        <div class="prize-pill-item"><span class="badge-dot dot-teal"></span> Voucher Giảm 20.000₫ & 30.000₫</div>
+                                    <div class="wheel-prizes-list" id="wheel-prizes-list">
+                                        <div class="text-center text-muted py-2 small">
+                                            <i class="fa-solid fa-spinner fa-spin me-1"></i> Đang tải giải thưởng...
+                                        </div>
                                     </div>
                                     <div class="wheel-rule-note mt-3">
                                         <i class="fa-solid fa-circle-info text-emerald-laser me-1"></i>
@@ -657,6 +655,15 @@
 
     // 2. Cập nhật UI
     function updateUIWithStatus(data) {
+        if (data.enabled === false) {
+            const container = document.getElementById('lucky-wheel-container');
+            if (container) container.style.display = 'none';
+            return;
+        }
+
+        // Render danh sách giải thưởng động
+        renderPrizesList(data.slices || []);
+
         const badge = document.getElementById('wheel-badge-spins');
         const spinsLeftEl = document.getElementById('wheel-spins-left');
         const spinsBarEl = document.getElementById('wheel-spins-bar');
@@ -685,6 +692,30 @@
 
         // Start countdown timer
         startCountdown(data.seconds_until_reset);
+    }
+
+    // 2.1 Render danh sách phần thưởng ở Tab Giải thưởng
+    function renderPrizesList(slices) {
+        const container = document.getElementById('wheel-prizes-list');
+        if (!container || !slices) return;
+
+        let html = '';
+        slices.forEach(slice => {
+            if (slice.type === 'coupon') {
+                html += `
+                    <div class="prize-pill-item">
+                        <span class="badge-dot" style="background-color: ${slice.color || '#4f46e5'};"></span>
+                        <span>${slice.name}</span>
+                    </div>
+                `;
+            }
+        });
+
+        if (!html) {
+            html = '<div class="text-muted small py-2 text-center">Chưa có phần thưởng nào.</div>';
+        }
+
+        container.innerHTML = html;
     }
 
     // 3. Render danh sách voucher của tôi

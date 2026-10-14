@@ -7,9 +7,14 @@
             <h3 class="fw-bold mb-1">Quản lý Mã Giảm Giá (Coupons)</h3>
             <p class="text-muted small mb-0">Quản lý mã khuyến mãi, voucher trúng thưởng từ Vòng Quay May Mắn</p>
         </div>
-        <a href="{{ route('admin.coupons.create') }}" class="btn btn-success rounded-pill px-3 shadow-sm">
-            Tạo mã giảm giá mới
-        </a>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('admin.lucky-wheel.index') }}" class="btn btn-outline-primary rounded-pill px-3 shadow-sm">
+                <i class="fa-solid fa-arrows-spin me-1"></i> Cấu hình Vòng Quay
+            </a>
+            <a href="{{ route('admin.coupons.create') }}" class="btn btn-success rounded-pill px-3 shadow-sm">
+                <i class="fa-solid fa-plus me-1"></i> Tạo mã giảm giá mới
+            </a>
+        </div>
     </div>
 
     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">

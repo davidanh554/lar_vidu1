@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Admin\VideoController as AdminVideoController;
 use App\Http\Controllers\Admin\CoinController as AdminCoinController;
 use App\Http\Controllers\Admin\FinanceController;
+use App\Http\Controllers\Admin\LuckyWheelController as AdminLuckyWheelController;
 use App\Http\Controllers\User\LuckyWheelController;
 use App\Http\Controllers\User\VideoShoppingController;
 use App\Http\Controllers\User\GeminiChatController;
@@ -162,6 +163,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Quản lý mã giảm giá (Coupons)
     Route::resource('coupons', AdminCouponController::class);
     Route::post('/coupons/{coupon}/toggle', [AdminCouponController::class, 'toggle'])->name('coupons.toggle');
+
+    // Quản lý & Cấu hình Vòng Quay May Mắn (Lucky Wheel)
+    Route::get('/lucky-wheel', [AdminLuckyWheelController::class, 'index'])->name('lucky-wheel.index');
+    Route::post('/lucky-wheel/settings', [AdminLuckyWheelController::class, 'updateSettings'])->name('lucky-wheel.settings');
+    Route::post('/lucky-wheel/reset', [AdminLuckyWheelController::class, 'resetDefault'])->name('lucky-wheel.reset');
 
     // Quản lý Video Reels
     Route::resource('videos', AdminVideoController::class);

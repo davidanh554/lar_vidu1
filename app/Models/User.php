@@ -104,7 +104,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function refreshAndGetSpins(): int
     {
         $now = now();
-        $limit = $this->daily_spins_limit ?? 1;
+        $globalLimit = (int)\App\Models\Setting::get('daily_spins_limit', 1);
+        $limit = $this->daily_spins_limit ?? $globalLimit;
 
         // Nếu chưa từng reset hoặc đã quá 24h kể từ lần reset trước
         if (!$this->last_spin_reset_at || $this->last_spin_reset_at->diffInHours($now) >= 24) {

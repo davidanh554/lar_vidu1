@@ -26,6 +26,9 @@
     <a href="{{ route('admin.coupons.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('admin.coupons.*') ? 'active' : '' }}">
         Mã Giảm Giá (Coupons)
     </a>
+    <a href="{{ route('admin.lucky-wheel.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('admin.lucky-wheel.*') ? 'active' : '' }}">
+        Vòng Quay May Mắn
+    </a>
     <a href="{{ route('admin.videos.index') }}" class="list-group-item list-group-item-action {{ request()->routeIs('admin.videos.*') ? 'active' : '' }}">
         Quản lý Video Reels
     </a>
