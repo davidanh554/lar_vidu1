@@ -72,18 +72,29 @@ class Coupon extends Model
     /**
      * Tính số tiền được giảm
      */
-    public function calculateDiscount(float $orderAmount): float
+    public function calculateDiscount(float $orderAmount, float $shippingFee = 0): float
     {
+        $isFreeship = str_contains(strtoupper($this->code), 'FREESHIP') 
+            || str_contains(mb_strtolower($this->title), 'vận chuyển') 
+            || str_contains(mb_strtolower($this->title), 'freeship');
+
+        if ($isFreeship) {
+            // Mã Freeship: Trừ trực tiếp vào tiền cước vận chuyển (nếu có ship) hoặc tổng thanh toán
+            $applicableFee = $shippingFee > 0 ? $shippingFee : ($orderAmount + $shippingFee);
+            return min($this->value, $applicableFee);
+        }
+
         $discount = 0;
         if ($this->type === 'percent') {
             $discount = ($orderAmount * $this->value) / 100;
             if ($this->max_discount !== null && $this->max_discount > 0) {
                 $discount = min($discount, $this->max_discount);
             }
+            return min($discount, $orderAmount);
         } else {
             $discount = $this->value;
+            // Với mã tiền mặt cố định: cho phép trừ vào tổng đơn (tiền hàng + ship)
+            return min($discount, $orderAmount + $shippingFee);
         }
-
-        return min($discount, $orderAmount);
     }
 }

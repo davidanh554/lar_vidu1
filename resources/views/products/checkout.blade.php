@@ -163,14 +163,23 @@
 
                         @if(!empty($userCoupons) && $userCoupons->count() > 0)
                             <div class="mt-2 pt-2 border-top border-secondary border-opacity-10">
-                                <small class="text-muted d-block mb-1"><i class="fa-solid fa-gift text-warning me-1"></i> Voucher từ Vòng Quay của bạn:</small>
-                                <div class="d-flex flex-wrap gap-1">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted fw-semibold"><i class="fa-solid fa-gift text-warning me-1"></i> Voucher bạn đã quay trúng:</small>
+                                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size: 0.7rem;">Sẵn sàng dùng</span>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
                                     @foreach($userCoupons as $uc)
-                                        <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 rounded-pill font-monospace btn-quick-coupon" style="font-size: 0.75rem;" data-code="{{ $uc->coupon->code }}" title="{{ $uc->coupon->title }}">
-                                            {{ $uc->coupon->code }}
+                                        <button type="button" class="btn btn-sm btn-outline-primary py-1 px-2 rounded-pill font-monospace btn-quick-coupon shadow-sm" style="font-size: 0.75rem;" data-code="{{ $uc->coupon->code }}" title="{{ $uc->coupon->title }}">
+                                            <i class="fa-solid fa-tag me-1"></i><strong>{{ $uc->coupon->code }}</strong> ({{ $uc->coupon->type === "percent" ? ("-" . $uc->coupon->value . "%") : ("-" . number_format($uc->coupon->value) . "đ") }})
                                         </button>
                                     @endforeach
                                 </div>
+                            </div>
+                        @else
+                            <div class="mt-2 pt-2 border-top border-secondary border-opacity-10">
+                                <small class="text-muted d-block">
+                                    <i class="fa-solid fa-circle-info text-info me-1"></i> Bạn chưa có voucher nào? Hãy tham gia <a href="javascript:void(0)" onclick="const btnWheel = document.getElementById('btn-open-lucky-wheel'); if(btnWheel) btnWheel.click();" class="text-primary fw-bold text-decoration-underline">Vòng quay may mắn</a> để săn voucher lên tới 100.000đ nhé!
+                                </small>
                             </div>
                         @endif
                     </div>
@@ -403,6 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let currentShippingFee = 0;
     let currentDiscount = 0;
+    let appliedCouponData = null;
     let currentCoinsDiscount = 0;
     const userCoins = {{ auth()->user()->coins ?? 0 }};
     const maxCoinsCash = userCoins * 500;
@@ -413,6 +423,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateTotals(fee) {
         if (typeof fee === 'number') {
             currentShippingFee = fee;
+        }
+
+        // Tự động tính lại mức giảm nếu đang áp mã Freeship hoặc mã tiền mặt
+        if (appliedCouponData) {
+            if (appliedCouponData.is_freeship) {
+                currentDiscount = Math.min(appliedCouponData.coupon_value, currentShippingFee > 0 ? currentShippingFee : (subtotal + currentShippingFee));
+            } else if (appliedCouponData.coupon_type === 'fixed') {
+                currentDiscount = Math.min(appliedCouponData.coupon_value, subtotal + currentShippingFee);
+            }
+            if (discountText) {
+                discountText.innerText = '-' + new Intl.NumberFormat('vi-VN').format(currentDiscount) + 'đ';
+            }
         }
         shippingFeeText.innerText = new Intl.NumberFormat('vi-VN').format(currentShippingFee) + ' VNĐ';
         
@@ -471,7 +493,8 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify({
                 code: code,
-                subtotal: subtotal
+                subtotal: subtotal,
+                shipping_fee: currentShippingFee
             })
         })
         .then(res => res.json())
@@ -480,6 +503,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btnApplyCoupon.innerText = 'Áp dụng';
 
             if (res.valid) {
+                appliedCouponData = res;
                 currentDiscount = res.discount || 0;
                 discountText.innerText = res.discount_formatted;
                 appliedCodeBadge.innerText = res.code;

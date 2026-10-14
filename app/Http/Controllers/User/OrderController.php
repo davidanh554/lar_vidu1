@@ -52,7 +52,18 @@ class OrderController extends Controller
             return $item['price'] * $item['quantity'];
         });
         
-        return view('products.checkout', compact('cart', 'totalPrice'));
+        $userCoupons = Auth::check()
+            ? \App\Models\UserCoupon::with('coupon')
+                ->where('user_id', Auth::id())
+                ->where('is_used', false)
+                ->whereHas('coupon', function($q) {
+                    $q->where('is_active', true);
+                })
+                ->latest()
+                ->get()
+            : collect();
+
+        return view('products.checkout', compact('cart', 'totalPrice', 'userCoupons'));
     }
 
     // đối tượng request để lấy toàn bộ tt vừa nhập
@@ -149,12 +160,20 @@ class OrderController extends Controller
         if (!empty($couponCode)) {
             $coupon = \App\Models\Coupon::where('code', $couponCode)->where('is_active', true)->first();
             if ($coupon) {
-                $validCheck = $coupon->isValidForOrder($subtotal);
-                if ($validCheck['valid']) {
-                    $hasUsed = Order::where('user_id', $user->id)->where('coupon_code', $couponCode)->exists();
-                    if (!$hasUsed) {
-                        $discountAmount = $coupon->calculateDiscount($subtotal);
-                        $appliedCoupon = $coupon;
+                // Bắt buộc phải có trong kho voucher từ Vòng quay may mắn
+                $userCoupon = \App\Models\UserCoupon::where('user_id', $user->id)
+                    ->where('coupon_id', $coupon->id)
+                    ->where('is_used', false)
+                    ->first();
+
+                if ($userCoupon) {
+                    $validCheck = $coupon->isValidForOrder($subtotal);
+                    if ($validCheck['valid']) {
+                        $hasUsed = Order::where('user_id', $user->id)->where('coupon_code', $couponCode)->exists();
+                        if (!$hasUsed) {
+                            $discountAmount = $coupon->calculateDiscount($subtotal, $shippingFee);
+                            $appliedCoupon = $coupon;
+                        }
                     }
                 }
             }

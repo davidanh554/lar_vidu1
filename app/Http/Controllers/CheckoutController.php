@@ -179,12 +179,20 @@ class CheckoutController extends Controller
         if (!empty($couponCode)) {
             $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
             if ($coupon) {
-                $validCheck = $coupon->isValidForOrder($subtotal);
-                if ($validCheck['valid']) {
-                    $hasUsed = Order::where('user_id', $user->id)->where('coupon_code', $couponCode)->exists();
-                    if (!$hasUsed) {
-                        $discountAmount = $coupon->calculateDiscount($subtotal);
-                        $appliedCoupon = $coupon;
+                // Bắt buộc phải có trong kho voucher từ Vòng quay may mắn
+                $userCoupon = UserCoupon::where('user_id', $user->id)
+                    ->where('coupon_id', $coupon->id)
+                    ->where('is_used', false)
+                    ->first();
+
+                if ($userCoupon) {
+                    $validCheck = $coupon->isValidForOrder($subtotal);
+                    if ($validCheck['valid']) {
+                        $hasUsed = Order::where('user_id', $user->id)->where('coupon_code', $couponCode)->exists();
+                        if (!$hasUsed) {
+                            $discountAmount = $coupon->calculateDiscount($subtotal, $shippingFee);
+                            $appliedCoupon = $coupon;
+                        }
                     }
                 }
             }
@@ -353,6 +361,7 @@ class CheckoutController extends Controller
     {
         $code = strtoupper(trim($request->input('code', '')));
         $subtotal = (float)$request->input('subtotal', 0);
+        $shippingFee = (float)$request->input('shipping_fee', 0);
 
         if (empty($code)) {
             return response()->json(['valid' => false, 'message' => 'Vui lòng nhập mã giảm giá!']);
@@ -368,6 +377,20 @@ class CheckoutController extends Controller
             return response()->json(['valid' => false, 'message' => $check['message']]);
         }
 
+        // KIỂM TRA BẮT BUỘC: Khách hàng PHẢI quay trúng mã này từ Vòng quay may mắn (có trong user_coupons)
+        $userId = auth()->id();
+        $userCoupon = UserCoupon::where('user_id', $userId)
+            ->where('coupon_id', $coupon->id)
+            ->where('is_used', false)
+            ->first();
+
+        if (!$userCoupon) {
+            return response()->json([
+                'valid' => false,
+                'message' => 'Bạn chưa sở hữu mã này! Hãy tham gia "Vòng quay may mắn" để săn voucher nhé.'
+            ]);
+        }
+
         // Kiểm tra xem khách hàng này đã dùng mã này cho đơn nào chưa
         $userId = auth()->id();
         $usedCount = Order::where('user_id', $userId)->where('coupon_code', $code)->count();
@@ -375,13 +398,16 @@ class CheckoutController extends Controller
             return response()->json(['valid' => false, 'message' => 'Bạn đã sử dụng mã giảm giá này cho một đơn hàng trước đó rồi!']);
         }
 
-        $discount = $coupon->calculateDiscount($subtotal);
+        $discount = $coupon->calculateDiscount($subtotal, $shippingFee);
 
         return response()->json([
             'valid'              => true,
             'message'            => 'Áp dụng mã giảm giá thành công!',
             'code'               => $coupon->code,
             'title'              => $coupon->title,
+            'is_freeship'        => str_contains(strtoupper($coupon->code), 'FREESHIP') || str_contains(mb_strtolower($coupon->title), 'vận chuyển'),
+            'coupon_value'       => (float) $coupon->value,
+            'coupon_type'        => $coupon->type,
             'discount'           => $discount,
             'discount_formatted' => '-' . number_format($discount) . '₫',
         ]);
