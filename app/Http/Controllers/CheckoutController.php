@@ -26,6 +26,16 @@ class CheckoutController extends Controller
         $userCart = $user->cart ?? [];
 
         if (empty($userCart)) {
+            // Nếu có tham số action=edit từ nút quay lại hoặc có đơn pending cần hủy để sửa
+            if ($request->query('action') === 'edit') {
+                $recentPending = Order::where('user_id', auth()->id())
+                    ->where('status', 'pending')
+                    ->latest()
+                    ->first();
+                if ($recentPending) {
+                    return redirect()->route('orders.sepay.cancel', $recentPending->id);
+                }
+            }
             $recentOrder = Order::where('user_id', auth()->id())
                 ->where('created_at', '>=', now()->subSeconds(60))
                 ->latest()

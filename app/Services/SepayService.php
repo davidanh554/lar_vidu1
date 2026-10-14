@@ -97,27 +97,51 @@ class SepayService
             return true;
         }
 
-        // 1. Kiểm tra chữ ký HMAC-SHA256 nếu SePay dùng phương thức HMAC-SHA256
-        $signature = $request->header('X-Sepay-Signature') ?: $request->header('x-sepay-signature');
-        if ($signature) {
-            $computedSignature = hash_hmac('sha256', $request->getContent(), $configuredToken);
-            if (hash_equals($signature, $computedSignature)) {
+        // 1. Kiểm tra chữ ký HMAC-SHA256 theo chuẩn SePay
+        $signature = (string) ($request->header('X-Sepay-Signature') ?: $request->header('x-sepay-signature') ?: '');
+        $timestamp = (string) ($request->header('X-SePay-Timestamp') ?: $request->header('x-sepay-timestamp') ?: '');
+        $rawBody   = (string) $request->getContent();
+
+        if (!empty($signature)) {
+            $cleanSignature = str_starts_with($signature, 'sha256=') ? substr($signature, 7) : $signature;
+
+            // Cách A: Chuẩn SePay (timestamp . '.' . rawBody)
+            if (!empty($timestamp)) {
+                $expected = hash_hmac('sha256', $timestamp . '.' . $rawBody, $configuredToken);
+                if (hash_equals($expected, $cleanSignature)) {
+                    return true;
+                }
+            }
+
+            // Cách B: hash_hmac rawBody đơn thuần
+            $expectedRaw = hash_hmac('sha256', $rawBody, $configuredToken);
+            if (hash_equals($expectedRaw, $cleanSignature) || hash_equals($expectedRaw, $signature)) {
                 return true;
             }
         }
 
         // 2. SePay gửi Header: "Apikey <TOKEN>" hoặc "Bearer <TOKEN>"
-        $authHeader = $request->header('Authorization', '');
-        if (str_starts_with($authHeader, 'Apikey ') || str_starts_with($authHeader, 'Bearer ')) {
-            $receivedToken = trim(substr($authHeader, 7));
-            return hash_equals($configuredToken, $receivedToken);
+        $authHeader = (string) $request->header('Authorization', '');
+        if (preg_match('/^(?:Apikey|Bearer)\s+(.+)$/i', $authHeader, $matches)) {
+            $receivedToken = trim($matches[1]);
+            if (hash_equals($configuredToken, $receivedToken)) {
+                return true;
+            }
         }
 
         // 3. Hoặc kiểm tra qua query param / body nếu có
-        $paramToken = $request->input('token') ?: $request->input('api_key');
+        $paramToken = (string) ($request->input('token') ?: $request->input('api_key') ?: '');
         if (!empty($paramToken)) {
-            return hash_equals($configuredToken, (string) $paramToken);
+            if (hash_equals($configuredToken, $paramToken)) {
+                return true;
+            }
         }
+
+        Log::warning('SePay Webhook Verification Failed', [
+            'has_signature' => !empty($signature),
+            'has_timestamp' => !empty($timestamp),
+            'auth_header'   => !empty($authHeader) ? substr($authHeader, 0, 15) . '...' : 'none',
+        ]);
 
         return false;
     }

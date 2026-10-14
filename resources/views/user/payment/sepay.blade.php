@@ -178,10 +178,10 @@
                         </form>
 
                         <!-- Nút Hủy Thanh Toán / Đổi Phương Thức -->
-                        <form action="{{ route('orders.sepay.cancel', $order->id) }}" method="POST" class="flex-fill">
+                        <form id="form-cancel-payment" action="{{ route('orders.sepay.cancel', $order->id) }}" method="POST" class="flex-fill">
                             @csrf
-                            <button type="submit" class="btn btn-outline-danger w-100 rounded-pill py-2 small fw-bold" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này? Tồn kho và Voucher sẽ được hoàn lại.')">
-                                <i class="fa-solid fa-ban me-1"></i> Hủy đơn / Đổi phương thức
+                            <button type="submit" class="btn btn-outline-danger w-100 rounded-pill py-2 small fw-bold" onclick="return confirm('Bạn có muốn hủy đơn này để quay lại chỉnh sửa thông tin giao hàng & giỏ hàng không? Tồn kho, Xu và Giỏ hàng sẽ được khôi phục nguyên vẹn.')">
+                                <i class="fa-solid fa-pen-to-square me-1"></i> Sửa lại thông tin giỏ hàng
                             </button>
                         </form>
                     </div>
@@ -333,6 +333,21 @@ document.addEventListener("DOMContentLoaded", function () {
             checkPaymentStatus(true);
         });
     }
+
+    // 4. Bắt sự kiện người dùng bấm nút Quay lại (Back) của trình duyệt
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+        if (confirm("Đơn hàng #{{ $order->id }} đang chờ bạn thanh toán. Bạn có muốn hủy đơn này và quay lại Giỏ hàng để thay đổi thông tin không?")) {
+            const formCancel = document.getElementById('form-cancel-payment');
+            if (formCancel) {
+                formCancel.submit();
+            } else {
+                window.location.href = "{{ route('checkout.index', ['action' => 'edit']) }}";
+            }
+        } else {
+            window.history.pushState(null, "", window.location.href);
+        }
+    };
 });
 </script>
 @endpush

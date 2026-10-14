@@ -118,13 +118,41 @@ class SepayController extends Controller
                 }
             }
 
+            // Khôi phục lại toàn bộ sản phẩm của đơn hàng vào giỏ hàng
+            $user = $order->user;
+            if ($user) {
+                $cart = $user->cart ?? [];
+                if (!is_array($cart)) {
+                    $cart = [];
+                }
+                foreach ($order->items as $item) {
+                    $product = $item->product;
+                    if ($product) {
+                        $key = $item->product_id . ($item->color ? ('_' . $item->color) : '');
+                        $cart[$key] = [
+                            'product_id' => $item->product_id,
+                            'name'       => $product->name,
+                            'price'      => (int) $item->price,
+                            'quantity'   => (int) $item->quantity,
+                            'color'      => $item->color,
+                            'image'      => $product->image ?? '',
+                        ];
+                    }
+                }
+                $user->cart = $cart;
+                $user->save();
+                session(['cart' => $cart]);
+            }
+
             // Cập nhật trạng thái transaction
             PaymentTransaction::where('order_id', $order->id)
                 ->where('gateway', 'sepay')
-                ->update(['status' => 'cancelled', 'message' => 'Người dùng hủy thanh toán VietQR']);
+                ->update(['status' => 'cancelled', 'message' => 'Người dùng hủy thanh toán VietQR để sửa lại thông tin']);
         });
 
-        return redirect()->route('orders.index')->with('info', 'Bạn đã hủy đơn hàng #' . $order->id . ' thành công. Tồn kho và ưu đãi đã được hoàn lại.');
+        session()->forget('last_order_id');
+
+        return redirect()->route('checkout.index')->with('info', 'Đã hủy đơn hàng #' . $order->id . ' và khôi phục giỏ hàng thành công. Bạn có thể thay đổi thông tin và tiến hành đặt lại!');
     }
 
     /**
