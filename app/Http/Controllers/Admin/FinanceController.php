@@ -14,7 +14,7 @@ class FinanceController extends Controller
 {
     private const STATUSES = [
         'pending' => 'Chờ thanh toán',
-        'initiated' => 'Đang chờ MoMo',
+        'initiated' => 'Đang chờ VietQR (SePay)',
         'paid' => 'Đã thanh toán',
         'failed' => 'Thanh toán thất bại',
         'cancelled' => 'Đã hủy',
@@ -45,7 +45,7 @@ class FinanceController extends Controller
         $orders = DB::table('orders')->leftJoin('payment_transactions as payment', function ($join) use ($paymentId) {
             $join->on('payment.order_id', '=', 'orders.id')->where('payment.id', '=', $paymentId);
         })->select('orders.*', 'payment.id as payment_id', 'payment.paid_at')
-        ->selectRaw("COALESCE(payment.gateway, CASE WHEN orders.status IN ('cod_ordered', 'cod_paid') THEN 'cod' WHEN orders.status IN ('paid', 'paid_momo') THEN 'momo' ELSE 'unknown' END) as gateway")
+        ->selectRaw("COALESCE(payment.gateway, CASE WHEN orders.status IN ('cod_ordered', 'cod_paid') THEN 'cod' ELSE 'sepay' END) as gateway")
         ->selectRaw("COALESCE(payment.status, CASE WHEN orders.status = 'cod_ordered' THEN 'pending' WHEN orders.status IN ('cod_paid', 'paid_momo') THEN 'paid' ELSE orders.status END) as payment_status");
 
         return DB::query()->fromSub($orders, 'finance_orders');
@@ -59,7 +59,7 @@ class FinanceController extends Controller
             'date_to' => ['nullable', 'date_format:Y-m-d', ...($request->filled('date_from') ? ['after_or_equal:date_from'] : [])],
             'min_amount' => ['nullable', 'numeric', 'min:0', 'max:9999999999999.99'],
             'max_amount' => ['nullable', 'numeric', 'min:0', 'max:9999999999999.99', ...($request->filled('min_amount') ? ['gte:min_amount'] : [])],
-            'gateway' => ['nullable', Rule::in(['cod', 'momo', 'unknown'])],
+            'gateway' => ['nullable', Rule::in(['cod', 'sepay'])],
             'payment_status' => ['nullable', Rule::in(array_keys(self::STATUSES))],
             'sort' => ['nullable', Rule::in(['newest', 'oldest', 'amount_asc', 'amount_desc'])],
             'page' => ['nullable', 'integer', 'min:1'],
@@ -129,7 +129,7 @@ class FinanceController extends Controller
             'statusTotals' => $statusTotals,
             'methodTotals' => $methodTotals,
             'statuses' => self::STATUSES,
-            'methods' => ['cod' => 'COD', 'sepay' => 'SePay (VietQR)', 'momo' => 'MoMo', 'unknown' => 'Chưa xác định'],
+            'methods' => ['cod' => 'COD (Khi nhận hàng)', 'sepay' => 'VietQR (SePay)'],
         ]);
     }
 
@@ -151,7 +151,7 @@ class FinanceController extends Controller
             'filters' => $filters,
             'statuses' => self::STATUSES,
             'codTransitions' => self::COD_TRANSITIONS,
-            'methods' => ['cod' => 'COD', 'sepay' => 'SePay (VietQR)', 'momo' => 'MoMo', 'unknown' => 'Chưa xác định'],
+            'methods' => ['cod' => 'COD (Khi nhận hàng)', 'sepay' => 'VietQR (SePay)'],
         ]);
     }
 

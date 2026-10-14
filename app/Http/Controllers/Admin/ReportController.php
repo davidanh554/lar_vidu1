@@ -162,14 +162,14 @@ class ReportController extends Controller
             ->whereColumn('order_id', 'orders.id')->where('status', 'paid')->orderByDesc('id')->limit(1);
 
         $paid = $this->paidOrders($dateFrom, $dateTo)->select('orders.total_price')->selectSub($gateway, 'gateway')
-            ->selectRaw("CASE WHEN orders.status = 'cod_paid' THEN 'cod' ELSE 'momo' END as legacy_gateway");
+            ->selectRaw("CASE WHEN orders.status = 'cod_paid' THEN 'cod' ELSE 'sepay' END as legacy_gateway");
 
         $methodRevenue = DB::query()->fromSub($paid, 'paid_orders')
             ->selectRaw('COALESCE(gateway, legacy_gateway) as method, SUM(total_price) as revenue')
             ->groupByRaw('COALESCE(gateway, legacy_gateway)')->pluck('revenue', 'method');
 
-        $paymentMethodLabels = ['MoMo', 'COD'];
-        $paymentMethodRevenue = [(float) $methodRevenue->get('momo', 0), (float) $methodRevenue->get('cod', 0)];
+        $paymentMethodLabels = ['VietQR (SePay)', 'COD'];
+        $paymentMethodRevenue = [(float) ($methodRevenue->get('sepay', 0) + $methodRevenue->get('momo', 0)), (float) $methodRevenue->get('cod', 0)];
 
         return view('admin.reports.charts', compact(
             'catLabels', 'catRevenue', 'revDateLabels', 'revDateData',

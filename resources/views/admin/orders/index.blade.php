@@ -32,7 +32,6 @@
                         <option value="cod_ordered" @selected(request('status') === 'cod_ordered')>COD đã đặt</option>
                         <option value="cod_paid" @selected(request('status') === 'cod_paid')>COD đã thu</option>
                         <option value="paid" @selected(request('status') === 'paid')>Đã thanh toán</option>
-                        <option value="paid_momo" @selected(request('status') === 'paid_momo')>Đã trả qua MoMo</option>
                         <option value="cancelled" @selected(request('status') === 'cancelled')>Đã hủy</option>
                     </select>
                 </div>

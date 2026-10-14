@@ -100,7 +100,7 @@
                         Chúng tôi hỗ trợ 2 hình thức thanh toán tiện lợi:
                         <ul class="mb-0 ps-3 mt-1">
                             <li><strong>Thanh toán khi nhận hàng (COD):</strong> Trả tiền mặt cho shipper GHN sau khi nhận và kiểm tra máy.</li>
-                            <li><strong>Cổng thanh toán MoMo:</strong> Quét mã QR MoMo, chuyển khoản qua ví MoMo hoặc thẻ ATM nội địa Napas tức thì với độ bảo mật cao nhất.</li>
+                            <li><strong>Chuyển khoản VietQR (SePay):</strong> Quét mã VietQR chuyển khoản tức thì 24/7 qua mọi ứng dụng ngân hàng, hệ thống tự động xác nhận đơn hàng sau vài giây.</li>
                         </ul>
                     </div>
                 </div>

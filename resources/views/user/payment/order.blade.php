@@ -53,10 +53,10 @@
                                 $isCancelled = in_array($order->status, ['cancelled']) || $order->shipping_status === 'cancelled';
                                 $isPaid = $order->status === 'paid';
                                 $hasSepay = $order->paymentTransactions && $order->paymentTransactions->where('gateway', 'sepay')->isNotEmpty();
-                                $hasMomo = $order->paymentTransactions && $order->paymentTransactions->where('gateway', 'momo')->isNotEmpty();
+                                
                                 $isCod = $order->status === 'cod_ordered' 
                                          || ($order->paymentTransactions && $order->paymentTransactions->where('gateway', 'cod')->isNotEmpty())
-                                         || (!$hasSepay && !$hasMomo && !$isPaid);
+                                         || (!$hasSepay && !$isPaid);
                             @endphp
                             <tr>
                                 <td class="ps-4">
@@ -166,16 +166,10 @@
                                             </button>
                                         @endif
 
-                                        @if(!$isCancelled && !$isPaid)
-                                            @if($hasSepay)
-                                                <a href="{{ route('orders.sepay.pay', $order->id) }}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
-                                                    <i class="fa-solid fa-qrcode me-1"></i> Quét mã QR
-                                                </a>
-                                            @elseif($hasMomo)
-                                                <a href="{{ route('orders.momo.pay', $order->id) }}" class="btn btn-sm btn-danger rounded-pill px-3 fw-bold">
-                                                    <i class="fa-solid fa-credit-card me-1"></i> Trả lại
-                                                </a>
-                                            @endif
+                                                                                @if(!$isCancelled && !$isPaid && !$isCod)
+                                            <a href="{{ route('orders.sepay.pay', $order->id) }}" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                                <i class="fa-solid fa-qrcode me-1"></i> Quét mã QR
+                                            </a>
                                         @endif
 
                                         @php

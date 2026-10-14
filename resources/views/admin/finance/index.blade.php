@@ -134,11 +134,11 @@
             </div>
         </div>
 
-        <!-- Đang chờ MoMo -->
+        <!-- Đang chờ VietQR (SePay) -->
         <div class="col-md-6 col-lg-3">
             <div class="card shadow-sm border-0 h-100 bg-light">
                 <div class="card-body p-3">
-                    <div class="text-muted small fw-medium mb-1">Đang chờ MoMo</div>
+                    <div class="text-muted small fw-medium mb-1">Đang chờ VietQR (SePay)</div>
                     <div class="h4 fw-bold text-info mb-1">{{ number_format($statusTotals['initiated']->total_amount ?? 0) }} đ</div>
                     <div class="text-muted small">{{ number_format($statusTotals['initiated']->order_count ?? 0) }} đơn</div>
                 </div>
@@ -224,13 +224,9 @@
                         <tr>
                             <td class="py-3 px-3">
                                 @if ($key === 'cod')
-                                    <span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1"><i class="fa-solid fa-truck-ramp-box me-1"></i> COD</span>
-                                @elseif ($key === 'sepay')
-                                    <span class="badge bg-success-subtle text-success border border-success px-2 py-1"><i class="fa-solid fa-qrcode me-1"></i> VietQR (SePay)</span>
-                                @elseif ($key === 'momo')
-                                    <span class="badge bg-danger-subtle text-danger border border-danger px-2 py-1"><i class="fa-solid fa-wallet me-1"></i> MoMo</span>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1"><i class="fa-solid fa-truck-ramp-box me-1"></i> COD (Khi nhận hàng)</span>
                                 @else
-                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary px-2 py-1"><i class="fa-solid fa-question me-1"></i> Chưa xác định</span>
+                                    <span class="badge bg-success-subtle text-success border border-success px-2 py-1"><i class="fa-solid fa-qrcode me-1"></i> VietQR (SePay)</span>
                                 @endif
                             </td>
                             <td class="py-3 px-3 text-center fw-medium">

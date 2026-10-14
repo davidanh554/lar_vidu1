@@ -26,7 +26,7 @@ class OrderController extends Controller
     {
         $paymentLabels = [
             'pending' => 'Chờ thanh toán',
-            'initiated' => 'Đang chờ MoMo',
+            'initiated' => 'Đang chờ VietQR (SePay)',
             'paid' => 'Đã thanh toán',
             'failed' => 'Thanh toán thất bại',
             'cancelled' => 'Đã hủy',
@@ -59,7 +59,7 @@ class OrderController extends Controller
             'status' => ['nullable', Rule::in(['pending', 'paid', 'paid_momo', 'cod_ordered', 'cod_paid', 'cancelled'])],
             'payment_status' => ['nullable', Rule::in(array_keys($paymentLabels))],
             'shipping_status' => ['nullable', Rule::in(array_keys($shippingLabels))],
-            'gateway' => ['nullable', Rule::in(['cod', 'momo', 'unknown'])],
+            'gateway' => ['nullable', Rule::in(['cod', 'sepay'])],
             'tab' => ['nullable', Rule::in(array_keys(self::TABS))],
             'date_from' => ['nullable', 'date_format:Y-m-d'],
             'date_to' => ['nullable', 'date_format:Y-m-d', ...($request->filled('date_from') ? ['after_or_equal:date_from'] : [])],
@@ -79,7 +79,7 @@ class OrderController extends Controller
         $source = DB::table('orders')->leftJoin('payment_transactions as payment', function ($join) use ($paymentId) {
             $join->on('payment.order_id', '=', 'orders.id')->where('payment.id', '=', $paymentId);
         })->select('orders.*')
-        ->selectRaw("COALESCE(payment.gateway, CASE WHEN orders.status IN ('cod_ordered', 'cod_paid') THEN 'cod' WHEN orders.status IN ('paid', 'paid_momo') THEN 'momo' ELSE 'unknown' END) as gateway")
+        ->selectRaw("COALESCE(payment.gateway, CASE WHEN orders.status IN ('cod_ordered', 'cod_paid') THEN 'cod' ELSE 'sepay' END) as gateway")
         ->selectRaw("COALESCE(payment.status, CASE WHEN orders.status = 'cod_ordered' THEN 'pending' WHEN orders.status IN ('cod_paid', 'paid_momo') THEN 'paid' ELSE orders.status END) as payment_status");
 
         $query = Order::query()->fromSub($source, 'orders');

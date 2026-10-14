@@ -226,8 +226,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/{order}/sepay/mock', [SepayController::class, 'mockSuccess'])->name('orders.sepay.mock');
 
     // Các route khởi tạo & thanh toán lại MoMo (giữ lại tương thích)
-    Route::get('/orders/{order}/start-momo', [MomoController::class, 'start'])->name('orders.momo.start');
-    Route::get('/orders/{order}/pay/momo', [MomoController::class, 'payAgain'])->name('orders.momo.pay');
+    Route::get('/orders/{order}/start-momo', fn($order) => redirect()->route('orders.sepay.pay', $order))->name('orders.momo.start');
+    Route::get('/orders/{order}/pay/momo', fn($order) => redirect()->route('orders.sepay.pay', $order))->name('orders.momo.pay');
 
     // Xác nhận đã nhận hàng
     Route::post('/orders/{order}/confirm-delivery', [OrderController::class, 'confirmDelivery'])->name('orders.confirmDelivery');

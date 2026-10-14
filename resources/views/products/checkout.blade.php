@@ -85,7 +85,7 @@
                         <textarea name="note" class="form-control" rows="2" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."></textarea>
                     </div>
 
-                    <!-- Phương thức thanh toán (COD hoặc MoMo) -->
+                    <!-- Phương thức thanh toán (COD hoặc VietQR SePay) -->
                     <div class="mt-4 pt-3 border-top">
                         <h5 class="fw-bold mb-3 d-flex align-items-center">
                             <i class="fa-solid fa-wallet me-2 text-primary"></i>2. Phương thức thanh toán <span class="text-danger">*</span>

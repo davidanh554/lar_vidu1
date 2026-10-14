@@ -79,7 +79,7 @@ class OrderController extends Controller
             'address'        => 'required|string|max:100',
             'to_district_id' => 'required|integer',
             'to_ward_code'   => 'required|string',
-            'payment_method' => 'required|in:cod,sepay,momo',
+            'payment_method' => 'required|in:cod,sepay',
         ], [
             'name.required'           => 'Vui lòng nhập họ và tên người nhận',
             'phone.required'          => 'Vui lòng nhập số điện thoại người nhận',

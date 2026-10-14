@@ -159,17 +159,9 @@
                                     <span class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">
                                         <i class="fa-solid fa-truck-ramp-box me-1"></i> COD
                                     </span>
-                                @elseif ($order->gateway === 'sepay')
+                                @else
                                     <span class="badge bg-success-subtle text-success border border-success px-2 py-1">
                                         <i class="fa-solid fa-qrcode me-1"></i> VietQR (SePay)
-                                    </span>
-                                @elseif ($order->gateway === 'momo')
-                                    <span class="badge bg-danger-subtle text-danger border border-danger px-2 py-1">
-                                        <i class="fa-solid fa-wallet me-1"></i> MoMo
-                                    </span>
-                                @else
-                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary px-2 py-1">
-                                        <i class="fa-solid fa-question me-1"></i> Chưa xác định
                                     </span>
                                 @endif
                             </td>
