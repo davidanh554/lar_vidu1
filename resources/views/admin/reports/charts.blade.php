@@ -167,7 +167,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 datasets: [{
                     label: 'Doanh thu (VNĐ)',
                     data: payRevenue,
-                    backgroundColor: ['#d63384', '#198754', '#6c757d']
+                    backgroundColor: ['#0d6efd', '#198754']
                 }]
             },
             options: {
